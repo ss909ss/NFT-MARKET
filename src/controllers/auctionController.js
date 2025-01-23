@@ -1,6 +1,7 @@
 import Auction from "../models/NFTSchema/Auction.models.js";
 import NFT from "../models/NFTSchema/NFT.models.js";
 import mongoose from 'mongoose';
+import client from '../config/redis.js';
 
 // Создание нового аукциона
 async function createAuction(req, res) {
@@ -35,9 +36,14 @@ async function createAuction(req, res) {
 }
 
 // Получение списка всех активных аукционов
-async function getAllAuctions(req,res) {
+async function getAllAuctions(req, res) {
     try {
+        const cacheddata = await client.get('allauctions');
+        if(cacheddata) {
+            return res.json({ data: JSON.parse(cacheddata) });
+        }
         const auctions = await Auction.find().populate('nft');
+        await client.set('allauctions', JSON.stringify(auctions), { EX: 600 }); // Добавляем время жизни 600 секунд
 
         res.status(200).json(auctions);
     } catch (err) {
@@ -46,12 +52,19 @@ async function getAllAuctions(req,res) {
 }
 
 // Получение информации о конкретном аукционе
-async function getAuction(req,res) {
+async function getAuction(req, res) {
     try {
-        const auction = await Auction.findById(req.params.id).populate('nft');
+        const auctionId = req.params.id;
+        const cachedAuction = await client.get(`auction:${auctionId}`);
+        if (cachedAuction) {
+            return res.status(200).json({data:JSON.parse(cachedAuction)});
+        }
+        const auction = await Auction.findById(auctionId).populate('nft');
         if(!auction) {
             return res.status(404).json({ message: 'Auction is not found' });
         }
+
+        await client.set(`auction:${auctionId}`,JSON.stringify(auction),{EX:600});
         res.status(200).json(auction);
     } catch (err) {
         res.status(500).json({ message: 'Error in getAuction controller', error: err });

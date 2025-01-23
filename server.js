@@ -12,6 +12,7 @@ const app = express();
 const PORT = 5555;
 connectDB();
 
+
 app.use(express.json());
 
 app.use('/auth',authRoutes);

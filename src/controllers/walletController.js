@@ -1,13 +1,22 @@
 import Wallet from '../models/FinancialSchema/Wallet.models.js';
 import Transaction from '../models/FinancialSchema/Transaction.models.js';
+import client from '../config/redis.js';
 
 // Получение информации о кошельке пользователя
 async function getWallet(req,res) {
     try {
+        const cacheKey = `wallet:${req.user.id}`;
+        const cachedWallet = await client.get(cacheKey);
+        if(cachedWallet) {
+            return res.status(200).json({data:JSON.parse(cachedWallet)});
+        }
+
         const wallet =await Wallet.findOne({user:req.user.id});
         if(!wallet) {
             return res.status(404).json({ message: 'Wallet is not found!' });
         }
+
+        await client.set(cacheKey,JSON.stringify(wallet),{EX:600});
         res.status(200).json(wallet);
     } catch (err) {
         res.status(500).json({message:"Error in getWallet controller",error:err});

@@ -1,5 +1,6 @@
 import NFT from '../models/NFTSchema/NFT.models.js';
 import Auction from '../models/NFTSchema/Auction.models.js';
+import client from '../config/redis.js';
 
 // Получение списка всех NFT с фильтрацией
 async function getAllNFTs(req,res) {
@@ -10,7 +11,15 @@ async function getAllNFTs(req,res) {
         if (auctionEndTime) filter.auctionEndTime = { $lte: new Date(auctionEndTime) };
         if (likes) filter.likes = { $gte: likes };
 
+        const cacheKey = `allNFTs:${price || 'none'}:${auctionEndTime || 'none'}:${likes || 'none'}`;
+        const cachedNFTs = await client.get(cacheKey);
+        if (cachedNFTs) {
+            return res.status(200).json({ data: JSON.parse(cachedNFTs) });
+        }
+        
         const nfts = await NFT.find(filter);
+
+        await client.set(cacheKey, JSON.stringify(nfts), { EX: 600 });
         res.status(200).json(nfts);
     } catch (err) {
         res.status(500).json({ message: 'Error in getAllNFTs controller', error: err });
@@ -20,10 +29,17 @@ async function getAllNFTs(req,res) {
 // Получение информации о конкретном NFT
 async function getNFT(req,res) {
     try {
-        const nft = await NFT.findById(req.params.id);
+        const nftId = req.params.id;
+        const cachedNft = await client.get(`nft:${nftId}`);
+        if(cachedNft) {
+            return res.status(200).json({data:JSON.parse(cachedNft)});
+        }
+        const nft = await NFT.findById(nftId);
         if(!nft) {
             return res.status(404).json({ message: 'NFT is not found' });
         }
+
+        await client.set(`nft:${nftId}`,JSON.stringify(nft),{EX:600});
         res.status(200).json(nft);
     } catch (err) {
         res.status(500).json({ message: 'Error in getNFT controller', error: err });
