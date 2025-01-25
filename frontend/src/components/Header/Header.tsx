@@ -2,6 +2,7 @@ import styles from "./Header.module.scss"
 import headerLogo from "../../assets/logo.svg"
 import seachIcon from "../../assets/search.svg"
 import notificationicon from "../../assets/notification.svg"
+import dropdown from "../../assets/dropdown.svg"
 import { Link } from 'react-router'
 
 const Header = () => {
@@ -23,7 +24,7 @@ const Header = () => {
                     </div>
                     <div className={styles.header__right}>
                         <div className={styles.search__form}>
-                            <input type="text" placeholder="Search"  className={styles.search__input}/>
+                            <input type="text" placeholder="Search" className={styles.search__input} />
                             <img src={seachIcon} alt="Icon" className={styles.search__icon} />
                         </div>
                         <div className={styles.right__notification}>
@@ -34,9 +35,13 @@ const Header = () => {
                             <button className={styles.button__upload}>Upload</button>
                             <button className={styles.button__wallet}>Connect Wallet</button>
                         </div>
+
+                        <button className={styles.header__dropdown}>
+                            <img src={dropdown} alt="Icon" />
+                        </button>
                     </div>
+                </div>
             </div>
-        </div>
         </header >
     )
 }

@@ -1,6 +1,6 @@
 import Header from "../components/Header/Header"
 import styles from "./layout.module.scss"
-// import {  Outlet } from "react-router"
+import {  Outlet } from "react-router"
 
 
 const Layout = () => {
@@ -8,7 +8,7 @@ const Layout = () => {
         <div className={styles.layout__wrapper}>
           <Header/>
             <main>
-                {/* <Outlet /> */}
+                <Outlet />
             </main>
             <footer></footer>
         </div>

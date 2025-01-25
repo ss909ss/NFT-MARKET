@@ -12,10 +12,6 @@
   .header__left {
     @include flex-center;
 
-    .header__logo {
-
-}
-
     .header__border{
         display: block;
         border-right: 2px solid $dark-gray;
@@ -39,11 +35,6 @@
         }
       }
     }
-
-  
-    
-
-   
   }
 
   .header__right {
@@ -75,7 +66,6 @@
         position: absolute;
         top: 10px;
         right:  10px;
-        
       }
     }
 
@@ -98,7 +88,7 @@
     }
     .header__buttons {
     .button__upload {
-        @include button($btn-color, $bg-color: $blue-color, $br-radius: 90px, $cursor: pointer);
+        @include button($btn-color, $bg-color: $blue-color, $br-radius: $br-radius, $cursor:$cursor);
         padding: 12px 16px;
         color: $white-color;
         border: none;
@@ -112,7 +102,7 @@
       }
 
       .button__wallet {
-        @include button($btn-color, $bg-color: $black-color, $br-radius: 90px, $cursor:pointer);
+        @include button($btn-color, $bg-color: $black-color, $br-radius: $br-radius, $cursor:$cursor);
         padding: 12px 16px;
         border: 2px solid  $muted-blue;
         color: $white-color;
@@ -123,6 +113,101 @@
         }
       }
     }
+
+    .header__dropdown{
+      display: none;
+    }
   }
 }
+}
+
+@media (max-width:1024px){
+  .header{
+    .container{
+      width: 100%;
+      padding: 20px 80px;
+    .header__content{
+      display: flex;
+      align-items: center;
+      .header__left{
+        .header__border{
+          display: none;
+        }
+        .header__menu{
+          .header__list{
+display: none;
+      
+          }
+        }
+      }
+      .header__right{
+        .right__notification{
+            .notification__counter{
+              top: 43px;
+          }
+        }
+      }
+      }
+    }
+  }
+}
+
+@media (max-width:902px){
+  .header{
+    .container{
+    width: 100%;
+    .header__content{
+      
+      .header__left{
+        .header__border{
+          display: none;
+        }
+        .header__menu{
+          .header__list{
+display: none;
+            li {
+              &:last-of-type{
+          //  margin-left: 32px;
+              }
+             a {
+              //  text-decoration: none;
+              //  @include text-style($text-color, $fz, $lh, $fw);
+             }
+           }
+          }
+        }
+      }
+      .header__right{
+     
+        .search__form{
+          display: none;
+        }
+        .right__notification{
+          display: none;
+        }
+
+        .header__buttons{
+          display: none;
+        }
+      
+      .header__dropdown{
+        display: block;
+        background-color: $black-color;
+        color: $white-color;
+        border: none;
+      }
+    }
+  }
+  }
+}
+}
+
+
+@media (max-width:500px){
+  .header{
+    .container{
+    width: 100%;
+   padding: 48px 32px;
+    }
+  }
 }
