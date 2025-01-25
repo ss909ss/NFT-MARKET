@@ -1,9 +1,13 @@
 import React from 'react'
+import CreatorInfo from '../../components/Creator/CreatorInfo/CreatorInfo'
+import CreatorSingle from '../../components/Creator/CreatorSingle/CreatorSingle'
+
 
 const Home = () => {
   return (
     <div>
-      <h1>Home Page</h1>
+      <CreatorInfo/>
+      <CreatorSingle/>
     </div>
   )
 }
