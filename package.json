@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon C:\\Users\\makar\\Desktop\\nft-marketplace-backend\\server.js"
+    "start": "concurrently \"nodemon server.js\" \"nodemon kafkaClient.js\" \"nodemon kafkaConsumer.js\"",
+    "kafkaCli": "nodemon kafkaClient.js",
+    "kafkaCon": "nodemon kafkaConsumer.js"
   },
   "keywords": [],
   "author": "",
@@ -27,12 +29,16 @@
     "mongoose": "^8.9.5",
     "morgan": "^1.10.0",
     "redis": "^4.7.0",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "util": "^0.12.5",
-    "winston": "^3.17.0"
+    "winston": "^3.17.0",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
+    "concurrently": "^9.1.2",
     "eslint": "^9.18.0",
     "nodemon": "^3.1.9"
   }

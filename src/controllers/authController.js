@@ -124,4 +124,17 @@ async function updateProfile(req,res) {
     }
 }
 
-export {register,login,logout,getProfile,updateProfile};
+async function getUserMessages(req, res) {
+    try {
+        const userId = req.user.id;
+
+        const user = await User.findById(userId).select('nftLikes walletTransfers auctionBids');
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        res.status(200).json(user);
+    } catch (err) {
+        res.status(500).json({ message: 'Error retrieving user messages', error: err });
+    }
+}
+
+export {register,login,logout,getProfile,updateProfile,getUserMessages};

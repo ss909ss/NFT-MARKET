@@ -2,7 +2,8 @@ import Auction from "../models/NFTSchema/Auction.models.js";
 import NFT from "../models/NFTSchema/NFT.models.js";
 import mongoose from 'mongoose';
 import client from '../config/redis.js';
-
+import producer from "../../kafkaClient.js";
+import User from "../models/UserSchema/User.models.js";
 // Создание нового аукциона
 async function createAuction(req, res) {
     const { nft, startingPrice, endTime } = req.body; // Изменено на startingPrice и nft
@@ -98,6 +99,35 @@ async function bidOnAuction(req, res) {
 
         // Сохраняем изменения
         await auction.save();
+
+        // Создаем уведомление для всех пользователей
+        const users = await User.find();  // Получаем всех пользователей
+        const notificationMessage = `New bid of ${bidAmount} placed on auction for NFT: ${auction.nft}`;
+
+        // Отправляем уведомление каждому пользователю
+        for (const user of users) {
+            user.auctionBids.push({
+                auctionId: auction.id,  // Добавляем идентификатор аукциона
+                bidAmount,  // Сумма ставки
+                timestamp: new Date(),
+                message: notificationMessage,  // Добавляем сообщение с уведомлением
+            });
+            await user.save();
+        }
+
+        const message = {
+            topic: 'auction-bids',
+            messages: JSON.stringify({ auctionId: auction.id, bidAmount,message:notificationMessage }),
+        };
+
+        producer.send([message], (err, data) => {
+            if (err) {
+                console.error('Error sending message to Kafka:', err);
+            } else {
+                console.log('Message sent to Kafka:', data);
+            }
+        });
+        
         res.status(200).json(auction);
     } catch (err) {
         res.status(500).json({ message: 'Error in bidOnAuction controller', error: err });

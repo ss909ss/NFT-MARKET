@@ -1,0 +1,87 @@
+
+services:
+  # MongoDB (локальный контейнер MongoDB не используется, если ты подключаешься к Atlas)
+  mongo:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+      - MONGO_INITDB_DATABASE=test
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - nft-network
+
+  # Redis
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - nft-network
+
+  # Kafka
+  zookeeper:
+    image: 'bitnami/zookeeper'
+    container_name: zookeeper
+    ports:
+      - '2181:2181'
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    volumes:
+      - ./bitnami/zookeeper:/bitnami/zookeeper
+    networks:
+      - nft-network
+
+  kafka:
+    image: 'bitnami/kafka'
+    container_name: kafka
+    ports:
+      - "9093:9093"
+    expose:
+      - "9093"
+    environment:
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CREATE_TOPICS="kafka_capstone_event_bus:1:1"
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CLIENT://:9092,EXTERNAL://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka:9092,EXTERNAL://localhost:9093
+      - KAFKA_INTER_BROKER_LISTENER_NAME=CLIENT
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    depends_on:
+      - zookeeper
+    volumes:
+      - ./bitnami/kafka:/bitnami/kafka
+    networks:
+      - nft-network
+
+  # Node.js приложение
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    ports:
+      - "5555:5555"
+    environment:
+      MONGO_URI: mongodb+srv://makarenkoi457:nYptI4JUR6oXeaqj@nft-market.mpb32.mongodb.net/nft-db?retryWrites=true&w=majority
+      SECRET: nft-market123
+    depends_on:
+      - mongo
+      - redis
+      - kafka
+    networks:
+      - nft-network
+    entrypoint: ["sh", "-c", "until nc -z redis 6379; do echo waiting for redis; sleep 2; done; npm start"]
+
+volumes:
+  mongo_data:
+
+networks:
+  nft-network:
+    driver: bridge
