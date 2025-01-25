@@ -6,6 +6,7 @@ import walletRoutes from './src/routes/walletRoutes.js';
 import nftRoutes from './src/routes/nftRoutes.js';
 import auctionRoutes from './src/routes/auctionRoutes.js';
 
+
 dotenv.config();
 
 const app = express();
@@ -24,7 +25,7 @@ app.get('/',(req,res) => {
     res.json('Hello from api!');
 });
 
-app.listen(PORT,(req,res) => {
+app.listen(PORT,() => {
     console.log(`http://localhost:${PORT}`);
 });
 

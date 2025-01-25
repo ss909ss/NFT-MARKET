@@ -1,7 +1,8 @@
 import NFT from '../models/NFTSchema/NFT.models.js';
 import Auction from '../models/NFTSchema/Auction.models.js';
 import client from '../config/redis.js';
-
+import producer from '../../kafkaClient.js';
+import User from '../models/UserSchema/User.models.js';
 // Получение списка всех NFT с фильтрацией
 async function getAllNFTs(req,res) {
     const {price,auctionEndTime,likes} = req.query;
@@ -107,18 +108,50 @@ async function deleteNFT(req,res) {
 async function likeNFT(req,res) {
     try {
         const nft = await NFT.findById(req.params.id);
-        if(!nft) {
+        if (!nft) {
             return res.status(404).json({ message: 'NFT is not found' });
         }
-
-        if(nft.likes.includes(req.user.id)) {
-            return res.status(400).json({ message: 'You already likes this NFT!' });
+    
+        if (nft.likes.includes(req.user.id)) {
+            return res.status(400).json({ message: 'You already like this NFT!' });
         }
-
+    
         nft.likes.push(req.user.id);
         await nft.save();
+    
+        const nftOwner = await User.findById(nft.creator);
+        if (!nftOwner) {
+            return res.status(404).json({ message: 'User who created NFT not found' });
+        }
+    
+        console.log('NFT owner before update:', nftOwner);
+    
+        if (!nftOwner.nftLikes) {
+            nftOwner.nftLikes = [];
+        }
+    
+        nftOwner.nftLikes.push({ nftId: nft.id, timestamp: new Date() });
+        console.log('Updated nftLikes:', nftOwner.nftLikes);
+    
+        await nftOwner.save();
+        console.log('NFT owner saved successfully');
+    
+        const message = {
+            topic: 'nft-likes',
+            messages: JSON.stringify({ nftId: nft.id, userId: req.user.id }),
+        };
+    
+        producer.send([message], (err, data) => {
+            if (err) {
+                console.error('Error sending message to Kafka:', err);
+            } else {
+                console.log('Message sent to Kafka:', data);
+            }
+        });
+    
         res.status(200).json(nft);
     } catch (err) {
+        console.error('Error in likeNFT controller', err);  // Логируем ошибку
         res.status(500).json({ message: 'Error in likeNFT controller', error: err });
     }
 }

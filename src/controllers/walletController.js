@@ -1,7 +1,8 @@
 import Wallet from '../models/FinancialSchema/Wallet.models.js';
 import Transaction from '../models/FinancialSchema/Transaction.models.js';
 import client from '../config/redis.js';
-
+import producer from '../../kafkaClient.js';
+import User from '../models/UserSchema/User.models.js';
 // Получение информации о кошельке пользователя
 async function getWallet(req,res) {
     try {
@@ -52,6 +53,43 @@ async function transferFunds(req,res) {
             receiverWalletId: receiverWallet.walletId,
             amount,
             type: 'transfer',
+        });
+
+          // Ищем пользователя по кошельку получателя
+        const receiverUser = await User.findOne({ _id: receiverWallet.user }); // Ищем по ID пользователя, связанного с кошельком
+        if (receiverUser) {
+            console.log('Receiver user found:', receiverUser.username); // Логируем информацию о пользователе
+
+            // Добавляем уведомление о переводе
+            receiverUser.walletTransfers.push({
+                amount: amount,
+                timestamp: new Date(),
+            });
+
+            // Сохраняем обновленного пользователя
+            await receiverUser.save();
+            console.log('User updated with transfer message');
+        } else {
+            console.log('Receiver user not found for walletId:', receiverWalletId);
+        }
+
+        // Отправляем сообщение в Kafka
+        const message = {
+            topic: 'wallet-transfers',
+            messages: JSON.stringify({
+                transactionId: transaction.id,
+                senderWalletId: senderWallet.walletId,
+                receiverWalletId: receiverWallet.walletId,
+                amount,
+            }),
+        };
+
+        producer.send([message], (err, data) => {
+            if (err) {
+                console.error('Error sending message to Kafka:', err);
+            } else {
+                console.log('Message sent to Kafka:', data);
+            }
         });
 
         await transaction.save();
