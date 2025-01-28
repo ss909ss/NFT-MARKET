@@ -17,6 +17,15 @@ export default tseslint.config(
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
     },
+    
+      "[scss]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+      },
+    
+      
+        "editor.formatOnSave": true,
+      
+      
     rules: {
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': [

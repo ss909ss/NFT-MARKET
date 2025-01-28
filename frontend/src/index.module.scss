@@ -10,6 +10,8 @@ $light-green-color: #45B26B;
 $muted-blue:#777E90;
 $dark-gray: #353945;
 $slate-gray: #23262F;
+$light-gray: #B1B5C3;
+$dark-white: #E6E8EC;
 
 $text-font-style:14px;
 $text-line-height: 16px;
@@ -41,7 +43,7 @@ $fnt-size: 12px;
 
 
 @mixin button($btn-color, $bg-color, $br-radius, $cursor){
-  color: $text-color;
+  color: $btn-color;
   background-color: $bg-color;
 border-radius: $br-radius;
  cursor: $cursor;

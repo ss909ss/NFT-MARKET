@@ -1,0 +1,23 @@
+@import '../../index.module.scss';
+
+.accordionItem{
+
+    .accordionBlock{
+@include flex-center;
+        .accordionTitle{
+
+        }
+        .arrowDown{
+
+        }
+
+
+    }
+
+    .accordionContent{
+
+        .accordionBtn{
+
+        }
+    }
+}
