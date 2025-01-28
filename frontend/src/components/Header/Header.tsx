@@ -1,5 +1,5 @@
 import styles from "./Header.module.scss"
-import headerLogo from "../../assets/logo.svg"
+import headerLogo from "../../assets/logo.png"
 import seachIcon from "../../assets/search.svg"
 import notificationicon from "../../assets/notification.svg"
 import dropdown from "../../assets/dropdown.svg"
