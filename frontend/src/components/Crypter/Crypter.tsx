@@ -1,5 +1,7 @@
 import s from './Crypter.module.scss';
 import crypterImage from '../../assets/crypter.png'
+import { Link } from "react-router";
+
 const Crypter = () => {
     return (
         <section className={s.crypter}>
@@ -13,9 +15,9 @@ const Crypter = () => {
                             <button type='button' className={s.crypterButtonEarn}>
                                 Earn now
                             </button>
-                            <button type='button' className={s.crypterButtonDiscover}>
+                            <Link to="/discover" type='button' className={s.crypterButtonDiscover}>
                                 Discover more
-                            </button>
+                            </Link>
                         </div>
                     </div>
                     <div className={s.crypterRight}>
