@@ -1,0 +1,267 @@
+@import "../../index.module.scss";
+
+.discover {
+  padding-top: 80px;
+  padding-bottom: 80px;
+
+  .yourKeywords {
+    width: 100%;
+    position: relative;
+    border-bottom: 1px solid #353945;
+
+    .yourKeywords__searchButton {
+      position: absolute;
+      background: #3772FF;
+      padding: 13px 15px;
+      border-radius: 50%;
+      border: none;
+      right: 0;
+    }
+
+    .yourKeywords__input {
+      width: 90%;
+      font-size: 24px;
+      background-color: transparent;
+      border: none;
+      color: #ffffff;
+      padding-bottom: 40px;
+      word-break: break-word;
+    }
+
+    .yourKeywords__input::placeholder {
+      color: white;
+    }
+
+    .yourKeywords__input:focus {
+      outline: none;
+      animation: inputAnimation 0.5s ease-in-out;
+    }
+
+    @keyframes inputAnimation {
+      from {
+        width: 50%;
+      }
+
+      to {
+        width: 90%;
+      }
+    }
+  }
+
+  .content {
+    padding-top: 60px;
+  }
+
+  .content__head {
+    .content__head__navigation {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+
+      li {
+        list-style: none;
+        padding: 6px 12px;
+
+        .navActive {
+          background-color: #fff;
+          padding: 10px;
+        }
+
+        a {
+          text-decoration: none;
+          color: #777E90;
+          transition: all .3s ease-in-out;
+        }
+
+        a:hover {
+          color: #f7f7f7;
+        }
+      }
+
+      li.active {
+        background-color: #fff;
+        color: #23262F;
+      }
+    }
+  }
+
+  .discover__content {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 48px;
+  }
+
+  .filter {
+    width: 256px;
+    margin-right: 32px;
+
+    .filter__content {
+      border-bottom: 1px solid #353945;
+      padding-bottom: 20px;
+    }
+
+    .filter__price {
+      margin-top: 20px;
+      border-bottom: 1px solid #353945;
+      padding-bottom: 20px;
+
+      .filter__price__title {
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        width: 256px;
+        color: #B1B5C3;
+      }
+
+      .filter__range {
+        position: relative;
+
+        input[type="range"] {
+          -webkit-appearance: none;
+          height: 8px;
+          width: 256px;
+          border-radius: 4px;
+          background: #2d2d2d;
+          outline: none;
+          padding: 0;
+          margin: 0;
+
+          &::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #1a73e8;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+          }
+
+          &::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: #1a73e8;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            cursor: pointer;
+          }
+        }
+
+        .filter__range__value {
+          position: absolute;
+          transform: translateX(-50%);
+          bottom: 30px;
+          left: 128px;
+          font-size: 12px;
+          font-weight: bold;
+          color: #ffffff;
+          background: #1a73e8;
+          padding: 5px 10px;
+          border-radius: 4px;
+          white-space: nowrap;
+        }
+      }
+
+      .filter__range__labels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 5px;
+        width: 256px;
+
+        span {
+          font-size: 12px;
+          color: #8c8c8c;
+        }
+      }
+    }
+
+    .filter__likes,
+    .filter__colors,
+    .filter__creator {
+      margin-top: 24px;
+      color: #B1B5C3;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    .filter__reset {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #F4F5F6;
+      margin-top: 25px;
+    }
+  }
+
+  .discover__cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+
+    .discover__card {
+      background-color: #23262F;
+      padding: 12px;
+      border-radius: 12px;
+      margin-top: 32px;
+
+      .nftImage {
+        border-radius: 16px;
+        margin-bottom: 20px;
+      }
+
+      .discover__card__infoWrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #FCFCFD;
+
+        .discover__card__price {
+          font-size: 12px;
+          color: #45B26B;
+          border: 1px solid #45B26B;
+          border-radius: 4px;
+          padding: 4px;
+        }
+      }
+
+      .discover__card__inStock {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 10px;
+
+        .discover__card__avatars {
+          position: relative;
+          height: 24px;
+
+          img {
+            width: 24px;
+            height: 24px;
+          }
+        }
+
+        .discover__card__amountInStock {
+          color: #E6E8EC;
+          font-size: 14px;
+        }
+      }
+
+      .discover__card__bid {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 12px;
+        margin-top: 10px;
+        font-weight: 700;
+        color: #777E90;
+        border-top: 1px solid #353945;
+        padding-top: 10px;
+
+        .price {
+          color: #E6E8EC;
+        }
+      }
+    }
+  }
+}

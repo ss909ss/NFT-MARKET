@@ -1,12 +1,14 @@
-
 import s from './Auth.module.scss'
-import { useAuthContext } from '../../context/auth'
+import { useDispatch, useSelector } from 'react-redux'
+import { setAuth } from '../../store/authSlice/authSlice'
+import { RootState } from '../../store/store'
 
 const Auth = () => {
-    const { auth, setAuth } = useAuthContext();
+    const dispatch = useDispatch();
+    const auth = useSelector((state: RootState) => state.auth.auth);
 
-    const toggleAughtLink = () => {
-        setAuth((auth: boolean) => !auth)
+    const toggleAuthLink = () => {
+        dispatch(setAuth(!auth));
     }
 
     return (
@@ -14,8 +16,7 @@ const Auth = () => {
             <div className={s.container}>
                 <div className={s.authContent}>
                     <div className={s.authForm}>
-                        <h2
-                            className={s.authTitle}>
+                        <h2 className={s.authTitle}>
                             {auth ? "Login" : "Register"}
                         </h2>
                         {auth ? (
@@ -30,24 +31,22 @@ const Auth = () => {
                                 <input type="text" className={s.authInput} name="email" placeholder='email' />
                             </>
                         )}
-                      
-                      <div className={s.authBtns}>
+
+                        <div className={s.authBtns}>
                             <button
                                 className={s.authSubLinkBtn}
-                                onClick={toggleAughtLink}
+                                onClick={toggleAuthLink}
                             >
-                            Sign In
+                                Sign In
                             </button>
 
                             <button
                                 className={s.authSubLinkBtnRegister}
-                                onClick={toggleAughtLink}
+                                onClick={toggleAuthLink}
                             >
-                              Sign Up
+                                Sign Up
                             </button>
-                            </div>
-
-
+                        </div>
                     </div>
                 </div>
             </div>
