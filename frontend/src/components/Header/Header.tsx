@@ -1,49 +1,76 @@
-import styles from "./Header.module.scss"
+import s from "./Header.module.scss"
 import headerLogo from "../../assets/logo.png"
 import seachIcon from "../../assets/search.svg"
 import notificationicon from "../../assets/notification.svg"
 import dropdown from "../../assets/dropdown.svg"
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
+import { useState } from "react"
+import Notification from "../notifications/Notification"
+import { useAuthContext } from "../../context/auth"
+
 
 const Header = () => {
-    return (
-        <header className={styles.header}>
-            <div className={styles.container}>
-                <div className={styles.header__content}>
-                    <div className={styles.header__left}>
-                        <Link to={'/'}>
-                            <img src={headerLogo} alt="Logo" className={styles.header__logo} />
-                        </Link>
-                        <span className={styles.header__border}></span>
-                        <nav className={styles.header__menu}>
-                            <ul className={styles.header__list}>
-                                <li><Link to={"/discover"}>Discover</Link></li>
-                                <li><Link to={"/frequently"}>How it work</Link></li>
-                            </ul>
-                        </nav>
-                    </div>
-                    <div className={styles.header__right}>
-                        <div className={styles.search__form}>
-                            <input type="text" placeholder="Search" className={styles.search__input} />
-                            <img src={seachIcon} alt="Icon" className={styles.search__icon} />
-                        </div>
-                        <div className={styles.right__notification}>
-                            <img src={notificationicon} alt="Icon" className={styles.notification__icon} />
-                            <span className={styles.notification__counter}>0</span>
-                        </div>
-                        <div className={styles.header__buttons}>
-                            <button className={styles.button__upload}>Upload</button>
-                            <button className={styles.button__wallet}>Connect Wallet</button>
-                        </div>
+    const [open, setIsOpen] = useState(false);
+    const navigate =useNavigate();
+     const { auth } = useAuthContext();
 
-                        <button className={styles.header__dropdown}>
-                            <img src={dropdown} alt="Icon" />
-                        </button>
+    const handleClick = () => {
+        setIsOpen(!open)
+    }
+    const handleClickUpload=()=>{
+        if(!auth){
+            navigate('/auth')
+        }else{
+            navigate('/uploadItem')
+        }
+    }
+    return (
+        <>
+            <header className={s.header}>
+                <div className={s.container}>
+                    <div className={s.header__content}>
+                        <div className={s.header__left}>
+                            <Link to={'/'}>
+                                <img src={headerLogo} alt="Logo" className={s.header__logo} />
+                            </Link>
+                            <span className={s.header__border}></span>
+                            <nav className={s.header__menu}>
+                                <ul className={s.header__list}>
+                                    <li><Link to={"/discover"}>Discover</Link></li>
+                                    <li><Link to={"/frequently"}>How it work</Link></li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div className={s.header__right}>
+                            <div className={s.search__form}>
+                                <input type="text" placeholder="Search" className={s.search__input} />
+                                <img src={seachIcon} alt="Icon" className={s.search__icon} />
+                            </div>
+                            <button className={s.right__notification} type='button' onClick={handleClick}>
+                                <img src={notificationicon} alt="Icon" className={s.notification__icon} />
+                                <span className={s.notification__counter}>0</span>
+                            </button>
+
+                            <div className={s.header__buttons}>
+                            
+                                <button className={s.button__upload} onClick={handleClickUpload}>
+                                    Upload
+                                </button  >
+                                <button className={s.button__wallet}>Connect Wallet</button>
+                            </div>
+                            <button className={s.header__dropdown}>
+                                <img src={dropdown} alt="Icon" />
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </header >
+            </header >
+            {open && <Notification/>}
+        </>
     )
 }
 
 export default Header
+
+
+

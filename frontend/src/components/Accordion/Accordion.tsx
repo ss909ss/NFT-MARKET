@@ -20,9 +20,7 @@ const Accordion: FC<IAccordion> = ({ title, content, index, activeIndex, onAccor
             {isActive &&
                 <div className={s.accordionContent}>
                     {content}
-                    <Link to='#'>
-                    <div className={s.accordionBtn}>Learn more</div>
-                    </Link>
+                    <Link to="#" className={s.accordionBtn}>Learn more</Link>
                 </div>
             }
         </div>
