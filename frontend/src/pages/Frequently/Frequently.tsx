@@ -5,31 +5,32 @@ import hoistingIcon from '../../assets/cloud-upload 1.svg';
 import productIcon from '../../assets/window-responsive 1.svg';
 import { useState } from 'react';
 import Accordion from '../../components/Accordion/Accordion';
+import { NavLink } from 'react-router';
 
-const AccordionMenu =[
+const AccordionMenu = [
   {
-    index:0,
-    title:"How does it work",
+    index: 0,
+    title: "How does it work",
     content: "The Stacks series of products: Stacks: Landing Page Kit, Stacks: Portfolio Kit,  Stacks: eCommerce Kit. Stacks is a production-ready library of stackable content blocks built in React Native. Mix-and-match dozens of responsive elements to quickly configure your favorite landing page layouts or hit the ground running with 10 pre-built templates, all in light or dark mode. "
   },
   {
-    index:1,
-    title:"How to start with Stacks",
+    index: 1,
+    title: "How to start with Stacks",
     content: "The Stacks series of products: Stacks: Landing Page Kit, Stacks: Portfolio Kit,  Stacks: eCommerce Kit. Stacks is a production-ready library of stackable content blocks built in React Native. Mix-and-match dozens of responsive elements to quickly configure your favorite landing page layouts or hit the ground running with 10 pre-built templates, all in light or dark mode. "
   },
   {
-    index:2,
-    title:"Dose it suppport Dark Mode",
+    index: 2,
+    title: "Dose it suppport Dark Mode",
     content: "The Stacks series of products: Stacks: Landing Page Kit, Stacks: Portfolio Kit,  Stacks: eCommerce Kit. Stacks is a production-ready library of stackable content blocks built in React Native. Mix-and-match dozens of responsive elements to quickly configure your favorite landing page layouts or hit the ground running with 10 pre-built templates, all in light or dark mode. "
   },
   {
-    index:3,
-    title:"Does it support Auto-Layout",
+    index: 3,
+    title: "Does it support Auto-Layout",
     content: "The Stacks series of products: Stacks: Landing Page Kit, Stacks: Portfolio Kit,  Stacks: eCommerce Kit. Stacks is a production-ready library of stackable content blocks built in React Native. Mix-and-match dozens of responsive elements to quickly configure your favorite landing page layouts or hit the ground running with 10 pre-built templates, all in light or dark mode. "
   },
   {
-    index:4,
-    title:"What is Stacks Design System",
+    index: 4,
+    title: "What is Stacks Design System",
     content: "The Stacks series of products: Stacks: Landing Page Kit, Stacks: Portfolio Kit,  Stacks: eCommerce Kit. Stacks is a production-ready library of stackable content blocks built in React Native. Mix-and-match dozens of responsive elements to quickly configure your favorite landing page layouts or hit the ground running with 10 pre-built templates, all in light or dark mode. "
   },
 ]
@@ -38,7 +39,7 @@ const Frequently = () => {
   const [ActiveIndex, setActiveIndex] = useState(-1);
 
   const handleAccordionClick = (index: number) => {
-    setActiveIndex(index ===ActiveIndex ? -1 : index)
+    setActiveIndex(index === ActiveIndex ? -1 : index)
   };
 
   return (
@@ -56,7 +57,7 @@ const Frequently = () => {
             <aside className={s.frequentlyLeft}>
               <div className={s.frequentlyAsideBlock}>
                 <img src={userIcon} alt="" />
-                <p className={s.frequentlyBlockTitle}>General</p>
+                <NavLink to='/' className={s.frequentlyTitleActive}>General </NavLink>
               </div>
               <div className={s.frequentlyAsideBlock}>
                 <img src={supportIcon} alt="" />
@@ -64,7 +65,7 @@ const Frequently = () => {
               </div>
               <div className={s.frequentlyAsideBlock}>
                 <img src={hoistingIcon} alt="" />
-                <p  className={s.frequentlyBlockTitle}>Hosting</p>
+                <p className={s.frequentlyBlockTitle}>Hosting</p>
               </div>
               <div className={s.frequentlyAsideBlock}>
                 <img src={productIcon} alt="" />
@@ -75,12 +76,12 @@ const Frequently = () => {
               <div className={s.frequentlyAccordion}>
                 {AccordionMenu.map((item, index) => (
                   <Accordion
-                  key={index}
-                  title={item.title}
-                  content={item.content}
-                  index={index}
-                  activeIndex={ActiveIndex}
-                  onAccordionClick={()=>handleAccordionClick(index)}
+                    key={index}
+                    title={item.title}
+                    content={item.content}
+                    index={index}
+                    activeIndex={ActiveIndex}
+                    onAccordionClick={() => handleAccordionClick(index)}
                   />
                 ))}
               </div>

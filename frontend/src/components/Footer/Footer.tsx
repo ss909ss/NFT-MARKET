@@ -4,7 +4,7 @@ import buttonRight from '../../assets/button-right.png';
 
 const Footer = () => {
     return (
-        <section className={s.footer}>
+        <footer className={s.footer}>
             <div className={s.container}>
                 <div className={s.footerContent}>
                     <div className={s.footerTop}>
@@ -45,7 +45,7 @@ const Footer = () => {
                         <p className={s.footerBottomTitle}>We use cookies for better service.</p>
                     </div>
             </div>
-        </section>
+        </footer>
     )
 }
 

@@ -42,6 +42,19 @@ $fnt-size: 12px;
 }
 
 
+@mixin clear-button{
+  color: $muted-blue;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 90px;
+  border: none;
+  @include flex-center;
+
+  .removeIcon{
+    margin-right: 8px;
+}
+}
+
 @mixin button($btn-color, $bg-color, $br-radius, $cursor){
   color: $btn-color;
   background-color: $bg-color;
