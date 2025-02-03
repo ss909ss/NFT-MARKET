@@ -1,14 +1,14 @@
-import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router'
+import {createRoot} from 'react-dom/client'
+import {BrowserRouter} from 'react-router'
 import './index.module.scss'
 import App from './App.tsx'
-import { AuthContextProvider } from './context/auth.tsx'
-
+import {Provider} from 'react-redux';
+import store from "./store/store";
 
 createRoot(document.getElementById('root')!).render(
-  <BrowserRouter>
-    <AuthContextProvider>
-      <App />
-    </AuthContextProvider>
-  </BrowserRouter>
+    <BrowserRouter>
+        <Provider store={store}>
+            <App/>
+        </Provider>
+    </BrowserRouter>
 )
