@@ -2,13 +2,35 @@ import s from './Auth.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
 import { setAuth } from '../../store/authSlice/authSlice'
 import { RootState } from '../../store/store'
+import { useForm, SubmitHandler } from "react-hook-form"
+import { FormData } from '../../types/Form'
+import { usePostFormLoginMutation, usePostFormRegisterMutation } from '../../store/api/authApi'
 
 const Auth = () => {
     const dispatch = useDispatch();
     const auth = useSelector((state: RootState) => state.auth.auth);
+    const { register, handleSubmit, reset } = useForm<FormData>();
+
+    const [postLogin, { isLoading: isLoggingIn }] = usePostFormLoginMutation();
+    const [postRegister, { isLoading: isRegistering }] = usePostFormRegisterMutation();
 
     const toggleAuthLink = () => {
         dispatch(setAuth(!auth));
+    }
+
+    const onSubmit = async (data: FormData) => {
+        try {
+            if (auth) {
+                await postLogin({ email: data.email, password: data.password }).unwrap();
+            } else {
+                await postRegister({
+                    username: data.username, email: data.email, password: data.password
+                }).unwrap();
+            }
+            reset();
+        } catch (error) {
+            console.error("Ошибка авторизации:", error);
+        }
     }
 
     return (
@@ -19,34 +41,104 @@ const Auth = () => {
                         <h2 className={s.authTitle}>
                             {auth ? "Login" : "Register"}
                         </h2>
-                        {auth ? (
-                            <>
-                                <input type="password" className={s.authInput} name="password" placeholder='password' />
-                                <input type="text" className={s.authInput} name="email" placeholder='email' />
-                            </>
-                        ) : (
-                            <>
-                                <input type="text" className={s.authInput} name="name" placeholder='name' />
-                                <input type="password" className={s.authInput} name="password" placeholder='password' />
-                                <input type="text" className={s.authInput} name="email" placeholder='email' />
-                            </>
-                        )}
+                        {/* <form onSubmit={handleSubmit(onSubmit)}>
+                            {auth ? (
+                                <>
+                                    <input type="password"
+                                        className={s.authInput}
 
-                        <div className={s.authBtns}>
+                                        placeholder='Password'
+                                        {...register("password", { required: !auth })}
+                                    />
+                                    <input
+                                        type="email"
+                                        className={s.authInput}
+                                        placeholder='Email'
+                                        {...register("email", { required: !auth })}
+                                    />
+                                </>
+                            ) : (
+                                <>
+                                    <input
+                                    type="text"
+                                    className={s.authInput}             
+                                    placeholder='Username'
+                                    {...register("username", { required: !auth })}
+                                    />
+                                    <input
+                                    type="password"
+                                    className={s.authInput}
+                         
+                                    placeholder='password'
+                                    {...register("password", { required: !auth })}
+                                    />
+                                    <input
+                                    type="text"
+                                    className={s.authInput}
+                                    placeholder='email'
+                                    {...register("email", { required: !auth })}
+                                    />
+                                </>
+                            )}
+                             <div className={s.authBtns}>
                             <button
+                                type='submit'
                                 className={s.authSubLinkBtn}
-                                onClick={toggleAuthLink}
+                                // onClick={toggleAuthLink}
                             >
                                 Sign In
                             </button>
 
                             <button
+                                type='submit'
                                 className={s.authSubLinkBtnRegister}
-                                onClick={toggleAuthLink}
+                                // onClick={toggleAuthLink}
                             >
                                 Sign Up
                             </button>
                         </div>
+                        </form> */}
+
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                            {!auth && (
+                                <input
+                                    type="text"
+                                    className={s.authInput}
+                                    placeholder="Username"
+                                    {...register("username", { required: true })}
+                                />
+                            )}
+                            <input
+                                type="email"
+                                className={s.authInput}
+                                placeholder="Email"
+                                {...register("email", { required: true })}
+                            />
+                            <input
+                                type="password"
+                                className={s.authInput}
+                                placeholder="Password"
+                                {...register("password", { required: true })}
+                            />
+
+                            <div className={s.authBtns}>
+                                <button type="submit" className={s.authSubLinkBtn}>
+                                    {auth ? "Sign In" : "Sign Up"}
+                                </button>
+
+                                <button
+                                    type="button" // <-- Кнопка теперь НЕ отправляет форму
+                                    className={s.authSubLinkBtnRegister}
+                                    onClick={toggleAuthLink} // <-- Только переключает `auth`
+                                >
+                                    {auth ? "Register" : "Login"}
+                                </button>
+                            </div>
+                        </form>
+
+
+
+
                     </div>
                 </div>
             </div>
