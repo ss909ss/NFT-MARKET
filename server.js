@@ -1,3 +1,4 @@
+import cors from 'cors';
 import express from 'express';
 import {connectDB} from './src/config/db.js'
 import dotenv from 'dotenv';
@@ -15,6 +16,13 @@ connectDB();
 
 
 app.use(express.json());
+
+app.use(cors({ 
+    origin: "http://localhost:5173",
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true, // Разрешить куки и заголовки авторизации
+    allowedHeaders: ['Content-Type', 'Authorization'], 
+}));
 
 app.use('/auth',authRoutes);
 app.use('/wallets',walletRoutes);
