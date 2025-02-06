@@ -8,22 +8,23 @@ import { useState } from "react";
 import Notification from "../notifications/Notification";
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuth } from "../../store/authSlice";
+import { selectAuth } from "../../store/authSlice/authSlice";
 
 const Header = () => {
     const [open, setIsOpen] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const auth = useSelector((state) => state.auth.isAuthenticated);
+    const auth = useSelector(selectAuth)
 
     const handleClick = () => {
         setIsOpen(!open);
     };
 
     const handleClickUpload = () => {
-        if (!auth) {
-            navigate('/auth');
-        } else {
+        if (auth) {
             navigate('/uploadItem');
+        } else {
+            navigate('/auth');
         }
     };
 

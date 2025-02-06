@@ -8,7 +8,6 @@ import userIcon from '../../assets/avatar.png';
 import { Link } from 'react-router-dom'; // використовуємо Link з react-router-dom
 
 const Profile = () => {
-    // Отримуємо email та username з localStorage
     const email = localStorage.getItem("email");
     const username = localStorage.getItem("username");
 
