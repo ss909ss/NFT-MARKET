@@ -1,13 +1,17 @@
 import s from './Profile.module.scss';
 import coins from '../../assets/coins.svg';
-import globeIcon from '../../assets/globe.svg'
-import facebookIcon from '../../assets/facebook.svg'
-import twitterIcon from '../../assets/twitter.svg'
-import instagramIcon from '../../assets/Instagram.svg'
-import userIcon from '../../assets/avatar.png'
-import { Link } from 'react-router';
+import globeIcon from '../../assets/globe.svg';
+import facebookIcon from '../../assets/facebook.svg';
+import twitterIcon from '../../assets/twitter.svg';
+import instagramIcon from '../../assets/Instagram.svg';
+import userIcon from '../../assets/avatar.png';
+import { Link } from 'react-router-dom'; // використовуємо Link з react-router-dom
 
 const Profile = () => {
+    // Отримуємо email та username з localStorage
+    const email = localStorage.getItem("email");
+    const username = localStorage.getItem("username");
+
     return (
         <section className={s.container}>
             <div className={s.profile}>
@@ -16,14 +20,12 @@ const Profile = () => {
                         <img src={userIcon} alt="" className={s.profileUserLogo} />
 
                         <div className={s.profileBlockInfo}>
-                            <h2 className={s.profileName}>Enrico Cole</h2>
+                            <h2 className={s.profileName}>{username || "User"}</h2>
                             <div className={s.profileQrcode}>
-                                <p className={s.qrcode}>0xc4c16a645...b21a</p>
+                                <p className={s.qrcode}>{email || "No email"}</p>
                                 <img src={coins} alt="" className={s.profileQrcodeImage} />
                             </div>
-                            <p className={s.profileUserDescription}>
-                                A wholesome farm owner in Montana. Upcoming gallery solo show in Germany
-                            </p>
+                            <p className={s.profileUserDescription}>Description here</p>
                             <div className={s.profileLink}>
                                 <img src={globeIcon} alt="" className={s.socilalLinkImage} />
                                 <Link to="https://ui8.net" className={s.socilalLink}>https://ui8.net</Link>
@@ -44,10 +46,8 @@ const Profile = () => {
                     </div>
                 </aside>
             </div>
-
-
         </section>
-    )
+    );
 }
 
-export default Profile
+export default Profile;
