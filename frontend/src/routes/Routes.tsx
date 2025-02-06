@@ -7,43 +7,48 @@ import Home from "../pages/Home/Home"
 import ProfilePage from "../pages/Profile/Profile"
 import Auth from "../pages/Register/Auth"
 import Upload from "../pages/Upload/Upload"
+import OneItem from "../pages/OneItem/OneItem"
 
-const  routes = [
+const routes = [
     {
-     path:"/",
-     element: <Home/>
+        path: "/",
+        element: <Home/>
     },
     {
-        path:"/frequently",
+        path: "/frequently",
         element: <Frequently/>
-       },
-       {
-        path:"/discover",
+    },
+    {
+        path: "/discover",
         element: <Discover/>
-       },
-       {
-        path:"/editProfile",
+    },
+    {
+        path: "/editProfile",
         element: <Edit/>
     },
     {
-        path:"/uploadItem",
+        path: "/uploadItem",
         element: <Upload/>
     },
     {
-        path:"*",
+        path: "*",
         element: <Error/>
     },
     {
-        path:"/create",
+        path: "/create",
         element: <Create/>
     },
     {
-        path:"/profile",
+        path: "/profile",
         element: <ProfilePage/>
     },
     {
-        path:"/auth",
+        path: "/auth",
         element: <Auth/>
+    },
+    {
+      path: "/oneItem",
+      element: <OneItem/>
     },
 ]
 

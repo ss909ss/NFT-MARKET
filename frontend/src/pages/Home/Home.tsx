@@ -2,7 +2,7 @@ import React from 'react'
 import CreatorInfo from '../../components/Creator/CreatorInfo/CreatorInfo'
 import CreatorSingle from '../../components/Creator/CreatorSingle/CreatorSingle'
 import Crypter from '../../components/Crypter/Crypter'
-// import Sellers from '../../components/Sellers/Sellers'
+import Seller from "../../components/Sellers/Seller/Seller";
 
 
 const Home = () => {
@@ -10,7 +10,7 @@ const Home = () => {
     <div>
       <CreatorInfo/>
       <CreatorSingle/>
-      {/* <Sellers/> */}
+      <Seller/>
       <Crypter/>
     </div>
   )

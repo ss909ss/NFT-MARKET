@@ -1,0 +1,132 @@
+import s from "./OneItem.module.scss"
+import nft from "../../assets/oneItemNft.jpg"
+import avatar from "../../assets/avatar.png"
+import ownerAvatarDec from "../../assets/ownerAvatarDecoration.svg"
+import React, {useEffect, useState} from "react";
+import {ETH_PRICE_API} from "../../store/api/cryptoApi";
+import {setCategory} from '../../store/peopleCategorySlice/peopleCategorySlice';
+import {useDispatch, useSelector} from "react-redux";
+
+const OneItem = () => {
+    const [ethPrice, setEthPrice] = useState<number | null>(null);
+    const dispatch = useDispatch();
+    const {activeCategory, data} = useSelector((state) => state.people);
+
+    const filteredDataByCategory = data.filter(
+        (item) => item.category === activeCategory && item.assignment === 'Owner'
+    );
+
+    const creatorsData = data.filter((item) => item.assignment === 'Creator');
+
+    const handleCategoryClick = (category) => {
+        dispatch(setCategory(category));
+    };
+
+    useEffect(() => {
+        const fetchPrice = async () => {
+            try {
+                const response = await fetch(ETH_PRICE_API);
+                const data = await response.json();
+                setEthPrice(data.ethereum.usd);
+            } catch (error) {
+                console.error("Помилка при отриманні курсу ETH:", error);
+            }
+        };
+
+        fetchPrice();
+    }, []);
+
+    const calculateValue = (ethAmount: number) => {
+        return ethPrice !== null ? (ethAmount * ethPrice).toFixed(2) : "-";
+    };
+
+    return (
+        <div className={`${s.oneItem} ${s.container}`}>
+            <img src={nft} alt="" className={s.oneItem__image}/>
+
+            <div className={s.oneItem__info}>
+                <h1>The amazing art</h1>
+                <div className={s.pricesAndStock}>
+                    <div className={s.discover__card__price}>2.5 ETH</div>
+                    <div className={s.discover__card__price_dark}>${calculateValue(2.5)}</div>
+                    <div className={s.pricesAndStock__inStock}>10 in stock</div>
+                </div>
+
+                <div className={s.oneItem__desc}>
+                    This NFT Card will give you Access to Special Airdrops. To learn more about UI8 please visit <br/>
+                    <a className={s.oneItem__desc__link} target="_blank" href="https://ui8.net">https://ui8.net</a>
+                </div>
+
+                <div className={s.peopleFilter}>
+                    <div className={s.catogories}>
+                        {['Info', 'Owners', 'History', 'Bids'].map((category) => (
+                            <div
+                                key={category}
+                                className={`${s.category} ${activeCategory === category ? s.active : ''}`}
+                                onClick={() => handleCategoryClick(category)}
+                            >
+                                {category}
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className={s.filterResult}>
+                        {filteredDataByCategory.map((item) => (
+                            <div key={item.id} className={s.filterResult__item}>
+                                <div className={s.avatarWrapper}>
+                                    <img src={avatar} alt="Avatar" className={s.avatar}/>
+                                </div>
+                                <div className={s.peopleInfo}>
+                                    <div className={s.assignment}>{item.assignment}</div>
+                                    <div className={s.name}>{item.name}</div>
+                                </div>
+                            </div>
+                        ))}
+
+                        <div className={s.creatorSection}>
+                            {creatorsData.map((item) => (
+                                <div key={item.id} className={s.filterResult__item}>
+                                    <div className={s.avatarWrapper}>
+                                        <img src={avatar} alt="Avatar" className={s.avatar}/>
+                                    </div>
+                                    <div className={s.peopleInfo}>
+                                        <div className={s.assignment}>{item.assignment}</div>
+                                        <div className={s.name}>{item.name}</div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                <div className={s.highestBid}>
+                    <div className={s.highestBid__head}>
+                        <img src={avatar} alt=""/>
+                        <div className={s.bidInfo}>
+                            <div className={s.bidInfo__head}>
+                                Highest bid by <span className={s.name}>Kohaku Tora</span>
+                            </div>
+                            <div className={s.bidInfo__price}>
+                                <span className={s.ethereum}>1.46 ETH</span> ${calculateValue(1.46)}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className={s.highestBid__buttons}>
+                        <button className={s.button_blue}>Purchase now</button>
+                        <button className={s.button_dark}>Place a bid</button>
+                    </div>
+
+                    <div className={s.highestBid__bottom}>
+                        <span>Service fee</span>
+                        <span className={s.whiteText}>1.5%</span>
+                        <span>2.563 ETH</span>
+                        <span>${calculateValue(2.563)}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default OneItem;
