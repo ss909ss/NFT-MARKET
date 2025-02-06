@@ -8,6 +8,10 @@ import userIcon from '../../assets/avatar.png'
 import { Link } from 'react-router';
 
 const Profile = () => {
+
+    const email = localStorage.getItem("email");
+    const username = localStorage.getItem("username");
+
     return (
         <section className={s.container}>
             <div className={s.profile}>
@@ -16,9 +20,9 @@ const Profile = () => {
                         <img src={userIcon} alt="" className={s.profileUserLogo} />
 
                         <div className={s.profileBlockInfo}>
-                            <h2 className={s.profileName}>Enrico Cole</h2>
+                            <h2 className={s.profileName}>{username || "User"}</h2>
                             <div className={s.profileQrcode}>
-                                <p className={s.qrcode}>0xc4c16a645...b21a</p>
+                                <p className={s.qrcode}>{email || "No email"}</p>
                                 <img src={coins} alt="" className={s.profileQrcodeImage} />
                             </div>
                             <p className={s.profileUserDescription}>

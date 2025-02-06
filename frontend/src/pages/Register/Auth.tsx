@@ -5,12 +5,13 @@ import { RootState } from '../../store/store'
 import { useForm, SubmitHandler } from "react-hook-form"
 import { FormData } from '../../types/Form'
 import { usePostFormLoginMutation, usePostFormRegisterMutation } from '../../store/api/authApi'
+import { useNavigate } from 'react-router'
 
 const Auth = () => {
     const dispatch = useDispatch();
     const auth = useSelector((state: RootState) => state.auth.auth);
     const { register, handleSubmit, reset } = useForm<FormData>();
-
+    const navigate = useNavigate();
     const [postLogin, { isLoading: isLoggingIn }] = usePostFormLoginMutation();
     const [postRegister, { isLoading: isRegistering }] = usePostFormRegisterMutation();
 
@@ -21,17 +22,37 @@ const Auth = () => {
     const onSubmit = async (data: FormData) => {
         try {
             if (auth) {
-                await postLogin({ email: data.email, password: data.password }).unwrap();
+                const responseLogin = await postLogin({ email: data.email, password: data.password }).unwrap();
+                if (responseLogin.token) {
+                    localStorage.setItem("token", responseLogin.token);
+                    console.log("Токен сохранён:", responseLogin.token);
+                }
+                dispatch(setAuth(true));
+                navigate('/profile');
             } else {
-                await postRegister({
+                const responseRegister = await postRegister({
                     username: data.username, email: data.email, password: data.password
                 }).unwrap();
+    
+                console.log("Ответ от регистрации:", responseRegister);
+    
+                if (responseRegister.token) {
+                    localStorage.setItem("token", responseRegister.token);
+                    console.log("Токен сохранён:", responseRegister.token);
+                } else {
+                    console.error("Токен не был возвращён после регистрации");
+                }
+    
+                dispatch(setAuth(true));
+                navigate('/profile');
             }
+    
             reset();
         } catch (error) {
-            console.error("Ошибка авторизации:", error);
+            console.error("Ошибка при отправке формы:", error);
         }
-    }
+    };
+    
 
     return (
         <section className={s.auth}>
@@ -41,63 +62,8 @@ const Auth = () => {
                         <h2 className={s.authTitle}>
                             {auth ? "Login" : "Register"}
                         </h2>
-                        {/* <form onSubmit={handleSubmit(onSubmit)}>
-                            {auth ? (
-                                <>
-                                    <input type="password"
-                                        className={s.authInput}
 
-                                        placeholder='Password'
-                                        {...register("password", { required: !auth })}
-                                    />
-                                    <input
-                                        type="email"
-                                        className={s.authInput}
-                                        placeholder='Email'
-                                        {...register("email", { required: !auth })}
-                                    />
-                                </>
-                            ) : (
-                                <>
-                                    <input
-                                    type="text"
-                                    className={s.authInput}             
-                                    placeholder='Username'
-                                    {...register("username", { required: !auth })}
-                                    />
-                                    <input
-                                    type="password"
-                                    className={s.authInput}
-                         
-                                    placeholder='password'
-                                    {...register("password", { required: !auth })}
-                                    />
-                                    <input
-                                    type="text"
-                                    className={s.authInput}
-                                    placeholder='email'
-                                    {...register("email", { required: !auth })}
-                                    />
-                                </>
-                            )}
-                             <div className={s.authBtns}>
-                            <button
-                                type='submit'
-                                className={s.authSubLinkBtn}
-                                // onClick={toggleAuthLink}
-                            >
-                                Sign In
-                            </button>
 
-                            <button
-                                type='submit'
-                                className={s.authSubLinkBtnRegister}
-                                // onClick={toggleAuthLink}
-                            >
-                                Sign Up
-                            </button>
-                        </div>
-                        </form> */}
 
                         <form onSubmit={handleSubmit(onSubmit)}>
                             {!auth && (
@@ -122,16 +88,18 @@ const Auth = () => {
                             />
 
                             <div className={s.authBtns}>
+                                {/* Кнопка для отправки формы */}
                                 <button type="submit" className={s.authSubLinkBtn}>
-                                    {auth ? "Sign In" : "Sign Up"}
+                                    {auth ? "Войти" : "Зарегистрироваться"}
                                 </button>
 
+                                {/* Кнопка для переключения между формами */}
                                 <button
-                                    type="button" // <-- Кнопка теперь НЕ отправляет форму
+                                    type="button" // не отправляет форму
                                     className={s.authSubLinkBtnRegister}
-                                    onClick={toggleAuthLink} // <-- Только переключает `auth`
+                                    onClick={toggleAuthLink} // переключение состояния auth
                                 >
-                                    {auth ? "Register" : "Login"}
+                                    {auth ? "Зарегистрироваться" : "Войти"}
                                 </button>
                             </div>
                         </form>
