@@ -1,12 +1,34 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import styles from './CreatorSingle.module.scss';
 import userAvatar from '../../../assets/avatar.png';
 import cryptoImage from '../../../assets/crypto.png'
 import arrowLeft from '../../../assets/Left arrow.png';
 import arrowRight from '../../../assets/Right arrow.svg';
 import singleImage from '../../../assets/singleImage.png'
+import { Link } from "react-router";
+import {ETH_PRICE_API} from "../../../store/api/cryptoApi";
 
 const CreatorSingle = () => {
+    const [ethPrice, setEthPrice] = useState<number | null>(null);
+
+    useEffect(() => {
+        const fetchPrice = async () => {
+            try {
+                const response = await fetch(ETH_PRICE_API);
+                const data = await response.json();
+                setEthPrice(data.ethereum.usd);
+            } catch (error) {
+                console.error("Помилка при отриманні курсу ETH:", error);
+            }
+        };
+
+        fetchPrice();
+    }, []);
+
+    const calculateValue = (ethAmount: number) => {
+        return ethPrice !== null ? (ethAmount * ethPrice).toFixed(2) : "-";
+    };
+
     return (
         <section className={styles.creator__container}>
             <div className={styles.container}>
@@ -40,7 +62,7 @@ const CreatorSingle = () => {
                                 <div className={styles.rightBlockInfoTop}>
                                     <span className={styles.rightBlockInfoBid}>Current Bid</span>
                                     <h2 className={styles.rightBlockInfoEtn}>1.00 ETH</h2>
-                                    <p className={styles.rightBlockInfoPrice}>$3,618.36</p>
+                                    <p className={styles.rightBlockInfoPrice}>${calculateValue(1.00)}</p>
                                 </div>
                                 <div className={styles.rightBlockInfoBottom}>
                                     <p className={styles.rightBlockInfoAuction}>Auction ending in</p>
@@ -65,7 +87,7 @@ const CreatorSingle = () => {
 
                             <div className={styles.rightBlockBottom}>
                                 <button className={styles.rightBlockBottomButon} type='button'>Place a bid</button>
-                                <button className={styles.rightBlockBottomButonDefault} type='button'>View item</button>
+                                <Link to="/oneItem" className={styles.rightBlockBottomButonDefault}>View item</Link>
                             </div>
 
                             <div className={styles.rightBlockBottomPagination}>
