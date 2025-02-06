@@ -1,7 +1,7 @@
 import { createClient } from '@redis/client';
 
 const client = createClient({
-  url: 'redis://redis:6379'
+  url: process.env.REDIS_URL || 'redis://localhost:6379'  // Для локальной разработки
 });
 
 // Логируем подключение
