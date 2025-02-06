@@ -1,14 +1,13 @@
 import s from './Profile.module.scss';
 import coins from '../../assets/coins.svg';
-import globeIcon from '../../assets/globe.svg'
-import facebookIcon from '../../assets/facebook.svg'
-import twitterIcon from '../../assets/twitter.svg'
-import instagramIcon from '../../assets/Instagram.svg'
-import userIcon from '../../assets/avatar.png'
-import { Link } from 'react-router';
+import globeIcon from '../../assets/globe.svg';
+import facebookIcon from '../../assets/facebook.svg';
+import twitterIcon from '../../assets/twitter.svg';
+import instagramIcon from '../../assets/Instagram.svg';
+import userIcon from '../../assets/avatar.png';
+import { Link } from 'react-router-dom'; // використовуємо Link з react-router-dom
 
 const Profile = () => {
-
     const email = localStorage.getItem("email");
     const username = localStorage.getItem("username");
 
@@ -25,9 +24,7 @@ const Profile = () => {
                                 <p className={s.qrcode}>{email || "No email"}</p>
                                 <img src={coins} alt="" className={s.profileQrcodeImage} />
                             </div>
-                            <p className={s.profileUserDescription}>
-                                A wholesome farm owner in Montana. Upcoming gallery solo show in Germany
-                            </p>
+                            <p className={s.profileUserDescription}>Description here</p>
                             <div className={s.profileLink}>
                                 <img src={globeIcon} alt="" className={s.socilalLinkImage} />
                                 <Link to="https://ui8.net" className={s.socilalLink}>https://ui8.net</Link>
@@ -48,10 +45,8 @@ const Profile = () => {
                     </div>
                 </aside>
             </div>
-
-
         </section>
-    )
+    );
 }
 
-export default Profile
+export default Profile;

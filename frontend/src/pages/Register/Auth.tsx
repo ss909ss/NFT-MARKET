@@ -29,30 +29,33 @@ const Auth = () => {
                 }
                 dispatch(setAuth(true));
                 navigate('/profile');
-            } else {
+            } else if (!auth) {
+                navigate('/')
+            }
+            else {
                 const responseRegister = await postRegister({
                     username: data.username, email: data.email, password: data.password
                 }).unwrap();
-    
+
                 console.log("Ответ от регистрации:", responseRegister);
-    
+
                 if (responseRegister.token) {
                     localStorage.setItem("token", responseRegister.token);
                     console.log("Токен сохранён:", responseRegister.token);
                 } else {
                     console.error("Токен не был возвращён после регистрации");
                 }
-    
+
                 dispatch(setAuth(true));
-                navigate('/profile');
+                navigate('/uploadItem');
             }
-    
+
             reset();
         } catch (error) {
             console.error("Ошибка при отправке формы:", error);
         }
     };
-    
+
 
     return (
         <section className={s.auth}>
@@ -92,7 +95,6 @@ const Auth = () => {
                                 <button type="submit" className={s.authSubLinkBtn}>
                                     {auth ? "Войти" : "Зарегистрироваться"}
                                 </button>
-
                                 {/* Кнопка для переключения между формами */}
                                 <button
                                     type="button" // не отправляет форму

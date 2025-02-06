@@ -1,7 +1,6 @@
 import imageIcon from '../../assets/image.svg'
 import pencilIcon from '../../assets/pencil.svg' 
 import { Link, useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
 import { setAuth } from '../../store/authSlice/authSlice';
 import s from './SubHeader.module.scss';
@@ -9,15 +8,14 @@ import s from './SubHeader.module.scss';
 const SubHeader = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+
     const handleLogout = () => {
-        // Видаляємо всі дані з localStorage та cookies
-        localStorage.removeItem("email");
-        localStorage.removeItem("username");
-        Cookies.remove('token');
-        // Скидаємо статус авторизації в Redux
+        localStorage.removeItem("token");
+        
         dispatch(setAuth(false));
-        // Перенаправляємо користувача на сторінку входу
-        navigate('/login');
+        navigate('/');
+        console.log("Токен удалился")
     };
     return (
         <section className={s.subHeader}>
@@ -36,11 +34,10 @@ const SubHeader = () => {
                             <img src={pencilIcon} alt="" className={s.subHeaderImage} />
                         </div>
                     </Link>
-                    <Link to='/logout'>
-                        <div className={s.subHeaderButton} onClick={handleLogout}>
+                    <button type='button'  className={s.subHeaderButton} onClick={handleLogout}>
                             logout
-                        </div>
-                    </Link>
+                   
+                    </button>
                 </div>
             </div>
         </section>
