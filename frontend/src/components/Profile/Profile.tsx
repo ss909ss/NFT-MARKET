@@ -5,11 +5,23 @@ import facebookIcon from '../../assets/facebook.svg';
 import twitterIcon from '../../assets/twitter.svg';
 import instagramIcon from '../../assets/Instagram.svg';
 import userIcon from '../../assets/avatar.png';
-import { Link } from 'react-router-dom'; // використовуємо Link з react-router-dom
+import { Link } from 'react-router-dom';  
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../store/authSlice/authSlice';
 
 const Profile = () => {
-    const email = localStorage.getItem("email");
-    const username = localStorage.getItem("username");
+    const  userInfo = useSelector(selectUser);
+    const [username, setUsername] = useState(userInfo.username || "User");
+    const [email, setEmail] = useState(userInfo.email || "No email");
+
+    useEffect(() => {
+        const storedUsername = localStorage.getItem("username") || "User";
+        const storedEmail = localStorage.getItem("email") || "No email";
+        setUsername(storedUsername);
+        setEmail(storedEmail);
+    }, []);
+   
 
     return (
         <section className={s.container}>
