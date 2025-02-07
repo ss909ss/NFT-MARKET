@@ -1,15 +1,14 @@
 import s from './Auth.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
-import { setAuth } from '../../store/authSlice/authSlice'
-import { RootState } from '../../store/store'
-import { useForm, SubmitHandler } from "react-hook-form"
+import { selectAuth, setAuth, setUser } from '../../store/authSlice/authSlice'
+import { SubmitHandler, useForm } from "react-hook-form"
 import { FormData } from '../../types/Form'
 import { usePostFormLoginMutation, usePostFormRegisterMutation } from '../../store/api/authApi'
 import { useNavigate } from 'react-router'
 
 const Auth = () => {
     const dispatch = useDispatch();
-    const auth = useSelector((state: RootState) => state.auth.auth);
+    const auth = useSelector(selectAuth)
     const { register, handleSubmit, reset } = useForm<FormData>();
     const navigate = useNavigate();
     const [postLogin, { isLoading: isLoggingIn }] = usePostFormLoginMutation();
@@ -19,19 +18,17 @@ const Auth = () => {
         dispatch(setAuth(!auth));
     }
 
-    const onSubmit = async (data: FormData) => {
+    const onSubmit: SubmitHandler<FormData> = async (data) => {
         try {
             if (auth) {
                 const responseLogin = await postLogin({ email: data.email, password: data.password }).unwrap();
                 if (responseLogin.token) {
                     localStorage.setItem("token", responseLogin.token);
-                    console.log("Токен сохранён:", responseLogin.token);
+                    console.log("Токен сохранён в локал сторедж:", responseLogin.token);
                 }
                 dispatch(setAuth(true));
                 navigate('/profile');
-            } else if (!auth) {
-                navigate('/')
-            }
+            } 
             else {
                 const responseRegister = await postRegister({
                     username: data.username, email: data.email, password: data.password
@@ -39,11 +36,18 @@ const Auth = () => {
 
                 console.log("Ответ от регистрации:", responseRegister);
 
-                if (responseRegister.token) {
-                    localStorage.setItem("token", responseRegister.token);
-                    console.log("Токен сохранён:", responseRegister.token);
+                // if (responseRegister) {
+                //     console.log("Пользователь зарегестрировался",)
+                // } else {
+                //     console.error("Пользователь не зарегестрировался");
+                // }
+                if (responseRegister) {
+                    console.log("Пользователь зарегистрирован:", responseRegister);
+                    dispatch(setAuth(true));
+                    dispatch(setUser({ username: data.username, email: data.email }));
+                    navigate("/uploadItem");
                 } else {
-                    console.error("Токен не был возвращён после регистрации");
+                    console.error("Ошибка регистрации");
                 }
 
                 dispatch(setAuth(true));

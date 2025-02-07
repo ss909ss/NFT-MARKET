@@ -8,7 +8,7 @@ const baseQuery = fetchBaseQuery({
     baseUrl: `${backendURL}/auth`,
     prepareHeaders: (headers) => { 
         const token = localStorage.getItem("token");
-        console.log('Token:', token);
+        console.log('Token  при отправке:', token);
 
         if (token) {
             headers.set("authorization", `Bearer ${token}`);

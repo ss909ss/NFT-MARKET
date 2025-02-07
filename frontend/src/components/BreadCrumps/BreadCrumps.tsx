@@ -14,7 +14,7 @@ const BreadCrumps = () => {
             <div className={s.container}>
                 <div className={s.breadCrumpsContent}>
                     <div className={s.breadCrumpsLeft}>
-                        <Link to='/'>
+                        <Link to='/profile'>
                             <div className={s.arrowLeft}>
                                 <img src={arrowLeft} alt="Icon" className={s.arrowLeftIcon} />
                                 Back to profile
