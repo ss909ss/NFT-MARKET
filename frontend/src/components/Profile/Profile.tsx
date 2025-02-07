@@ -7,21 +7,13 @@ import instagramIcon from '../../assets/Instagram.svg';
 import userIcon from '../../assets/avatar.png';
 import { Link } from 'react-router-dom';  
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { selectUser } from '../../store/authSlice/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUser, setUser } from '../../store/authSlice/authSlice';
+import { useGetProfileQuery } from '../../store/api/profileApi';
 
 const Profile = () => {
-    const  userInfo = useSelector(selectUser);
-    const [username, setUsername] = useState(userInfo.username || "User");
-    const [email, setEmail] = useState(userInfo.email || "No email");
-
-    useEffect(() => {
-        const storedUsername = localStorage.getItem("username") || "User";
-        const storedEmail = localStorage.getItem("email") || "No email";
-        setUsername(storedUsername);
-        setEmail(storedEmail);
-    }, []);
-   
+    const dispatch = useDispatch();
+    const {data } = useGetProfileQuery();
 
     return (
         <section className={s.container}>
@@ -31,9 +23,9 @@ const Profile = () => {
                         <img src={userIcon} alt="" className={s.profileUserLogo} />
 
                         <div className={s.profileBlockInfo}>
-                            <h2 className={s.profileName}>{username || "User"}</h2>
+                            <h2 className={s.profileName}>{data?.email || "User"}</h2>
                             <div className={s.profileQrcode}>
-                                <p className={s.qrcode}>{email || "No email"}</p>
+                                <p className={s.qrcode}>{data?.email || "No email"}</p>
                                 <img src={coins} alt="" className={s.profileQrcodeImage} />
                             </div>
                             <p className={s.profileUserDescription}>Description here</p>

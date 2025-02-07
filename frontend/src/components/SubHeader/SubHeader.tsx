@@ -1,22 +1,23 @@
 import imageIcon from '../../assets/image.svg'
-import pencilIcon from '../../assets/pencil.svg' 
+import pencilIcon from '../../assets/pencil.svg'
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setAuth } from '../../store/authSlice/authSlice';
+import { logout, selectUser } from '../../store/authSlice/authSlice';
 import s from './SubHeader.module.scss';
 
+
 const SubHeader = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+const navigate = useNavigate();
+    const dispatch = useDispatch(); // Получаем dispatch
+    const logoutFunction = () => {
+        dispatch(logout());
+        navigate('/')
+        alert("Вышел с аккаунта успешно")
+    }
 
 
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        
-        dispatch(setAuth(false));
-        navigate('/');
-        console.log("Токен удалился")
-    };
+ 
+
     return (
         <section className={s.subHeader}>
             <div className={s.container}>
@@ -34,10 +35,14 @@ const SubHeader = () => {
                             <img src={pencilIcon} alt="" className={s.subHeaderImage} />
                         </div>
                     </Link>
-                    <button type='button'  className={s.subHeaderButton} onClick={handleLogout}>
-                            logout
-                   
+                    <button
+                        type='button'
+                        className={s.subHeaderButton}
+                        onClick={logoutFunction} // Диспатчим logout
+                    >
+                        logout
                     </button>
+
                 </div>
             </div>
         </section>
