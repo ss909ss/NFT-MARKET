@@ -2,15 +2,17 @@ import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './authSlice/authSlice';
 import { apiAuthSlice } from './api/authApi';
 import peopleReducer from './peopleCategorySlice/peopleCategorySlice';
+import { apiProfileSlice } from './api/profileApi';
 
 const store = configureStore({
     reducer: {
         auth: authReducer,
         [apiAuthSlice.reducerPath]: apiAuthSlice.reducer,
+        [apiProfileSlice.reducerPath]: apiProfileSlice.reducer,
         people: peopleReducer, // добавляем сюда peopleReducer
     },
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(apiAuthSlice.middleware),
+        getDefaultMiddleware().concat(apiAuthSlice.middleware, apiProfileSlice.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

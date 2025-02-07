@@ -6,7 +6,7 @@ export const backendURL = "https://nft-market-as0q.onrender.com";
 
 const baseQuery = fetchBaseQuery({
     baseUrl: `${backendURL}/auth`,
-    prepareHeaders: (headers) => { 
+    prepareHeaders: (headers) => {
         const token = localStorage.getItem("token");
         console.log('Token  при отправке:', token);
 
@@ -38,10 +38,17 @@ export const apiAuthSlice = createApi({
                 body: FormData,
             })
         }),
+        logoutForm: builder.mutation<{ message: string }, void>({
+            query: () => ({
+                url: "/logout",
+                method: "POST",
+            })
+        })
     })
 });
 
 export const {
     usePostFormLoginMutation,
-    usePostFormRegisterMutation
+    usePostFormRegisterMutation,
+    useLogoutFormMutation
 } = apiAuthSlice;
