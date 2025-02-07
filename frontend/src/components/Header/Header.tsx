@@ -9,12 +9,14 @@ import Notification from "../notifications/Notification";
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuth } from "../../store/authSlice";
 import { selectAuth } from "../../store/authSlice/authSlice";
+import Wallet from "../Wallet/Wallet";
 
 const Header = () => {
     const [open, setIsOpen] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const auth = useSelector(selectAuth)
+    const [isProfileOnClick, setIsProfileOnClick] = useState(false)
 
     const handleClick = () => {
         setIsOpen(!open);
@@ -27,6 +29,10 @@ const Header = () => {
             navigate('/auth');
         }
     };
+
+    const handleActiveProfile = () => {
+        setIsProfileOnClick(prevState => !prevState)
+    }
 
     return (
         <>
@@ -60,7 +66,16 @@ const Header = () => {
                                     Upload
                                 </button>
                                 <button className={s.button__wallet}>Connect Wallet</button>
+                                <button
+                                    onClick={handleActiveProfile}
+                                    className={s.button__upload}>
+                                    Profile
+                                </button>
+                                <div className={s.dropProfile}>
+                                    {isProfileOnClick && <Wallet />}
+                                </div>
                             </div>
+
                             <button className={s.header__dropdown}>
                                 <img src={dropdown} alt="Icon" />
                             </button>

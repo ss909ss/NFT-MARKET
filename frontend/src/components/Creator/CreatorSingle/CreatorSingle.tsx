@@ -36,6 +36,7 @@ const CreatorSingle = () => {
                     <div className={styles.creator__left}>
                         <img src={singleImage} alt="" className={styles.creatorLeftImage} />
                     </div>
+                    
                     <div className={styles.creator__right}>
                         <div className={styles.right__block}>
                             <div className={styles.rightBlockTop}>

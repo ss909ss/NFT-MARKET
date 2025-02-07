@@ -5,8 +5,8 @@
   width: 100%;
   height: 81px;
   padding: 20px 0;
-   border-bottom: 1px solid $dark-gray;
-   position: relative;
+  border-bottom: 1px solid $dark-gray;
+  position: relative;
 
   .header__content {
     @include flex-container;
@@ -21,9 +21,11 @@
         margin: 0 32px;
         height: 40px;
       }
+
       .header__menu {
         display: flex;
         align-items: center;
+
         .header__list {
           @include flex-center;
 
@@ -31,6 +33,7 @@
             &:last-of-type {
               margin-left: 32px;
             }
+
             a {
               text-decoration: none;
               @include text-style($text-color, $fz, $lh, $fw);
@@ -42,9 +45,11 @@
 
     .header__right {
       @include flex-center;
+
       .search__form {
         position: relative;
         margin-right: 36px;
+
         .search__input {
           border: 2px solid $dark-gray;
           padding: 10px 16px;
@@ -65,6 +70,7 @@
             color: $muted-blue;
           }
         }
+
         .search__icon {
           position: absolute;
           top: 10px;
@@ -77,9 +83,11 @@
         background: transparent;
         border: none;
         cursor: pointer;
+
         .notification__icon {
           position: relative;
         }
+
         .notification__counter {
           background-color: $light-green-color;
           width: 16px;
@@ -92,19 +100,20 @@
           color: $white-color;
         }
       }
+
       .header__buttons {
+        display: flex;
+        gap: 12px;
+
         .button__upload {
-       
-          @include button(
-            $btn-color,
+
+          @include button($btn-color,
             $bg-color: $blue-color,
             $br-radius: $br-radius,
-            $cursor: $cursor
-          );
+            $cursor: $cursor );
           padding: 12px 16px;
           color: $white-color;
           border: none;
-          margin-right: 12px;
           text-decoration: none;
 
           &:hover {
@@ -114,13 +123,16 @@
           }
         }
 
+        .dropProfile {
+          position: absolute;
+          top: 60px;
+        }
+
         .button__wallet {
-          @include button(
-            $btn-color,
+          @include button($btn-color,
             $bg-color: $black-color,
             $br-radius: $br-radius,
-            $cursor: $cursor
-          );
+            $cursor: $cursor );
           padding: 12px 16px;
           border: 2px solid $muted-blue;
           color: $white-color;
@@ -144,19 +156,23 @@
     .container {
       width: 100%;
       padding: 20px 80px;
+
       .header__content {
         display: flex;
         align-items: center;
+
         .header__left {
           .header__border {
             display: none;
           }
+
           .header__menu {
             .header__list {
               display: none;
             }
           }
         }
+
         .header__right {
           .right__notification {
             .notification__counter {
@@ -173,18 +189,22 @@
   .header {
     .container {
       width: 100%;
+
       .header__content {
         .header__left {
           .header__border {
             display: none;
           }
+
           .header__menu {
             .header__list {
               display: none;
+
               li {
                 &:last-of-type {
                   //  margin-left: 32px;
                 }
+
                 a {
                   //  text-decoration: none;
                   //  @include text-style($text-color, $fz, $lh, $fw);
@@ -193,10 +213,12 @@
             }
           }
         }
+
         .header__right {
           .search__form {
             display: none;
           }
+
           .right__notification {
             display: none;
           }
