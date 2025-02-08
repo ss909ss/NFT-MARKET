@@ -1,28 +1,29 @@
 import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
 import { IProfile } from "../../types/profileType";
 
+
 export const backendURL = "https://nft-market-as0q.onrender.com";
 
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${backendURL}/auth`,
-  prepareHeaders: (headers) => {
-    const token = localStorage.getItem("token");
-    console.log(token)
-    console.log("Токен в localStorage:", localStorage.getItem("token"));
+  // prepareHeaders: (headers) => {
+  //   const token = localStorage.getItem("token");
+  //   console.log(token)
+  //   console.log("Токен в localStorage:", localStorage.getItem("token"));
 
 
-    if (token) {
-      headers.set("authorization", `Bearer ${token}`);
-      console.log(headers.get("authorization")); // Теперь вы должны увидеть "Bearer <токен>"
-    } else {
-      console.log("Токен не найден");
-    }
+  //   if (token) {
+  //     headers.set("authorization", `Bearer ${token}`);
+  //     console.log(headers.get("authorization")); // Теперь вы должны увидеть "Bearer <токен>"
+  //   } else {
+  //     console.log("Токен не найден");
+  //   }
 
-    console.log(headers.get("authorization",));
+  //   console.log(headers.get("authorization",));
 
-    return headers;
-  }
+  //   return headers;
+  // }
 });
 
 
