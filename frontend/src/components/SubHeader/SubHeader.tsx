@@ -2,7 +2,7 @@ import imageIcon from '../../assets/image.svg'
 import pencilIcon from '../../assets/pencil.svg'
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { logout, selectUser } from '../../store/authSlice/authSlice';
+import { logout,  } from '../../store/authSlice/authSlice';
 import s from './SubHeader.module.scss';
 
 

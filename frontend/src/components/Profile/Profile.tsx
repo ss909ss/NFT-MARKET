@@ -14,20 +14,26 @@ import { IProfile } from '../../types/profileType';
 const Profile = () => {
     const { data, isLoading, error } = useGetProfileQuery();
 
-    if (isLoading) return <p>Loading...</p>;
-    if (error) return <p>Error loading profile</p>;
+  
+
+    // const userName = localStorage.getItem("username")
+    // const email = localStorage.getItem("email")
+
+    useEffect(() => {
+
+    }, [data ])
 
     return (
         <section className={s.container}>
             <div className={s.profile}>
                 <aside className={s.aside}>
                     <div className={s.profileBlock}>
-                        <img src={data?.profileImage || "/default-avatar.png"} alt="User" className={s.profileUserLogo} />
+                        <img src={data?.profileImage || userIcon} alt="User" className={s.profileUserLogo} />
 
                         <div className={s.profileBlockInfo}>
-                            <h2 className={s.profileName}>{data?.username || "User"}</h2>
+                            <h2 className={s.profileName}>{data?.username  ||  "User"}</h2>
                             <div className={s.profileQrcode}>
-                                <p className={s.qrcode}>{data?.email || "No email"}</p>
+                                <p className={s.qrcode}>{data?.email  || "No email"}</p>
                                 <img src={coins} alt="Coins" className={s.profileQrcodeImage} />
                             </div>
                             <p className={s.profileUserDescription}>Description here</p>
