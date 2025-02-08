@@ -58,7 +58,7 @@ interface AuthState {
     auth: boolean;
     username: string;
     email: string;
-    password?: string;
+    password: string;
     token: string;
 }
 
@@ -66,7 +66,8 @@ const initialState: AuthState = {
     auth: JSON.parse(localStorage.getItem("auth") || "false"),
     username: localStorage.getItem("username") || "",
     email: localStorage.getItem("email") || "",
-    token: JSON.parse(localStorage.getItem("token") || "null")
+    token: JSON.parse(localStorage.getItem("token") || "null"),
+    password:""
 };
 
 const authSlice = createSlice({
@@ -82,10 +83,15 @@ const authSlice = createSlice({
             state.token = action.payload;
             localStorage.setItem("token", JSON.stringify(action.payload));
         },
-        setUser: (state, action: PayloadAction<{ username: string; email: string }>) => {
+        setUser: (state, action: PayloadAction<{ username: string; email: string, password:string }>) => {
             state.username = action.payload.username;
             state.email = action.payload.email;
             localStorage.setItem("username", action.payload.username);
+            localStorage.setItem("email", action.payload.email);
+        },
+        setLoginUser: (state, action: PayloadAction<{ password: string; email: string }>) => {
+            state.password = action.payload.password;
+            state.email = action.payload.email;
             localStorage.setItem("email", action.payload.email);
         },
         logout: (state) => {
@@ -100,7 +106,7 @@ const authSlice = createSlice({
     },
 });
 
-export const { setAuth, setToken, setUser, logout } = authSlice.actions;
+export const { setAuth, setToken, setUser, logout, setLoginUser } = authSlice.actions;
 export const selectAuth = (state: RootState) => state.auth.auth;
 export const selectUser = (state: RootState) => ({ username: state.auth.username, email: state.auth.email });
 export default authSlice.reducer;
