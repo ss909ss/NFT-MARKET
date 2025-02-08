@@ -9,6 +9,7 @@ export interface IFormLogin{
     token?: string;
     email: string;
     password: string;
+    username?:string
 }
 
 export type FormData={

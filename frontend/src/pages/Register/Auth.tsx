@@ -1,6 +1,6 @@
 import s from './Auth.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectAuth, setAuth, setToken, setUser } from '../../store/authSlice/authSlice'
+import { selectAuth, setAuth, setLoginUser, setToken, setUser } from '../../store/authSlice/authSlice'
 import { SubmitHandler, useForm } from "react-hook-form"
 import { FormData } from '../../types/Form'
 import { usePostFormLoginMutation, usePostFormRegisterMutation } from '../../store/api/authApi'
@@ -27,12 +27,15 @@ const Auth = () => {
             if (isLoginForm) {
                 const responseLogin = await postLogin({ email: data.email, password: data.password }).unwrap();
                 if (responseLogin.token) {
+                    localStorage.setItem("token", responseLogin.token);
                     dispatch(setToken(responseLogin.token));
-                    console.log("Токен сохранён в локал сторедж:", responseLogin.token);
-                }
+                    console.log("Токен сохранён в localStorage:", responseLogin.token);
+                  }
+                  
+
                 dispatch(setAuth(true));
-                
-                dispatch(setUser({ username: data.username, email: data.email ,}));
+
+                dispatch(setLoginUser({ password: data.password, email: data.email }));
                 navigate('/profile');
             }
             else {
@@ -41,10 +44,11 @@ const Auth = () => {
                 }).unwrap();
 
                 if (responseRegister) {
-                    console.log("Пользователь зарегистрирован:", responseRegister);
+
                     dispatch(setAuth(true));
-                    dispatch(setUser({ username: data.username, email: data.email }));
+                    dispatch(setUser({ username: data.username, email: data.email, password: data.password }));
                     navigate("/uploadItem");
+                    console.log("Пользователь зарегистрирован:", responseRegister);
                 } else {
                     console.error("Ошибка регистрации");
                 }

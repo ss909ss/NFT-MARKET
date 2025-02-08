@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
+import { IProfile } from "../../types/profileType";
 
 export const backendURL = "https://nft-market-as0q.onrender.com";
 
@@ -6,43 +7,40 @@ export const backendURL = "https://nft-market-as0q.onrender.com";
 const baseQuery = fetchBaseQuery({
   baseUrl: `${backendURL}/auth`,
   prepareHeaders: (headers) => {
-      const token = localStorage.getItem("token");
-      console.log(token)
-       console.log("Токен в localStorage:", localStorage.getItem("token"));
+    const token = localStorage.getItem("token");
+    console.log(token)
+    console.log("Токен в localStorage:", localStorage.getItem("token"));
 
-      
-       if (token) {
-        headers.set("authorization", `Bearer ${token}`);
-        console.log(headers.get("authorization")); // Теперь вы должны увидеть "Bearer <токен>"
-      } else {
-        console.log("Токен не найден");
-      }
-      
-      console.log(headers.get("authorization"));
 
-      return headers;
+    if (token) {
+      headers.set("authorization", `Bearer ${token}`);
+      console.log(headers.get("authorization")); // Теперь вы должны увидеть "Bearer <токен>"
+    } else {
+      console.log("Токен не найден");
+    }
+
+    console.log(headers.get("authorization",));
+
+    return headers;
   }
 });
 
 
 
 
-const fetchBaseWithRetry = retry(baseQuery, { maxRetries: 1 });
+// const fetchBaseWithRetry = retry(baseQuery, { maxRetries: 1 });
 
 export const apiProfileSlice = createApi({
-    reducerPath: "profileApi",
-    baseQuery: fetchBaseWithRetry, // Исправлено: используем базовый запрос с ретраем
-    endpoints: (builder) => ({
-        getProfile: builder.query<{ username: string; email: string }, void>({
-            query: () => {
-              // Если вы уже устанавливаете заголовок в prepareHeaders, можно не добавлять его здесь:
-              return {
-                url: "/profile",
-                method: "GET",
-              };
-            }
-          })
+  reducerPath: "profileApi",
+  baseQuery: baseQuery,
+  endpoints: (builder) => ({
+    getProfile: builder.query<IProfile, void>({
+      query: () => ({
+        url: "/profile",
+        method: "GET"
+      })
     })
+  })
 });
 
 export const { useGetProfileQuery } = apiProfileSlice;
