@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
 import { IProfile } from "../../types/profileType";
 
+
 export const backendURL = "https://nft-market-as0q.onrender.com";
 
 
