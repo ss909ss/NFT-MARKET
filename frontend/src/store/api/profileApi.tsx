@@ -4,17 +4,27 @@ export const backendURL = "https://nft-market-as0q.onrender.com";
 
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: `${backendURL}/auth`,
-    prepareHeaders: (headers) => {
-        const token = localStorage.getItem("token");
-        console.log('Token при отправке:', token);
-        console.log("Отправил токен для аутентификации", token);
-        if (token) {
-            headers.set("authorization", `Bearer ${token}`);
-        }
-        return headers;
-    }
+  baseUrl: `${backendURL}/auth`,
+  prepareHeaders: (headers) => {
+      const token = localStorage.getItem("token");
+      console.log(token)
+       console.log("Токен в localStorage:", localStorage.getItem("token"));
+
+      
+       if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+        console.log(headers.get("authorization")); // Теперь вы должны увидеть "Bearer <токен>"
+      } else {
+        console.log("Токен не найден");
+      }
+      
+      console.log(headers.get("authorization"));
+
+      return headers;
+  }
 });
+
+
 
 
 const fetchBaseWithRetry = retry(baseQuery, { maxRetries: 1 });
