@@ -9,37 +9,68 @@ import { Link } from 'react-router-dom';
 
 import { useGetProfileQuery } from '../../store/api/profileApi';
 import { useEffect } from 'react';
-import { IProfile } from '../../types/profileType';
+import { useSelector } from 'react-redux';
+import { selectProfile } from '../../store/authSlice/profileSlice';
+
 
 const Profile = () => {
-    const { data, isLoading, error } = useGetProfileQuery();
+    const { data: dataProfile, error, isLoading } = useGetProfileQuery();
 
-  
+    console.log("Загружается?", isLoading);
+    console.log("Ошибка?", error);
+    console.log("Данные профиля:", dataProfile);
 
-    // const userName = localStorage.getItem("username")
-    // const email = localStorage.getItem("email")
+
+
+    // Если произошла ошибка при получении данных
+    if (error) {
+        return <p>Error occurred!</p>;
+    }
+
+    // Если данные не получены (на всякий случай)
+    if (!dataProfile) {
+        return <p>Нет данных</p>;
+    }
+
+    // Если данные успешно получены, отображаем UI
 
     useEffect(() => {
-
-    }, [data ])
+        console.log("dataProfile обновился:", dataProfile);
+    }, [dataProfile]);
 
     return (
         <section className={s.container}>
             <div className={s.profile}>
                 <aside className={s.aside}>
                     <div className={s.profileBlock}>
-                        <img src={data?.profileImage || userIcon} alt="User" className={s.profileUserLogo} />
+                        <img
+                            src={dataProfile.profileImage || userIcon}
+                            alt="User"
+                            className={s.profileUserLogo}
+                        />
 
                         <div className={s.profileBlockInfo}>
-                            <h2 className={s.profileName}>{data?.username  ||  "User"}</h2>
+                            <h2 className={s.profileName}>
+                                {dataProfile?.data?.username || "User"}
+                            </h2>
+                         
+
                             <div className={s.profileQrcode}>
-                                <p className={s.qrcode}>{data?.email  || "No email"}</p>
+                            <p className={s.qrcode}>
+                                {dataProfile?.data?.email || "No email"}
+                            </p>
                                 <img src={coins} alt="Coins" className={s.profileQrcodeImage} />
                             </div>
                             <p className={s.profileUserDescription}>Description here</p>
                             <div className={s.profileLink}>
-                                <img src={globeIcon} alt="Website" className={s.socilalLinkImage} />
-                                <Link to="https://ui8.net" className={s.socilalLink}>https://ui8.net</Link>
+                                <img
+                                    src={globeIcon}
+                                    alt="Website"
+                                    className={s.socilalLinkImage}
+                                />
+                                <Link to="https://ui8.net" className={s.socilalLink}>
+                                    https://ui8.net
+                                </Link>
                             </div>
                         </div>
 
@@ -52,7 +83,9 @@ const Profile = () => {
                         </div>
 
                         <span className={s.profileLine}></span>
-                        <p className={s.profileDate}>Member since {data?.dateJoined || "Unknown"}</p>
+                        <p className={s.profileDate}>
+                            Member since {dataProfile.dateJoined || "Unknown"}
+                        </p>
                     </div>
                 </aside>
             </div>
@@ -61,4 +94,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
