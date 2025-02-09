@@ -3,8 +3,108 @@ import s from './Edit.module.scss'
 import avatar from '../../assets/avatar.png';
 import plusIcon from '../../assets/plus.png';
 import removeIcon from '../../assets/removeIcon.png'
+import { useAuth } from '../../context/authContenxt';
+import { useEffect, useState } from 'react';
+import { IProfile } from '../../types/profileType';
+import axios from 'axios';
+import { useInfo } from '../../context/UserInfo';
 
 const Edit = () => {
+    const { username, updateUsername, email, updateEmail } = useInfo();
+    const { token } = useAuth(); // Получаем токен из контекста
+
+    const [localUsername, setLocalUsername] = useState(username); // Локальное состояние
+
+    useEffect(() => {
+        setLocalUsername(username); // Если username обновляется извне, синхронизируем
+    }, [username]);
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            if (!token) {
+                console.error('No token found!');
+                return;
+            }
+
+            try {
+                const response = await axios.get<IProfile>(
+                    "https://nft-market-as0q.onrender.com/auth/profile",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+
+                console.log('Profile data:', response.data);
+               
+                updateUsername(response.data.data.username || ""); // Теперь обновляет состояние в контексте
+                // updateEmail(response.data.data.email.email || "");
+            } catch (error) {
+                console.error("Error fetching profile:", error);
+            }
+        };
+
+        fetchProfile();
+    }, [token]);
+
+    // const handleUpdateProfile = async () => {
+    //     if (!token) return;
+
+    //     try {
+    //         const response = await axios.put(
+    //             "https://nft-market-as0q.onrender.com/auth/profile",
+    //             { username: localUsername },
+    //             {
+    //                 headers: {
+    //                     Authorization: `Bearer ${token}`,
+    //                     "Content-Type": "application/json",
+    //                 },
+    //             }
+    //         );
+
+    //         console.log('Profile updated:', response.data);
+    //         setProfileData(response.data.data);
+    //         updateUsername(response.data.data.username || "");
+    //         // updateEmail(response.data.data.email || "");
+    //         // setPassword(response.data.data)
+    //     } catch (error) {
+    //         console.error("Error updating profile:", error);
+    //     }
+    // };
+
+    const handleUpdateProfile = async () => {
+        if (!token) return;
+    
+        try {
+            const response = await axios.put(
+                "https://nft-market-as0q.onrender.com/auth/profile",
+                { username: localUsername },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+    
+            console.log('Profile updated:', response.data);
+            // Сначала обновляем данные в локальном состоянии и контексте
+          
+            updateUsername(response.data.data.username || "");
+            
+    
+            // Перезапрашиваем профиль, чтобы синхронизировать актуальные данные
+            const profileResponse = await axios.get("https://nft-market-as0q.onrender.com/auth/profile", {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+         
+            updateUsername(profileResponse.data.data.username || "");
+        } catch (error) {
+            console.error("Error updating profile:", error);
+        }
+    };
+    
     return (
         <>
             <BreadCrumps />
@@ -36,42 +136,48 @@ const Edit = () => {
                                 <h2 className={s.contentRightTilte}>Account info</h2>
                                 <div className={s.contentRightForm}>
                                     <div className={s.formBlock}>
-                                        <label htmlFor="displayName" className={s.formLabel}>
+                                        <label htmlFor="username" className={s.formLabel}>
                                             DISPLAY NAME
                                         </label>
                                         <input
                                             type="text"
-                                            id="displayName"
+                                            id="username"
                                             name="displayName"
                                             className={s.formInput}
+                                            value={localUsername} // Привязываем к локальному состоянию
+                                            onChange={(e) => setLocalUsername(e.target.value)}  // Обновляем username
                                             placeholder="Enter your display name"
                                         />
                                     </div>
 
 
-                                    <div className={s.formBlock}>
-                                        <label htmlFor="customUrl" className={s.formLabel}>
-                                            CUSTOM URL
+                                    {/* <div className={s.formBlock}>
+                                        <label htmlFor="password" className={s.formLabel}>
+                                            Password
                                         </label>
                                         <input
                                             type="text"
-                                            id="customUrl"
-                                            name="customUrl"
+                                            id="password"
+                                            name="password"
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
                                             className={s.formInput}
-                                            placeholder="ui8.net/Your custom URL"
+                                            placeholder="password"
                                         />
-                                    </div>
-                                    <div className={s.formBlock}>
-                                        <label htmlFor="bio" className={s.formLabel}>
-                                            BIO
+                                    </div> */}
+                                    {/* <div className={s.formBlock}>
+                                        <label htmlFor="email" className={s.formLabel}>
+                                            Email
                                         </label>
-                                        <textarea
-                                            name="bio"
-                                            id="bio"
+                                        <input
+                                            name="email"
+                                            id="email"
+                                            value={email}
+                                            onChange={(e) => updateEmail(e.target.value)}  // Обновляем username
                                             className={s.formBio}
-                                            placeholder="About yourselt in a few words."
+                                            placeholder="email"
                                         />
-                                    </div>
+                                    </div> */}
 
                                     <h2 className={s.formSocial}>Social</h2>
 
@@ -120,8 +226,8 @@ const Edit = () => {
                                     <span className={s.editpageLine}></span>
 
                                     <div className={s.editButtons}>
-                                        <button type='button' className={s.updateButton}>
-                                        Update Profile
+                                        <button type='button' className={s.updateButton} onClick={handleUpdateProfile}>
+                                            Update Profile
                                         </button>
                                         <button type='button' className={s.clearButton}>
                                             <img src={removeIcon} alt="remove-icon" className={s.removeIcon} />

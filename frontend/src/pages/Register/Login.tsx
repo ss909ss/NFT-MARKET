@@ -7,6 +7,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router'
 import { useAuth } from '../../context/authContenxt'
+import { useInfo } from '../../context/UserInfo'
 
 interface FormData {
     email: string;
@@ -15,31 +16,94 @@ interface FormData {
   
   const Login = () => {
     const [loading, setLoading] = useState(false);
+    const { updateUsername, updateEmail} =useInfo();
     const { setToken } = useAuth(); // Получаем функцию для установки токена
     const navigate = useNavigate();
   
     const { register, handleSubmit } = useForm<FormData>();
   
-    const onSubmitJHandler: SubmitHandler<FormData> = async (data) => {
-      try {
+    // const onSubmitJHandler: SubmitHandler<FormData> = async (data) => {
+    //   try {
+    //     setLoading(true);
+    //     const response = await axios.post('https://nft-market-as0q.onrender.com/auth/login', {
+    //       email: data.email,
+    //       password: data.password,
+    //     });
+  
+    //     if (response.data.token) {
+    //       setToken(response.data.token); // Устанавливаем токен через контекст
+    //       navigate('/profile');
+    //     }
+    //   } catch (error) {
+    //     console.error('Ошибка при отправке формы:', error);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+  //   const onSubmitJHandler: SubmitHandler<FormData> = async (data) => {
+  //     try {
+  //         setLoading(true);
+  //         const response = await axios.post('https://nft-market-as0q.onrender.com/auth/login', {
+  //             email: data.email,
+  //             password: data.password,
+  //         });
+  
+  //         if (response.data.token) {
+  //             setToken(response.data.token); // Устанавливаем токен
+  
+  //             // Загружаем данные профиля сразу после входа
+  //             try {
+  //                 const profileResponse = await axios.get("https://nft-market-as0q.onrender.com/auth/profile", {
+  //                     headers: { Authorization: `Bearer ${response.data.token}` },
+  //                 });
+  
+  //                 updateUsername(profileResponse.data.data.username || "");
+  //                 updateEmail(profileResponse.data.data.email || ""); // Обновляем email
+  //             } catch (error) {
+  //                 console.error("Ошибка при загрузке профиля после входа:", error);
+  //             }
+  
+  //             navigate('/profile');
+  //         }
+  //     } catch (error) {
+  //         console.error('Ошибка при отправке формы:', error);
+  //     } finally {
+  //         setLoading(false);
+  //     }
+  // };
+  const onSubmitJHandler: SubmitHandler<FormData> = async (data) => {
+    try {
         setLoading(true);
         const response = await axios.post('https://nft-market-as0q.onrender.com/auth/login', {
-          email: data.email,
-          password: data.password,
+            email: data.email,
+            password: data.password,
         });
-  
+
         if (response.data.token) {
-          setToken(response.data.token); // Устанавливаем токен через контекст
-          navigate('/profile');
+            setToken(response.data.token);
+
+            try {
+                const profileResponse = await axios.get("https://nft-market-as0q.onrender.com/auth/profile", {
+                    headers: { Authorization: `Bearer ${response.data.token}` },
+                });
+
+                updateUsername(profileResponse.data.data.username);
+                updateEmail(profileResponse.data.data.email);
+            } catch (error) {
+                console.error("Ошибка загрузки профиля после входа:", error);
+            }
+
+            navigate('/profile');
         }
-      } catch (error) {
+    } catch (error) {
         console.error('Ошибка при отправке формы:', error);
-      } finally {
+    } finally {
         setLoading(false);
-      }
-    };
+    }
+};
   
-    return (
+  
+  return (
       <section className="auth">
         <div className="container">
           <div className="authContent">

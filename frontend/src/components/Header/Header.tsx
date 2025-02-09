@@ -11,10 +11,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setAuth } from "../../store/authSlice";
 import { selectAuth } from "../../store/authSlice/authSlice";
 import Wallet from "../Wallet/Wallet";
+import { useAuth } from "../../context/authContenxt";
 
 const Header = () => {
     const [open, setIsOpen] = useState(false);
     const navigate = useNavigate();
+    const {token} = useAuth();
     const dispatch = useDispatch();
     const auth = useSelector(selectAuth)
     const [isProfileOnClick, setIsProfileOnClick] = useState(false)
@@ -63,14 +65,15 @@ const Header = () => {
                             </button>
 
                             <div className={s.header__buttons}>
-
-                                <div className={s.userIconWrapper}>
-                                    <img src={userIcon} className={s.button__wallet} />
-                                    <ul className={s.userDropdownList}>
-                                        <li><Link to="/register" className={s.userDropdownItem}>Register</Link></li>
-                                        <li><Link to="/login" className={s.userDropdownItem}>Login</Link></li>
-                                    </ul>
-                                </div>
+                                {!token &&
+                                    <div className={s.userIconWrapper}>
+                                        <img src={userIcon} className={s.button__wallet} />
+                                        <ul className={s.userDropdownList}>
+                                            <li><Link to="/register" className={s.userDropdownItem}>Register</Link></li>
+                                            <li><Link to="/login" className={s.userDropdownItem}>Login</Link></li>
+                                        </ul>
+                                    </div>
+                                }
 
 
 

@@ -4,18 +4,16 @@ import globeIcon from '../../assets/globe.svg';
 import facebookIcon from '../../assets/facebook.svg';
 import twitterIcon from '../../assets/twitter.svg';
 import instagramIcon from '../../assets/Instagram.svg';
-import userIcon from '../../assets/avatar.png';
 import { Link } from 'react-router-dom';
-
-// import { useGetProfileQuery } from '../../store/api/profileApi';
 import { useEffect, useState } from 'react';
-// import { useSelector } from 'react-redux';
-// import { selectProfile } from '../../store/authSlice/profileSlice';
 import axios from 'axios';
 import { IProfile } from '../../types/profileType';
 import { useAuth } from '../../context/authContenxt';
+import { useInfo } from '../../context/UserInfo';
+
 
 const Profile = () => {
+  const { username, email } = useInfo();
     const { token } = useAuth(); // Получаем токен из контекста
     const [profileData, setProfileData] = useState<IProfile | null>(null);
   
@@ -50,7 +48,7 @@ const Profile = () => {
       };
   
       fetchProfile();
-    }, [token]);
+    }, [token, username]);
      
 
     return (
@@ -61,9 +59,9 @@ const Profile = () => {
                         <img src={profileData?.profileImage} alt="User" className={s.profileUserLogo} />
 
                         <div className={s.profileBlockInfo}>
-                            <h2 className={s.profileName}>{profileData?.username || "User"}</h2>
+                            <h2 className={s.profileName}>{username}</h2>
                             <div className={s.profileQrcode}>
-                                <p className={s.qrcode}>{profileData?.email  || "No email"}</p>
+                                <p className={s.qrcode}>{email}</p>
                                 <img src={coins} alt="Coins" className={s.profileQrcodeImage} />
                             </div>
                             <p className={s.profileUserDescription}>Description here</p>
