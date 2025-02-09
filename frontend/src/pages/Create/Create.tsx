@@ -7,6 +7,7 @@ import axios, { AxiosError } from 'axios'
 import { useState } from 'react';
 import { useAuth } from '../../context/authContenxt';
 import { IAddNft } from '../../types/NftType';
+import { useNavigate } from 'react-router';
 // import { usePostAddNftMutation } from '../../store/api/AddNfts';
 
 
@@ -18,6 +19,7 @@ const Create = () => {
     const { token } = useAuth(); // Get token from context
     const [isChecked, setIsChecked] = useState(false);
     const [image, setImage] = useState<File | null>(null);
+    const navigate = useNavigate();
     const [data, setData] = useState<IAddNft>({
         name: "",
         description: "",
@@ -29,7 +31,7 @@ const Create = () => {
 
     const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-    
+
         if (name === "auctionEndTime") {
             const localDate = new Date(value);  // Создаем объект Date из значения ввода
             const utcDate = new Date(Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate()));  // Конвертируем в UTC
@@ -41,7 +43,7 @@ const Create = () => {
             setData((prevData) => ({ ...prevData, [name]: value }));
         }
     };
-    
+
 
 
 
@@ -56,68 +58,132 @@ const Create = () => {
         }));
     };
 
+    // const onSubmitHandler = async (e: React.FormEvent) => {
+    //     e.preventDefault();
+
+    //     if (
+    //       !data.name ||
+    //       !data.description ||
+    //       !data.price ||
+    //       !data.auctionEndTime ||
+    //       !data.collection
+    //     ) {
+    //       alert("Please fill in all fields!");
+    //       return;
+    //     }
+
+    //     // Формирование объекта FormData
+    //     const formData = new FormData();
+    //     formData.append("name", data.name);
+    //     formData.append("description", data.description);
+    //     formData.append("price", data.price.toString());
+    //     formData.append("auctionEndTime", data.auctionEndTime.toISOString());
+    //     formData.append("collection", data.collection);
+
+    //     // Если изображение выбрано, добавляем в FormData только его имя
+    //     if (image) {
+    //       formData.append("image", image.name);
+    //     }
+
+    //     // Логирование содержимого FormData
+    //     for (const [key, value] of formData.entries()) {
+    //       console.log(key, value);
+    //     }
+
+    //     // Функция для отправки данных формы
+    //     const sendFormData = async (formData: FormData) => {
+    //       if (!token) {
+    //         alert("No token found! You need to be logged in.");
+    //         return;
+    //       }
+
+    //       try {
+    //         console.log(token, "token");
+    //         const response = await axios.post(
+    //           "https://nft-market-as0q.onrender.com/nfts",
+    //           formData,
+    //           {
+    //             headers: {
+    //               Authorization: `Bearer ${token}`,
+    //             },
+    //           }
+    //         );
+    //         console.log("Data sent successfully:", response.data);
+    //         if (response.data.success) {
+    //           // Сброс формы и состояния изображения
+    //           setImage(null);
+    //           setData({
+    //             name: "",
+    //             description: "",
+    //             price: 0,
+    //             auctionEndTime: null,
+    //             collection: "",
+    //           });
+    //         }
+    //       } catch (e) {
+    //         if (e instanceof AxiosError) {
+    //           console.error(
+    //             "Error sending data:",
+    //             e.response ? e.response.data : e.message
+    //           );
+    //         } else {
+    //           console.error("Unknown error:", e);
+    //         }
+    //         alert("There was an error sending your data.");
+    //       }
+    //     };
+
+    //     // Отправка данных формы
+    //     sendFormData(formData);
+    //   };
+
+
     const onSubmitHandler = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!data.name || !data.description || !data.price || !data.auctionEndTime || !data.collection) {
+        // Проверка обязательных полей (убираем проверку коллекции, если её значение некорректно)
+        if (
+            !data.name ||
+            !data.description ||
+            !data.price ||
+            !data.auctionEndTime
+        ) {
             alert("Please fill in all fields!");
             return;
         }
 
-        const formData = new FormData();
-        formData.append("name", data.name);
-        formData.append("description", data.description);
-        formData.append("price", data.price.toString());
+        // Формирование JSON-пейлоада
+        const payload = {
+            name: data.name,
+            description: data.description,
+            price: data.price,
+            auctionEndTime: data.auctionEndTime.toISOString(),
+            // Не отправляем поле collection, чтобы избежать ошибки приведения к ObjectId
+            image: image ? image.name : undefined,
+        };
 
-        if (data.auctionEndTime) {
-            formData.append("auctionEndTime", data.auctionEndTime.toISOString()); // Гарантируем UTC-формат
-        }
+        console.log("Payload:", payload);
 
-
-        formData.append("collection", data.collection);
-        console.log("FormData before sending:", data);
-
-        if (image) {
-            const base64Image = await readImageAsBase64(image);
-            formData.append("image", base64Image);
-        }
-
-        sendFormData(formData);
-    };
-
-    const readImageAsBase64 = (imageFile: File): Promise<string> => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                resolve(reader.result as string);
-            };
-            reader.onerror = () => {
-                reject("Error reading image file.");
-            };
-            reader.readAsDataURL(imageFile);
-        });
-    };
-
-
-    const sendFormData = async (formData: FormData) => {
         if (!token) {
             alert("No token found! You need to be logged in.");
             return;
         }
 
         try {
+            console.log(token, "token");
             const response = await axios.post(
                 "https://nft-market-as0q.onrender.com/nfts",
-                formData,
+                payload,
                 {
                     headers: {
-                        Authorization: `Bearer ${token}`, // Use token here
-
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
                     },
                 }
             );
             console.log("Data sent successfully:", response.data);
-            if (response.data.success) {
+            if (response.status === 201) {
+                // Сброс формы и состояния изображения
                 setImage(null);
                 setData({
                     name: "",
@@ -126,20 +192,21 @@ const Create = () => {
                     auctionEndTime: null,
                     collection: "",
                 });
+                navigate("/");
             }
         } catch (e) {
             if (e instanceof AxiosError) {
-                console.error('Error sending data:', e.response ? e.response.data : e.message);
+                console.error(
+                    "Error sending data:",
+                    e.response ? e.response.data : e.message
+                );
             } else {
-                console.error('Unknown error:', e);
+                console.error("Unknown error:", e);
             }
             alert("There was an error sending your data.");
         }
     };
 
-
-   
-   
 
 
     return (
@@ -153,6 +220,8 @@ const Create = () => {
                                 Switch to Multiple
                             </button>
                         </div>
+
+
                         <h2 className={s.uploadTitle}>Upload file</h2>
                         <p className={s.uploadContenttTitle}>Drag or choose your file to upload</p>
 

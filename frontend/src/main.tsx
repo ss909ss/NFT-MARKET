@@ -5,13 +5,16 @@ import App from './App.tsx'
 import { Provider } from 'react-redux';
 import store from "./store/store";
 import { AuthProvider } from './context/authContenxt.tsx'; // Импортируйте AuthProvider
+import { UserInfoProvider } from './context/UserInfo.tsx';
 
 
 createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
         <Provider store={store}>
             <AuthProvider>
-                <App />
+                <UserInfoProvider>
+                    <App />
+                </UserInfoProvider>
             </AuthProvider>
         </Provider>
     </BrowserRouter>

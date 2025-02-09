@@ -4,5 +4,5 @@ export interface IAddNft{
     price:number;
     auctionEndTime: Date | null;
     image?: string;
-    collection:string
+    collection?:string
 }
