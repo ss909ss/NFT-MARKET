@@ -19,16 +19,18 @@ export const apiProfileSlice = createApi({
     getProfile: builder.query<ProfileState, void>({
       query: () => {
         const token = localStorage.getItem("token");
-console.log("token", token)
+        console.log("Запрос профиля отправляется с токеном:", token);
         return {
-          url: "/profile/",
+          url: "/profile",
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`
-          }
-                  };
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        };
       },
     }),
+    
   }),
 });
 

@@ -4,15 +4,16 @@ import profileReducer from './authSlice/profileSlice'
 import { apiAuthSlice } from './api/authApi';
 import peopleReducer from './peopleCategorySlice/peopleCategorySlice';
 import { apiProfileSlice } from './api/profileApi';
+// import { apiNftSlice } from './api/AddNfts';
 
 
 const store = configureStore({
     reducer: {
         auth: authReducer,
+        [apiProfileSlice.reducerPath]: apiProfileSlice.reducer,
         profile: profileReducer,
-    [apiProfileSlice.reducerPath]: apiProfileSlice.reducer,
         [apiAuthSlice.reducerPath]: apiAuthSlice.reducer,
-      
+        // [apiNftSlice.reducerPath]: apiNftSlice.reducer,
         people: peopleReducer, // добавляем сюда peopleReducer
     },
     middleware: (getDefaultMiddleware) =>

@@ -60,14 +60,16 @@ interface AuthState {
     email: string;
     password: string;
     token: string;
+    avatar: string
 }
 
 const initialState: AuthState = {
     auth: JSON.parse(localStorage.getItem("auth") || "false"),
     username: localStorage.getItem("username") || "",
     email: localStorage.getItem("email") || "",
-    token: JSON.parse(localStorage.getItem("token") || "null"),
-    password:""
+    token: localStorage.getItem("token") || "", 
+    password:"",
+    avatar:localStorage.getItem("avatar" )|| ""
 };
 
 const authSlice = createSlice({
@@ -89,10 +91,14 @@ const authSlice = createSlice({
             localStorage.setItem("username", action.payload.username);
             localStorage.setItem("email", action.payload.email);
         },
-        setLoginUser: (state, action: PayloadAction<{ password: string; email: string }>) => {
+        setLoginUser: (state, action: PayloadAction<{ password: string; email: string, username:string, avatar:string }>) => {
             state.password = action.payload.password;
             state.email = action.payload.email;
             localStorage.setItem("email", action.payload.email);
+            localStorage.setItem("username", action.payload.username);
+            localStorage.setItem("avatar", action.payload.avatar);
+            // localStorage.setItem("email", action.payload.email);
+            // localStorage.setItem("email", action.payload.email);
         },
         logout: (state) => {
             state.auth = false;

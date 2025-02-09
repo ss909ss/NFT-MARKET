@@ -3,16 +3,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { selectAuth, setAuth, setLoginUser, setToken, setUser } from '../../store/authSlice/authSlice'
 import { SubmitHandler, useForm } from "react-hook-form"
 import { FormData } from '../../types/Form'
-import { usePostFormLoginMutation, usePostFormRegisterMutation } from '../../store/api/authApi'
+import {  usePostFormRegisterMutation } from '../../store/api/authApi'
 import { useNavigate } from 'react-router'
-import { useState } from 'react'
+
 
 const Register = () => {
     const dispatch = useDispatch();
     const auth = useSelector(selectAuth)
     const { register, handleSubmit, reset } = useForm<FormData>();
     const navigate = useNavigate();
-    const [postLogin, { isLoading: isLoggingIn }] = usePostFormLoginMutation();
     const [postRegister, { isLoading: isRegistering }] = usePostFormRegisterMutation();
    
 
