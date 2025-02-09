@@ -6,6 +6,7 @@ import dropdown from "../../assets/dropdown.svg";
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from "react";
 import Notification from "../notifications/Notification";
+import userIcon from '../../assets/userI.svg'
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuth } from "../../store/authSlice";
 import { selectAuth } from "../../store/authSlice/authSlice";
@@ -62,10 +63,23 @@ const Header = () => {
                             </button>
 
                             <div className={s.header__buttons}>
-                                <button className={s.button__upload} onClick={handleClickUpload}>
-                                    Upload
-                                </button>
-                                <button className={s.button__wallet}>Connect Wallet</button>
+
+                                <div className={s.userIconWrapper}>
+                                    <img src={userIcon} className={s.button__wallet} />
+                                    <ul className={s.userDropdownList}>
+                                        <li><Link to="/register" className={s.userDropdownItem}>Register</Link></li>
+                                        <li><Link to="/login" className={s.userDropdownItem}>Login</Link></li>
+                                    </ul>
+                                </div>
+
+
+
+                                {auth &&
+                                    <button className={s.button__upload} onClick={handleClickUpload}>
+                                        Upload
+                                    </button>
+                                }
+
                                 <button
                                     onClick={handleActiveProfile}
                                     className={s.button__upload}>

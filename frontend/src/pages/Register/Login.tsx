@@ -7,7 +7,7 @@ import { usePostFormLoginMutation, usePostFormRegisterMutation } from '../../sto
 import { useNavigate } from 'react-router'
 import { useState } from 'react'
 
-const Auth = () => {
+const Login = () => {
     const dispatch = useDispatch();
     const auth = useSelector(selectAuth)
     const { register, handleSubmit, reset } = useForm<FormData>();
@@ -16,15 +16,12 @@ const Auth = () => {
     const [postRegister, { isLoading: isRegistering }] = usePostFormRegisterMutation();
     const [isLoginForm, setIsLoginForm] = useState(false);
 
-    const toggleAuthLink = () => {
-        setIsLoginForm(!isLoginForm);
-    };
 
 
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
         try {
-            if (isLoginForm) {
+         
                 const responseLogin = await postLogin({ email: data.email, password: data.password }).unwrap();
                 if (responseLogin.token) {
                     localStorage.setItem("token", responseLogin.token);
@@ -35,28 +32,9 @@ const Auth = () => {
 
                 dispatch(setAuth(true));
 
-                dispatch(setLoginUser({ password: data.password, email: data.email }));
+               
                 navigate('/profile');
-            }
-            else {
-                const responseRegister = await postRegister({
-                    username: data.username, email: data.email, password: data.password
-                }).unwrap();
-
-                if (responseRegister) {
-
-                    dispatch(setAuth(true));
-                    dispatch(setUser({ username: data.username, email: data.email, password: data.password }));
-                    navigate("/uploadItem");
-                    console.log("Пользователь зарегистрирован:", responseRegister);
-                } else {
-                    console.error("Ошибка регистрации");
-                }
-
-                dispatch(setAuth(true));
-                navigate('/uploadItem');
-            }
-
+            
             reset();
         } catch (error) {
             console.error("Ошибка при отправке формы:", error);
@@ -70,21 +48,13 @@ const Auth = () => {
                 <div className={s.authContent}>
                     <div className={s.authForm}>
                         <h2 className={s.authTitle}>
-                            {isLoginForm ? "Login" : "Register"}
+                            Login
                         </h2>
 
 
 
                         <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-                            {!isLoginForm && (
-                                <input
-                                    type="text"
-                                    className={s.authInput}
-                                    placeholder="Username"
-                                    {...register("username", { required: true })}
-                                    autoComplete="off"
-                                />
-                            )}
+                           
                             <input
                                 type="email"
                                 className={s.authInput}
@@ -101,18 +71,10 @@ const Auth = () => {
                             />
 
                             <div className={s.authBtns}>
-                                {/* Кнопка для отправки формы */}
                                 <button type="submit" className={s.authSubLinkBtn}>
-                                    {isLoginForm ? "Войти" : "Зарегистрироваться"}
+                                    Войти
                                 </button>
-                                {/* Кнопка для переключения между формами */}
-                                <button
-                                    type="button" // не отправляет форму
-                                    className={s.authSubLinkBtnRegister}
-                                    onClick={toggleAuthLink} // Переключение состояния
-                                >
-                                    {isLoginForm ? "Зарегистрироваться" : "Войти"}
-                                </button>
+                             
                             </div>
                         </form>
 
@@ -125,4 +87,4 @@ const Auth = () => {
     )
 }
 
-export default Auth
+export default Login

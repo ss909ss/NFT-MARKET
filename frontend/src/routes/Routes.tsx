@@ -5,9 +5,11 @@ import Error from "../pages/Error/Error"
 import Frequently from "../pages/Frequently/Frequently"
 import Home from "../pages/Home/Home"
 import ProfilePage from "../pages/Profile/Profile"
-import Auth from "../pages/Register/Auth"
+import Auth from "../pages/Register/Login"
 import Upload from "../pages/Upload/Upload"
 import OneItem from "../pages/OneItem/OneItem"
+import Register from "../pages/Register/Register"
+import Login from "../pages/Register/Login"
 
 const routes = [
     {
@@ -43,13 +45,17 @@ const routes = [
         element: <ProfilePage/>
     },
     {
-        path: "/auth",
-        element: <Auth/>
+        path: "/login",
+        element: <Login/>
     },
     {
       path: "/oneItem",
       element: <OneItem/>
     },
+    {
+        path: "/register",
+        element: <Register/>
+      },
 ]
 
 export default routes
