@@ -31,13 +31,13 @@ export const apiAuthSlice = createApi({
                 body: FormData,
             })
         }),
-        postFormLogin: builder.mutation<IFormLogin, IFormLogin>({
-            query: (FormData) => ({
-                url: "/login",
-                method: "POST",
-                body: FormData,
-            })
-        }),
+        // postFormLogin: builder.mutation<IFormLogin, IFormLogin>({
+        //     query: (FormData) => ({
+        //         url: "/login",
+        //         method: "POST",
+        //         body: FormData,
+        //     })
+        // }),
         logoutForm: builder.mutation<{ message: string }, void>({
             query: () => ({
                 url: "/logout",
@@ -48,7 +48,7 @@ export const apiAuthSlice = createApi({
 });
 
 export const {
-    usePostFormLoginMutation,
+    // usePostFormLoginMutation,
     usePostFormRegisterMutation,
     useLogoutFormMutation
 } = apiAuthSlice;

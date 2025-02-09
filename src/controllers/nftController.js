@@ -52,7 +52,11 @@ async function createNFT(req, res) {
     const { name, description, price, auctionEndTime, image, collection } = req.body; // Убираем title
     try {
         // Проверяем, переданы ли обязательные поля
-        if (!name || !price || !auctionEndTime) {
+        // if (!name || !price || !auctionEndTime) {
+        //     return res.status(400).json({ message: 'Name, price, and auctionEndTime are required fields.' });
+        // }
+
+        if ( !auctionEndTime) {
             return res.status(400).json({ message: 'Name, price, and auctionEndTime are required fields.' });
         }
 

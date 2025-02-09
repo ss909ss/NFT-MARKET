@@ -1,90 +1,76 @@
 import s from './Auth.module.scss'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectAuth, setAuth, setLoginUser, setToken, setUser } from '../../store/authSlice/authSlice'
-import { SubmitHandler, useForm } from "react-hook-form"
-import { FormData } from '../../types/Form'
-import { usePostFormLoginMutation, usePostFormRegisterMutation } from '../../store/api/authApi'
-import { useNavigate } from 'react-router'
+import { useDispatch,  } from 'react-redux'
+import {  setAuth,  setToken } from '../../store/authSlice/authSlice'
+import {  SubmitHandler, useForm } from "react-hook-form"
+
 import { useState } from 'react'
+import axios from 'axios'
+import { useNavigate } from 'react-router'
+import { useAuth } from '../../context/authContenxt'
 
-const Login = () => {
-    const dispatch = useDispatch();
-    const auth = useSelector(selectAuth)
-    const { register, handleSubmit, reset } = useForm<FormData>();
+interface FormData {
+    email: string;
+    password: string;
+  }
+  
+  const Login = () => {
+    const [loading, setLoading] = useState(false);
+    const { setToken } = useAuth(); // Получаем функцию для установки токена
     const navigate = useNavigate();
-    const [postLogin, { isLoading: isLoggingIn }] = usePostFormLoginMutation();
-    const [postRegister, { isLoading: isRegistering }] = usePostFormRegisterMutation();
-    const [isLoginForm, setIsLoginForm] = useState(false);
-
-
-
-
-    const onSubmit: SubmitHandler<FormData> = async (data) => {
-        try {
-         
-                const responseLogin = await postLogin({ email: data.email, password: data.password }).unwrap();
-                if (responseLogin.token) {
-                    localStorage.setItem("token", responseLogin.token);
-                    dispatch(setToken(responseLogin.token));
-                    console.log("Токен сохранён в localStorage:", responseLogin.token);
-                  }
-                  
-
-                dispatch(setAuth(true));
-
-               
-                navigate('/profile');
-            
-            reset();
-        } catch (error) {
-            console.error("Ошибка при отправке формы:", error);
+  
+    const { register, handleSubmit } = useForm<FormData>();
+  
+    const onSubmitJHandler: SubmitHandler<FormData> = async (data) => {
+      try {
+        setLoading(true);
+        const response = await axios.post('https://nft-market-as0q.onrender.com/auth/login', {
+          email: data.email,
+          password: data.password,
+        });
+  
+        if (response.data.token) {
+          setToken(response.data.token); // Устанавливаем токен через контекст
+          navigate('/profile');
         }
+      } catch (error) {
+        console.error('Ошибка при отправке формы:', error);
+      } finally {
+        setLoading(false);
+      }
     };
-
-
+  
     return (
-        <section className={s.auth}>
-            <div className={s.container}>
-                <div className={s.authContent}>
-                    <div className={s.authForm}>
-                        <h2 className={s.authTitle}>
-                            Login
-                        </h2>
-
-
-
-                        <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-                           
-                            <input
-                                type="email"
-                                className={s.authInput}
-                                placeholder="Email"
-                                {...register("email", { required: true })}
-                                autoComplete="new-email"
-                            />
-                            <input
-                                type="password"
-                                className={s.authInput}
-                                placeholder="Password"
-                                {...register("password", { required: true })}
-                                autoComplete="new-password"
-                            />
-
-                            <div className={s.authBtns}>
-                                <button type="submit" className={s.authSubLinkBtn}>
-                                    Войти
-                                </button>
-                             
-                            </div>
-                        </form>
-
-
-
-                    </div>
+      <section className="auth">
+        <div className="container">
+          <div className="authContent">
+            <div className="authForm">
+              <h2 className="authTitle">Login</h2>
+              <form onSubmit={handleSubmit(onSubmitJHandler)} autoComplete="off">
+                <input
+                  type="email"
+                  className="authInput"
+                  placeholder="Email"
+                  {...register('email', { required: 'Email is required' })}
+                  autoComplete="new-email"
+                />
+                <input
+                  type="password"
+                  className="authInput"
+                  placeholder="Password"
+                  {...register('password', { required: 'Password is required' })}
+                  autoComplete="new-password"
+                />
+                <div className="authBtns">
+                  <button type="submit" className="authSubLinkBtn" disabled={loading}>
+                    {loading ? 'Loading...' : 'Войти'}
+                  </button>
                 </div>
+              </form>
             </div>
-        </section>
-    )
-}
-
-export default Login
+          </div>
+        </div>
+      </section>
+    );
+  };
+  
+  export default Login;
