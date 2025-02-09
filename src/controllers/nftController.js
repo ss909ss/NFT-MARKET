@@ -56,7 +56,7 @@ async function createNFT(req, res) {
         //     return res.status(400).json({ message: 'Name, price, and auctionEndTime are required fields.' });
         // }
 
-        if ( !auctionEndTime) {
+        if ( !name) {
             return res.status(400).json({ message: 'Name, price, and auctionEndTime are required fields.' });
         }
 
