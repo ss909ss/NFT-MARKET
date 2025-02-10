@@ -36,9 +36,9 @@ const CreatorSingle = () => {
         const fetchSingleData = async () => {
             try {
                 const response = await axios.get<INftsResponse>("https://nft-market-as0q.onrender.com/nfts");
-                if (response.data.data.length > 0) {
+                if (response?.data?.data?.length > 0) {
                     // setSingleData(response.data.data[0]); 
-                    setSingleData(response.data.data || []);
+                    setSingleData(response?.data?.data || []);
 
 
                     setAuctionEndTime(new Date(response.data.data[currentIndex].auctionEndTime)); // Установить сразу!
@@ -98,28 +98,28 @@ const CreatorSingle = () => {
     return (
         <section className={styles.creator__container}>
             <div className={styles.container}>
-                        <div key={currentNft._id} className={styles.creator__single}>
+                        <div key={currentNft?._id} className={styles.creator__single}>
                             <div className={styles.creator__left}>
-                                <img src={currentNft.image} alt="NFT" className={styles.creatorLeftImage} />
+                                <img src={currentNft?.image} alt="NFT" className={styles.creatorLeftImage} />
                             </div>
 
                             <div className={styles.creator__right}>
                                 <div className={styles.right__block}>
                                     <div className={styles.rightBlockTop}>
-                                        <h2 className={styles.rightTitle}>{currentNft.name}</h2>
+                                        <h2 className={styles.rightTitle}>{currentNft?.name}</h2>
                                         <div className={styles.rightTopBottom}>
                                             <div className={styles.rightBlockBotomLeft}>
                                                 <img src={avatar} alt="Avatar" className={styles.userAvatar} />
                                                 <div className={styles.rightBlockUserInfo}>
                                                     <p className={styles.rightBlockUserTitle}>Creator</p>
-                                                    <h3 className={styles.rightBlockUser}>{currentNft.creator}</h3>
+                                                    <h3 className={styles.rightBlockUser}>{currentNft?.creator}</h3>
                                                 </div>
                                             </div>
                                             <div className={styles.rightBlockBotomRight}>
                                                 <img src={cryptoImage} alt="Crypto" className={styles.cryptoImage} />
                                                 <div className={styles.rightBlockPriceInfo}>
                                                     <p className={styles.rightBlockPriceTitle}>Instant price</p>
-                                                    <h3 className={styles.rightBlockPrice}>{currentNft.price} BTC</h3>
+                                                    <h3 className={styles.rightBlockPrice}>{currentNft?.price} BTC</h3>
                                                 </div>
                                             </div>
                                         </div>
@@ -128,7 +128,7 @@ const CreatorSingle = () => {
                                     <div className={styles.rightBlockInfo}>
                                         <div className={styles.rightBlockInfoTop}>
                                             <span className={styles.rightBlockInfoBid}>Current Bid</span>
-                                            <h2 className={styles.rightBlockInfoEtn}>{currentNft.price} BTC</h2>
+                                            <h2 className={styles.rightBlockInfoEtn}>{currentNft?.price} BTC</h2>
                                             {/* <p className={styles.rightBlockInfoPrice}>${calculateValue(1.0)}</p> */}
                                         </div>
                                         <div className={styles.rightBlockInfoBottom}>
