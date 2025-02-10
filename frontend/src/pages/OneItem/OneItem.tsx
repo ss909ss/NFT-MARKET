@@ -6,20 +6,28 @@ import React, { useEffect, useState } from "react";
 import { ETH_PRICE_API } from "../../store/api/cryptoApi";
 import { setCategory } from '../../store/peopleCategorySlice/peopleCategorySlice';
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from "axios";
 import { INft } from '../../types/NFT'
 import closeIcon from "../../assets/closeIcon.svg"
 import share from "../../assets/share.svg"
 import more from "../../assets/more.svg"
 import heart from "../../assets/heart.svg"
+import { useAuth } from "../../context/authContenxt";
+import { useFavorites } from "../../context/favorites";
+import redHert from '../../assets/red-heart.png'
+import binIcon from '../../assets/bin.svg'
 
 const OneItem = () => {
     const { id } = useParams();
     const [nft, setNft] = useState<INft | null>(null);
     const [ethPrice, setEthPrice] = useState<number | null>(null);
+    const [isFavorite, setIsFavorite] = useState(false);
     const dispatch = useDispatch();
     const { activeCategory, data } = useSelector((state) => state.people);
+    const { token } = useAuth();
+    const { addFavorite, getFavorites, removeFavorite } = useFavorites();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchNftDetail = async () => {
@@ -36,6 +44,79 @@ const OneItem = () => {
             fetchNftDetail();
         }
     }, [id]);
+    useEffect(() => {
+        const favoritesImage = getFavorites();
+        setIsFavorite(favoritesImage.some(fav => fav._id === id)); // Используем id из useParams()
+    }, [id, getFavorites]); // Добавляем зависимости, чтобы эффект выполнялся только при изменении id
+
+
+    const handleClick = async () => {
+        if (!token) {
+            navigate("/register");
+            return;
+        }
+
+        try {
+            if (isFavorite) {
+                // Удаление из избранного
+                const response = await axios.post(
+                    `https://nft-market-as0q.onrender.com/nfts/${id}/unlike`,
+                    {},
+                    { headers: { Authorization: `Bearer ${token}` } }
+                );
+
+                if (response.status === 200 && id) {
+                    removeFavorite(id);
+                }
+
+
+                setNft(response.data.data); // Обновляем состояние NFT
+            } else {
+                // Добавление в избранное
+                const response = await axios.post(
+                    `https://nft-market-as0q.onrender.com/nfts/${id}/like`,
+                    {},
+                    { headers: { Authorization: `Bearer ${token}` } }
+                );
+
+                if (response.status === 200) {
+                    addFavorite(response.data);
+                }
+            }
+        } catch (error) {
+            console.error("Ошибка при обновлении избранного:", error);
+        }
+    };
+
+
+    const handleDeleteNft = async () => {
+        if (!token) {
+            alert("You don't have a token");
+            return;
+        }
+    
+        if (!id) {
+            console.error("NFT ID не найден");
+            return;
+        }
+    
+        try {
+            const response = await axios.delete(
+                `https://nft-market-as0q.onrender.com/nfts/${id}`,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+    
+            if (response.status === 200) {
+                removeFavorite(id);
+                navigate("/profile")
+            }
+    
+            setNft(response.data.data); // Обновляем состояние NFT
+        } catch (error) {
+            console.error("Ошибка при удалении NFT:", error);
+        }
+    }
+
 
 
     const filteredDataByCategory = data.filter(
@@ -156,11 +237,11 @@ const OneItem = () => {
                 <button className={s.buttons__button}>
                     <img src={closeIcon} alt="" />
                 </button>
-                <button className={s.buttons__button}>
-                    <img src={share} alt="" />
+                <button className={s.buttons__button} onClick={handleDeleteNft}>
+                    <img src={binIcon} alt="" className={s.deleteIcon} />
                 </button>
-                <button className={s.buttons__button}>
-                    <img src={heart} alt="" />
+                <button className={s.buttons__button} onClick={handleClick}>
+                    <img src={isFavorite ? redHert : heart} alt="" />
                 </button>
                 <button className={s.buttons__button}>
                     <img src={more} alt="" />
