@@ -317,11 +317,12 @@ const Create = () => {
 
 
 
-                        <div className={s.detailsCollection}>
-                            <h3 className={s.collectionTitle}>Choose collection</h3>
-                            <p className={s.collectionSubtitle}>Choose an exiting collection or create a new one</p>
 
-                            <div className={s.detailsCollections}>
+                        <div className={s.detailsCollection}>
+                            {/* <h3 className={s.collectionTitle}>Choose collection</h3>
+                            <p className={s.collectionSubtitle}>Choose an exiting collection or create a new one</p> */}
+
+                            {/* <div className={s.detailsCollections}>
                                 <div className={s.collection} onClick={() => handleCollectionSelect("Create collection")}>
                                     <img src={plusIcon} alt="" />
                                     <p className={s.collectionCrypto}>Create collection</p>
@@ -341,7 +342,7 @@ const Create = () => {
                                     <img src={plusIcon} alt="icon" />
                                     <p className={s.collectionCrypto}>Crypto Legend - Professor</p>
                                 </div>
-                            </div>
+                            </div> */}
 
 
                             <button type='submit' className={s.createNft}>
