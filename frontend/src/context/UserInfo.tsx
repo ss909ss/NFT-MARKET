@@ -7,17 +7,19 @@ interface AuthContextType {
     updateUsername: (newUsername: string) => void;
     token: string | null;
     email: string;
-    updateEmail:(newEmail: string)=> void;
-
+    updateEmail: (newEmail: string) => void;
+    avatar: string
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const UserInfoProvider = ({ children }: { children: React.ReactNode }) => {
     const [username, setUsername] = useState("");
+    const [avatar, setAvatar] = useState("")
+    console.log(avatar)
     console.log(username)
     const [email, setEmail] = useState("");
-    const {token} = useAuth();
+    const { token } = useAuth();
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -30,6 +32,7 @@ export const UserInfoProvider = ({ children }: { children: React.ReactNode }) =>
 
                 setUsername(response.data.data.username || "");
                 setEmail(response.data.data.email || "")
+                setAvatar(response.data.data.profileImage || "")
             } catch (error) {
                 console.error("Error fetching profile:", error);
             }
@@ -42,27 +45,27 @@ export const UserInfoProvider = ({ children }: { children: React.ReactNode }) =>
     useEffect(() => {
         console.log('Username updated in context:', username);
     }, [username]);
-    
+
     const updateUsername = async (newUsername: string) => {
         try {
-            const response = await axios.put("https://nft-market-as0q.onrender.com/auth/profile", 
-            { username: newUsername }, 
-            {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-    
+            const response = await axios.put("https://nft-market-as0q.onrender.com/auth/profile",
+                { username: newUsername },
+                {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+
             setUsername(response.data.data.username);
         } catch (error) {
             console.error("Ошибка при обновлении username:", error);
         }
     };
-    
-    const updateEmail = (newEmail: string)=>{
+
+    const updateEmail = (newEmail: string) => {
         setEmail(newEmail)
     }
 
     return (
-        <AuthContext.Provider value={{ username, updateUsername, token, email, updateEmail }}>
+        <AuthContext.Provider value={{ username, updateUsername, token, email, updateEmail, avatar }}>
             {children}
         </AuthContext.Provider>
     );
