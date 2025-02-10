@@ -12,11 +12,9 @@ import { INft } from '../../../types/NFT';
 import axios from 'axios';
 import { useInfo } from '../../../context/UserInfo';
 
-
 interface INftsResponse {
     data: INft[];
 }
-
 
 const CreatorSingle = () => {
     const { avatar } = useInfo();
@@ -175,5 +173,4 @@ const CreatorSingle = () => {
         </section>
     )
 }
-
-export default CreatorSingle
+export default CreatorSingle;

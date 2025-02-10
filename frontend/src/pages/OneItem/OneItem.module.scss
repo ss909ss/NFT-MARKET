@@ -7,6 +7,8 @@
 
   .oneItem__image {
     border-radius: 16px;
+    width: 50%;
+    height: max-content;
   }
 
   .oneItem__info {
@@ -21,7 +23,9 @@
       align-items: center;
       gap: 8px;
 
-      .discover__card__price, .discover__card__price_dark, .pricesAndStock__inStock {
+      .discover__card__price,
+      .discover__card__price_dark,
+      .pricesAndStock__inStock {
         display: inline-block;
         color: #45B26B;
         border: 1px solid #45B26B;
@@ -148,7 +152,8 @@
           width: 48px;
         }
 
-        .name, .ethereum {
+        .name,
+        .ethereum {
           color: #FCFCFD;
         }
       }
@@ -201,6 +206,25 @@
           color: #FCFCFD;
         }
       }
+    }
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    &__button {
+      background: transparent;
+      border-radius: 50%;
+      border: 2px solid #353945;
+      padding: 20px 22px;
+    }
+
+    &__button:first-child {
+      background: #FCFCFD;
+      border: none;
+      padding: 25px 27px;
     }
   }
 }

@@ -2,15 +2,41 @@ import s from "./OneItem.module.scss"
 import nft from "../../assets/oneItemNft.jpg"
 import avatar from "../../assets/avatar.png"
 import ownerAvatarDec from "../../assets/ownerAvatarDecoration.svg"
-import React, {useEffect, useState} from "react";
-import {ETH_PRICE_API} from "../../store/api/cryptoApi";
-import {setCategory} from '../../store/peopleCategorySlice/peopleCategorySlice';
-import {useDispatch, useSelector} from "react-redux";
+import React, { useEffect, useState } from "react";
+import { ETH_PRICE_API } from "../../store/api/cryptoApi";
+import { setCategory } from '../../store/peopleCategorySlice/peopleCategorySlice';
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from 'react-router-dom';
+import axios from "axios";
+import { INft } from '../../types/NFT'
+import closeIcon from "../../assets/closeIcon.svg"
+import share from "../../assets/share.svg"
+import more from "../../assets/more.svg"
+import heart from "../../assets/heart.svg"
 
 const OneItem = () => {
+    const { id } = useParams();
+    const [nft, setNft] = useState<INft | null>(null);
     const [ethPrice, setEthPrice] = useState<number | null>(null);
     const dispatch = useDispatch();
-    const {activeCategory, data} = useSelector((state) => state.people);
+    const { activeCategory, data } = useSelector((state) => state.people);
+
+    useEffect(() => {
+        const fetchNftDetail = async () => {
+            try {
+                const response = await axios.get(`https://nft-market-as0q.onrender.com/nfts/${id}`);
+                console.log(response.data.data)
+                setNft(response.data.data);
+            } catch (error) {
+                console.error("Error fetching NFT detail:", error);
+            }
+        };
+
+        if (id) {
+            fetchNftDetail();
+        }
+    }, [id]);
+
 
     const filteredDataByCategory = data.filter(
         (item) => item.category === activeCategory && item.assignment === 'Owner'
@@ -42,10 +68,10 @@ const OneItem = () => {
 
     return (
         <div className={`${s.oneItem} ${s.container}`}>
-            <img src={nft} alt="" className={s.oneItem__image}/>
+            <img src={nft?.image} alt={nft?.name} className={s.oneItem__image} />
 
             <div className={s.oneItem__info}>
-                <h1>The amazing art</h1>
+                <h1>{nft?.name}</h1>
                 <div className={s.pricesAndStock}>
                     <div className={s.discover__card__price}>2.5 ETH</div>
                     <div className={s.discover__card__price_dark}>${calculateValue(2.5)}</div>
@@ -53,7 +79,7 @@ const OneItem = () => {
                 </div>
 
                 <div className={s.oneItem__desc}>
-                    This NFT Card will give you Access to Special Airdrops. To learn more about UI8 please visit <br/>
+                    This NFT Card will give you Access to Special Airdrops. To learn more about UI8 please visit <br />
                     <a className={s.oneItem__desc__link} target="_blank" href="https://ui8.net">https://ui8.net</a>
                 </div>
 
@@ -74,7 +100,7 @@ const OneItem = () => {
                         {filteredDataByCategory.map((item) => (
                             <div key={item.id} className={s.filterResult__item}>
                                 <div className={s.avatarWrapper}>
-                                    <img src={avatar} alt="Avatar" className={s.avatar}/>
+                                    <img src={avatar} alt="Avatar" className={s.avatar} />
                                 </div>
                                 <div className={s.peopleInfo}>
                                     <div className={s.assignment}>{item.assignment}</div>
@@ -87,7 +113,7 @@ const OneItem = () => {
                             {creatorsData.map((item) => (
                                 <div key={item.id} className={s.filterResult__item}>
                                     <div className={s.avatarWrapper}>
-                                        <img src={avatar} alt="Avatar" className={s.avatar}/>
+                                        <img src={avatar} alt="Avatar" className={s.avatar} />
                                     </div>
                                     <div className={s.peopleInfo}>
                                         <div className={s.assignment}>{item.assignment}</div>
@@ -101,7 +127,7 @@ const OneItem = () => {
 
                 <div className={s.highestBid}>
                     <div className={s.highestBid__head}>
-                        <img src={avatar} alt=""/>
+                        <img src={avatar} alt="" />
                         <div className={s.bidInfo}>
                             <div className={s.bidInfo__head}>
                                 Highest bid by <span className={s.name}>Kohaku Tora</span>
@@ -124,6 +150,21 @@ const OneItem = () => {
                         <span>${calculateValue(2.563)}</span>
                     </div>
                 </div>
+            </div>
+
+            <div className={s.buttons}>
+                <button className={s.buttons__button}>
+                    <img src={closeIcon} alt="" />
+                </button>
+                <button className={s.buttons__button}>
+                    <img src={share} alt="" />
+                </button>
+                <button className={s.buttons__button}>
+                    <img src={heart} alt="" />
+                </button>
+                <button className={s.buttons__button}>
+                    <img src={more} alt="" />
+                </button>
             </div>
         </div>
     );
