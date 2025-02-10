@@ -5,6 +5,7 @@ import Layout from './Layout/Layout'
 import ProfilePage from './pages/Profile/Profile'
 import OnSale from './components/onSale/onSale'
 import Collectibles from './components/Collectibles/Collectibles'
+import Favorites from './components/Favorites/Favorites'
 
 const App = () => {
 
@@ -17,8 +18,9 @@ const App = () => {
         <Route path="/profile/*" element={<ProfilePage />}>
           <Route path="on-sale" element={<OnSale />} />
           <Route path="collectibles" element={<Collectibles />} />
+          <Route path="favorites" element={<Favorites />} />
           {/* <Route path="created" element={<Created />} />
-        <Route path="likes" element={<Likes />} />
+
         <Route path="following" element={<Following />} />
         <Route path="followers" element={<Followers />} /> */}
         </Route>

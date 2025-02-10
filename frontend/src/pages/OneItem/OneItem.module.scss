@@ -218,7 +218,18 @@
       background: transparent;
       border-radius: 50%;
       border: 2px solid #353945;
-      padding: 20px 22px;
+      padding: 17px 15px;
+      cursor: pointer;
+
+
+      .deleteIcon{
+        width: 24px;
+        height: 24px;
+      }
+
+      &:hover{
+        background-color:rgb(70, 70, 70);
+      }
     }
 
     &__button:first-child {

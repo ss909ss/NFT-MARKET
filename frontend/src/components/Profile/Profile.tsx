@@ -4,7 +4,7 @@ import globeIcon from '../../assets/globe.svg';
 import facebookIcon from '../../assets/facebook.svg';
 import twitterIcon from '../../assets/twitter.svg';
 import instagramIcon from '../../assets/Instagram.svg';
-import { Link, NavLink, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { IProfile } from '../../types/profileType';
@@ -18,6 +18,14 @@ const Profile = () => {
   const { username, email } = useInfo();
   const { token } = useAuth(); // Получаем токен из контекста
   const [profileData, setProfileData] = useState<IProfile | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === "/profile") {
+      navigate("/profile/on-sale", { replace: true });
+    }
+  }, [location.pathname, navigate]);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -91,20 +99,20 @@ const Profile = () => {
             <NavLink to="/profile/on-sale" className={({ isActive }) => isActive ? `${s.tabsButton} ${s.active}` : s.tabsButton}>
               On Sale
             </NavLink>
-            <NavLink to="/profile/collectibles" className={({ isActive }) => isActive ? `${s.tabsButton} ${s.active}` : s.tabsButton}>
-              Collectibles
-            </NavLink>
             <NavLink to="/created" className={({ isActive }) => isActive ? `${s.tabsButton} ${s.active}` : s.tabsButton}>
               Created
             </NavLink>
-            <NavLink to="/likes" className={({ isActive }) => isActive ? `${s.tabsButton} ${s.active}` : s.tabsButton}>
-              Likes
+            <NavLink to="/profile/favorites" className={({ isActive }) => isActive ? `${s.tabsButton} ${s.active}` : s.tabsButton}>
+              Favorites
             </NavLink>
             <NavLink to="/following" className={({ isActive }) => isActive ? `${s.tabsButton} ${s.active}` : s.tabsButton}>
               Following
             </NavLink>
             <NavLink to="/followers" className={({ isActive }) => isActive ? `${s.tabsButton} ${s.active}` : s.tabsButton}>
               Followers
+            </NavLink>
+                 <NavLink to="/profile/collectibles" className={({ isActive }) => isActive ? `${s.tabsButton} ${s.active}` : s.tabsButton}>
+              Collectibles
             </NavLink>
           </div>
 

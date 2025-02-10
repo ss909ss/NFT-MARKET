@@ -6,6 +6,8 @@ import { Provider } from 'react-redux';
 import store from "./store/store";
 import { AuthProvider } from './context/authContenxt.tsx'; // Импортируйте AuthProvider
 import { UserInfoProvider } from './context/UserInfo.tsx';
+import { FavoritesProvider } from './context/favorites.tsx';
+
 
 
 createRoot(document.getElementById('root')!).render(
@@ -13,7 +15,9 @@ createRoot(document.getElementById('root')!).render(
         <Provider store={store}>
             <AuthProvider>
                 <UserInfoProvider>
-                    <App />
+                    <FavoritesProvider>
+                        <App />
+                    </FavoritesProvider>
                 </UserInfoProvider>
             </AuthProvider>
         </Provider>
