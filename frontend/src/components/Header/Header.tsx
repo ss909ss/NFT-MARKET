@@ -26,10 +26,10 @@ const Header = () => {
     };
 
     const handleClickUpload = () => {
-        if (auth) {
+        if (token) {
             navigate('/uploadItem');
         } else {
-            navigate('/auth');
+            navigate('/register');
         }
     };
 
@@ -77,7 +77,7 @@ const Header = () => {
 
 
 
-                                {auth &&
+                                {token &&
                                     <button className={s.button__upload} onClick={handleClickUpload}>
                                         Upload
                                     </button>

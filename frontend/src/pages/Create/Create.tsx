@@ -58,156 +58,176 @@ const Create = () => {
         }));
     };
 
+  
     // const onSubmitHandler = async (e: React.FormEvent) => {
     //     e.preventDefault();
 
+    //     // Проверка обязательных полей (убираем проверку коллекции, если её значение некорректно)
     //     if (
-    //       !data.name ||
-    //       !data.description ||
-    //       !data.price ||
-    //       !data.auctionEndTime ||
-    //       !data.collection
+    //         !data.name ||
+    //         !data.description ||
+    //         !data.price ||
+    //         !data.auctionEndTime
     //     ) {
-    //       alert("Please fill in all fields!");
-    //       return;
-    //     }
-
-    //     // Формирование объекта FormData
-    //     const formData = new FormData();
-    //     formData.append("name", data.name);
-    //     formData.append("description", data.description);
-    //     formData.append("price", data.price.toString());
-    //     formData.append("auctionEndTime", data.auctionEndTime.toISOString());
-    //     formData.append("collection", data.collection);
-
-    //     // Если изображение выбрано, добавляем в FormData только его имя
-    //     if (image) {
-    //       formData.append("image", image.name);
-    //     }
-
-    //     // Логирование содержимого FormData
-    //     for (const [key, value] of formData.entries()) {
-    //       console.log(key, value);
-    //     }
-
-    //     // Функция для отправки данных формы
-    //     const sendFormData = async (formData: FormData) => {
-    //       if (!token) {
-    //         alert("No token found! You need to be logged in.");
+    //         alert("Please fill in all fields!");
     //         return;
-    //       }
+    //     }
 
-    //       try {
-    //         console.log(token, "token");
-    //         const response = await axios.post(
-    //           "https://nft-market-as0q.onrender.com/nfts",
-    //           formData,
-    //           {
-    //             headers: {
-    //               Authorization: `Bearer ${token}`,
-    //             },
-    //           }
-    //         );
-    //         console.log("Data sent successfully:", response.data);
-    //         if (response.data.success) {
-    //           // Сброс формы и состояния изображения
-    //           setImage(null);
-    //           setData({
-    //             name: "",
-    //             description: "",
-    //             price: 0,
-    //             auctionEndTime: null,
-    //             collection: "",
-    //           });
-    //         }
-    //       } catch (e) {
-    //         if (e instanceof AxiosError) {
-    //           console.error(
-    //             "Error sending data:",
-    //             e.response ? e.response.data : e.message
-    //           );
-    //         } else {
-    //           console.error("Unknown error:", e);
-    //         }
-    //         alert("There was an error sending your data.");
-    //       }
+    //     // Формирование JSON-пейлоада
+    //     const payload = {
+    //         name: data.name,
+    //         description: data.description,
+    //         price: data.price,
+    //         auctionEndTime: data.auctionEndTime.toISOString(),
+    //         // Не отправляем поле collection, чтобы избежать ошибки приведения к ObjectId
+    //         image: image ? image.name : undefined,
     //     };
 
-    //     // Отправка данных формы
-    //     sendFormData(formData);
-    //   };
+    //     console.log("Payload:", payload);
+
+    //     if (!token) {
+    //         alert("No token found! You need to be logged in.");
+    //         return;
+    //     }
+
+    //     try {
+    //         console.log(token, "token");
+    //         const response = await axios.post(
+    //             "https://nft-market-as0q.onrender.com/nfts",
+    //             payload,
+    //             {
+    //                 headers: {
+    //                     Authorization: `Bearer ${token}`,
+    //                     "Content-Type": "application/json",
+    //                 },
+    //             }
+    //         );
+    //         console.log("Data sent successfully:", response.data);
+    //         if (response.status === 201) {
+    //             // Сброс формы и состояния изображения
+    //             setImage(null);
+    //             setData({
+    //                 name: "",
+    //                 description: "",
+    //                 price: 0,
+    //                 auctionEndTime: null,
+    //                 collection: "",
+    //             });
+    //             navigate("/");
+    //         }
+    //     } catch (e) {
+    //         if (e instanceof AxiosError) {
+    //             console.error(
+    //                 "Error sending data:",
+    //                 e.response ? e.response.data : e.message
+    //             );
+    //         } else {
+    //             console.error("Unknown error:", e);
+    //         }
+    //         alert("There was an error sending your data.");
+    //     }
+    // };
 
 
+    
     const onSubmitHandler = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        // Проверка обязательных полей (убираем проверку коллекции, если её значение некорректно)
-        if (
-            !data.name ||
-            !data.description ||
-            !data.price ||
-            !data.auctionEndTime
-        ) {
-            alert("Please fill in all fields!");
-            return;
+      
+        // Проверка обязательных полей
+        if (!data.name || !data.description || !data.price || !data.auctionEndTime) {
+          alert("Please fill in all fields!");
+          return;
         }
-
-        // Формирование JSON-пейлоада
-        const payload = {
-            name: data.name,
-            description: data.description,
-            price: data.price,
-            auctionEndTime: data.auctionEndTime.toISOString(),
-            // Не отправляем поле collection, чтобы избежать ошибки приведения к ObjectId
-            image: image ? image.name : undefined,
-        };
-
-        console.log("Payload:", payload);
-
+      
+        const token = localStorage.getItem("token");
         if (!token) {
-            alert("No token found! You need to be logged in.");
-            return;
+          alert("No token found! You need to be logged in.");
+          return;
         }
-
-        try {
-            console.log(token, "token");
+      
+        // Функция для отправки payload
+        const sendPayload = async (payload: any) => {
+          try {
             const response = await axios.post(
-                "https://nft-market-as0q.onrender.com/nfts",
-                payload,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                }
+              "https://nft-market-as0q.onrender.com/nfts",
+              payload,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  "Content-Type": "application/json",
+                },
+              }
             );
             console.log("Data sent successfully:", response.data);
             if (response.status === 201) {
-                // Сброс формы и состояния изображения
-                setImage(null);
-                setData({
-                    name: "",
-                    description: "",
-                    price: 0,
-                    auctionEndTime: null,
-                    collection: "",
-                });
-                navigate("/");
+              // Сброс формы
+              setImage(null);
+              setData({
+                name: "",
+                description: "",
+                price: 0,
+                auctionEndTime: new Date(), // либо другое значение по умолчанию
+                collection: "",
+              });
+              navigate("/");
             }
-        } catch (e) {
+          } catch (e: unknown) {
             if (e instanceof AxiosError) {
-                console.error(
-                    "Error sending data:",
-                    e.response ? e.response.data : e.message
-                );
+              console.error(
+                "Error sending data:",
+                e.response ? e.response.data : e.message
+              );
             } else {
-                console.error("Unknown error:", e);
+              console.error("Unknown error:", e);
             }
             alert("There was an error sending your data.");
+          }
+        };
+      
+        // Если изображение выбрано, преобразуем его в base64
+        if (image) {
+          const reader = new FileReader();
+          reader.readAsDataURL(image);
+          reader.onloadend = async () => {
+            const base64Image = reader.result as string;
+            // Формирование payload
+            const payload: any = {
+              name: data.name,
+              description: data.description,
+              price: data.price,
+              auctionEndTime: (data.auctionEndTime instanceof Date
+                ? data.auctionEndTime
+                : new Date(data.auctionEndTime!)
+              ).toISOString(),
+              image: base64Image,
+            };
+            // Добавляем поле collection только если оно задано и не равно "Create collection"
+            if (data.collection && data.collection !== "Create collection") {
+              payload.collection = data.collection;
+            }
+            console.log("Payload:", payload);
+            await sendPayload(payload);
+          };
+        } else {
+          // Если изображение не выбрано, отправляем payload без него
+          const payload: any = {
+            name: data.name,
+            description: data.description,
+            price: data.price,
+            auctionEndTime: (data.auctionEndTime instanceof Date
+              ? data.auctionEndTime
+              : new Date(data.auctionEndTime!)
+            ).toISOString(),
+            image: undefined,
+          };
+          if (data.collection && data.collection !== "Create collection") {
+            payload.collection = data.collection;
+          }
+          console.log("Payload:", payload);
+          await sendPayload(payload);
         }
-    };
-
-
+      };
+      
 
     return (
         <section className={s.createPage}>
