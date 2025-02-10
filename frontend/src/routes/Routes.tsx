@@ -49,7 +49,7 @@ const routes = [
         element: <Login />
     },
     {
-        path: "/oneItem",
+        path: "/nft/:id",
         element: <OneItem />
     },
     {

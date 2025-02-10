@@ -27,11 +27,11 @@ const OnSale = () => {
                 const response = await axios.get<INftsResponse>("https://nft-market-as0q.onrender.com/nfts", {
                     headers: {
                         Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json", // Убрал "multipart/form-data"
+                        "Content-Type": "application/json", 
                     },
                 });
                 console.log("SaleData", response.data);
-                setSaleData(response.data.data); // Устанавливаем массив
+                setSaleData(response.data.data);
             } catch (e) {
                 if (axios.isAxiosError(e)) {
                     console.error("Axios error:", e.response?.data);

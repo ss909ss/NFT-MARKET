@@ -204,10 +204,15 @@
       padding: 12px;
       border-radius: 12px;
       margin-top: 32px;
+      width: calc(33% - 64px / 3);
+      max-height: 500px;
+      word-break: break-all;
 
       .nftImage {
         border-radius: 16px;
         margin-bottom: 20px;
+        width: auto;
+        max-width: 100%;
       }
 
       .discover__card__infoWrapper {
