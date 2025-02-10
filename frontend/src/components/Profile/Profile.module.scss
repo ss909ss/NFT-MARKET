@@ -3,7 +3,10 @@
 .profile{
 padding-bottom: 136px;
 border-bottom: 1px solid $dark-gray;
-
+@include flex-container;
+align-items: flex-start;
+justify-content: space-between;
+width: 1120px;
     .aside{
         background-color: $slate-gray;
         width: 256px;
@@ -96,5 +99,32 @@ margin-bottom: 48px;
             }
 
         }
+    }
+
+    .content{
+        width: 800px;
+@include flex-center;
+align-items: flex-start;
+
+flex-direction: column;
+
+        .tabs{
+         width: 100%;
+            margin: 32px 0;
+            a{
+text-decoration: none;
+@include text-style($text-color:$muted-blue, $fz:14px, $lh:16px, $fw:700);
+margin-left:40px;
+&:first-child{
+    margin: 0;
+}
+            }
+            .active{
+                @include  button($btn-color:$black-color, $bg-color:$white-color, $br-radius:100px, $cursor:pointer);
+                padding:6px 12px;
+                            }
+      
+        }
+     
     }
 }

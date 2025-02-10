@@ -10,52 +10,91 @@ import Upload from "../pages/Upload/Upload"
 import OneItem from "../pages/OneItem/OneItem"
 import Register from "../pages/Register/Register"
 import Login from "../pages/Register/Login"
+import OnSale from "../components/onSale/onSale"
+
+import Collectibles from "../components/Collectibles/Collectibles"
 
 const routes = [
     {
         path: "/",
-        element: <Home/>
+        element: <Home />
     },
     {
         path: "/frequently",
-        element: <Frequently/>
+        element: <Frequently />
     },
     {
         path: "/discover",
-        element: <Discover/>
+        element: <Discover />
     },
     {
         path: "/editProfile",
-        element: <Edit/>
+        element: <Edit />
     },
     {
         path: "/uploadItem",
-        element: <Upload/>
+        element: <Upload />
     },
     {
         path: "*",
-        element: <Error/>
+        element: <Error />
     },
     {
         path: "/create",
-        element: <Create/>
+        element: <Create />
     },
-    {
-        path: "/profile",
-        element: <ProfilePage/>
-    },
+
     {
         path: "/login",
-        element: <Login/>
+        element: <Login />
     },
     {
-      path: "/oneItem",
-      element: <OneItem/>
+        path: "/oneItem",
+        element: <OneItem />
     },
     {
         path: "/register",
-        element: <Register/>
-      },
+        element: <Register />
+    },
+
+    // {
+    //     path: "/profile/*",
+    //     element: <ProfilePage />,
+    //     children: [
+    //         { path: "on-sale", element: <OnSale /> },
+    //         { path: "collectibles", element: <Collectibles /> },
+    //         // { path: "created", element: <Created /> },
+    //         // { path: "likes", element: <Likes /> },
+    //         // { path: "following", element: <Following /> },
+    //         // { path: "followers", element: <Followers /> },
+    //     ],
+    // },
+
+    // {
+    //     path: "/on-sale",
+    //     element: <OnSale />
+    // },
+    // {
+    //     path: "/collectibles",
+    //     element: <Collectibles />
+    // },
+    // {
+    //     path: "/created",
+    //     element: <Created />
+    // },
+    // {
+    //     path: "/likes",
+    //     element: <Likes />
+    // },
+    // {
+    //     path: "/following",
+    //     element: <Following />
+    // },
+    // {
+    //     path: "/followers",
+    //     element: <Followers />
+    // },
+
 ]
 
 export default routes
