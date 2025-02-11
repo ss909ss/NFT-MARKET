@@ -1,0 +1,106 @@
+@import "../modalBid//modalBid.module.scss";
+@import '../../index.module.scss';
+
+.modalWrapper {
+    margin-top: 20px;
+    margin-left: 20px;
+    max-width: 430px;
+    padding: 32px;
+    border-radius: 20px;
+    background-color: #141416;
+    border: 2px solid #23262F;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+
+    &__top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &__title {
+            @include text-style($text-color: $white-color, $fz: 32px, $lh: 40px, $fw: 700);
+        }
+
+        img {
+            height: 40px;
+            width: 40px;
+        }
+    }
+
+    &__purshasing {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+
+        &__title {
+            color: #FCFCFD;
+            margin-bottom: 3px;
+        }
+
+        &__subtitle {
+            font-size: 14px;
+            color: #777E90;
+        }
+    }
+
+    &__infoError {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #25181D;
+        padding: 24px;
+        border-radius: 8px;
+        color: #EF466F;
+
+        &__subtitle {
+            margin-top: 5px;
+            font-size: 12px;
+        }
+
+        &__avatar {
+            width: 48px;
+            height: 48px;
+        }
+    }
+
+    &__buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        &__countine {
+            width: 100%;
+            @include button($btn-color,
+                $bg-color: $blue-color,
+                $br-radius: $br-radius,
+                $cursor: $cursor );
+            padding: 12px 16px;
+            color: $white-color;
+            border: none;
+            text-decoration: none;
+
+            &:hover {
+                transition: 0.3s ease-out;
+                background-color: $white-color;
+                color: $blue-color;
+            }
+        }
+
+        &__cancel {
+            width: 100%;
+            @include clear-button();
+            padding: 12px 16px;
+            color: $white-color;
+            border: none;
+            text-decoration: none;
+            justify-content: center;
+
+            &:hover {
+                transition: 0.3s ease-out;
+                background-color: $white-color;
+                color: $blue-color;
+            }
+        }
+    }
+}
