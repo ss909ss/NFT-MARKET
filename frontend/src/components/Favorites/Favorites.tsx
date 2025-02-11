@@ -22,7 +22,7 @@ const Favorites = () => {
                 <p>No favorites added yet.</p>
             ) : (
                 favorites.map((favorite) => (
-                    <Link to="/">
+                    <Link to={`/nft/${favorite._id}`} >
                         <div key={favorite._id} className={s.tabBlock}>
                             <img src={favorite.image} alt={favorite.name} className={s.nftImg} />
                             <div className={s.nftInfo}>
