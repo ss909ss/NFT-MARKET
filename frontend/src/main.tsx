@@ -7,6 +7,7 @@ import store from "./store/store";
 import { AuthProvider } from './context/authContenxt.tsx'; // Импортируйте AuthProvider
 import { UserInfoProvider } from './context/UserInfo.tsx';
 import { FavoritesProvider } from './context/favorites.tsx';
+import { UpdateNftProvider } from './context/nftContext.tsx';
 
 
 
@@ -16,7 +17,9 @@ createRoot(document.getElementById('root')!).render(
             <AuthProvider>
                 <UserInfoProvider>
                     <FavoritesProvider>
-                        <App />
+                        <UpdateNftProvider>
+                            <App />
+                        </UpdateNftProvider>
                     </FavoritesProvider>
                 </UserInfoProvider>
             </AuthProvider>
