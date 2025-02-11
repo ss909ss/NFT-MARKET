@@ -1,8 +1,7 @@
 @import '../../index.module.scss';
 
 
-
-.modal{
+.modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -13,7 +12,7 @@
     justify-content: center;
     background: rgba(0, 0, 0, 0.5); // затемнение фона
 
-.modalContent{
+    .modalContent {
 
         position: absolute;
         top: 50%;
@@ -21,56 +20,64 @@
         transform: translate(-50%, -50%);
         z-index: 1000;
         background-color: #23262F;
-        width: 448px; 
-        height: 598px; 
-        border-radius: 20px; 
+        width: 448px;
+        height: 598px;
+        border-radius: 20px;
         padding: 32px;
- 
-    
-    .modalTop{
-@include flex-center;
-align-items: center;
-justify-content: space-between;
-        .bidTitle{
-            @include text-style($text-color:$white-color, $fz:32px, $lh:40px, $fw:700);
+
+
+        .modalTop {
+            @include flex-center;
+            align-items: center;
+            justify-content: space-between;
+
+            .bidTitle {
+                @include text-style($text-color: $white-color, $fz: 32px, $lh: 40px, $fw: 700);
+                margin-bottom: 32px;
+            }
+
+        }
+
+        .bidSubtitle {
+            @include text-style($text-color: $white-color, $fz: 16px, $lh: 24px, $fw: 400);
             margin-bottom: 32px;
         }
-   
-    }
-    .bidSubtitle{
-        @include text-style($text-color:$white-color, $fz:16px, $lh:24px, $fw:400);
-        margin-bottom: 32px;
-    }
-    .titleBid{
-         @include text-style($text-color:$white-color, $fz:32px, $lh:40px, $fw:600);
+
+        .titleBid {
+            @include text-style($text-color: $white-color, $fz: 32px, $lh: 40px, $fw: 600);
             margin-bottom: 16px;
-    }
-    .bidInfo{
-display: flex;
-flex-direction: column;
-
-.bidLine{
-height: 1px;
-background-color: $muted-blue;
-display: block;
-width: 100%;
- margin-bottom: 12px;
-      }
-
-        .bidCategory, .bidBalance, .bidService{
-@include flex-container;
-justify-content: space-between;
- margin-bottom: 12px;
-            .bidLeft{
-     @include text-style($text-color:$muted-blue, $fz:16px, $lh:24px, $fw:500);
-     font-family: $font-family-alt;
-            }
-            .bidRight{
-@include text-style($text-color:$white-color, $fz:16px, $lh:24px, $fw:500);
-           font-family: $font-family-alt;
-            }
         }
 
+        .bidInfo {
+            display: flex;
+            flex-direction: column;
+
+            .bidLine {
+                height: 1px;
+                background-color: $muted-blue;
+                display: block;
+                width: 100%;
+                margin-bottom: 12px;
+            }
+
+            .bidCategory,
+            .bidBalance,
+            .bidService {
+                @include flex-container;
+                justify-content: space-between;
+                margin-bottom: 12px;
+
+                .bidLeft {
+                    @include text-style($text-color: $muted-blue, $fz: 16px, $lh: 24px, $fw: 500);
+                    font-family: $font-family-alt;
+                }
+
+                .bidRight {
+                    @include text-style($text-color: $white-color, $fz: 16px, $lh: 24px, $fw: 500);
+                    font-family: $font-family-alt;
+                }
+            }
+
+        }
     }
-}
 }

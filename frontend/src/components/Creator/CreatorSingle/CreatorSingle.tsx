@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import styles from './CreatorSingle.module.scss';
 // import userAvatar from '../../../assets/avatar.png';
 import cryptoImage from '../../../assets/crypto.png'
-// import arrowLeft from '../../../assets/Left arrow.png';
-// import arrowRight from '../../../assets/Right arrow.svg';
+import arrowLeft from '../../../assets/Left arrow.png';
+import arrowRight from '../../../assets/Right arrow.svg';
 // import singleImage from '../../../assets/singleImage.png'
 import { Link } from "react-router";
 // import { ETH_PRICE_API } from "../../../store/api/cryptoApi";
@@ -181,13 +181,11 @@ const CreatorSingle = () => {
 
                             <div className={styles.rightBlockBottomPagination}>
                                 <button onClick={handlePrev} className={styles.leftBlockBottomButon}>
-                                    <img src={"/path-to-left-arrow.jpg"} alt="Left" className={styles.arrowLeft} />
+                                    <img src={arrowLeft} alt="Left" className={styles.arrowLeft} />
                                 </button>
-                                <button onClick={handleNext} className={styles.rightBlockBottomeButon}>
-                                    <img src={"/path-to-right-arrow.jpg"} alt="Right" className={styles.arrowRight} />
+                                <button onClick={handleNext} className={styles.rightBlockBottomButon}>
+                                    <img src={arrowRight} alt="Right" className={styles.arrowRight} />
                                 </button>
-
-
                             </div>
                         </div>
                     </div>
