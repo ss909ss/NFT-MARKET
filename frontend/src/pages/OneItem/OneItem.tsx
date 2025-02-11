@@ -11,6 +11,7 @@ import axios from "axios";
 import { INft } from '../../types/NFT'
 import closeIcon from "../../assets/closeIcon.svg"
 import share from "../../assets/share.svg"
+import editIcon from '../../assets/editIcon.svg'
 import more from "../../assets/more.svg"
 import heart from "../../assets/heart.svg"
 import { useAuth } from "../../context/authContenxt";
@@ -18,6 +19,7 @@ import { useFavorites } from "../../context/favorites";
 import redHert from '../../assets/red-heart.png'
 import binIcon from '../../assets/bin.svg'
 import { useInfo } from "../../context/UserInfo";
+import { useNft } from "../../context/nftContext";
 
 const OneItem = () => {
     const { id } = useParams();
@@ -29,7 +31,8 @@ const OneItem = () => {
     const { token } = useAuth();
     const { addFavorite, getFavorites, removeFavorite } = useFavorites();
     const navigate = useNavigate();
-    const {avatar, username} = useInfo();
+    const { avatar, username } = useInfo();
+    const { fetchGetNftData } = useNft();
 
     useEffect(() => {
         const fetchNftDetail = async () => {
@@ -46,6 +49,8 @@ const OneItem = () => {
             fetchNftDetail();
         }
     }, [id]);
+
+
     useEffect(() => {
         const favoritesImage = getFavorites();
         setIsFavorite(favoritesImage.some(fav => fav._id === id)); // Используем id из useParams()
@@ -96,28 +101,29 @@ const OneItem = () => {
             alert("You don't have a token");
             return;
         }
-    
+
         if (!id) {
             console.error("NFT ID не найден");
             return;
         }
-    
+
         try {
             const response = await axios.delete(
                 `https://nft-market-as0q.onrender.com/nfts/${id}`,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
-    
+
             if (response.status === 200) {
                 removeFavorite(id);
                 navigate("/profile")
             }
-    
+
             setNft(response.data.data); // Обновляем состояние NFT
         } catch (error) {
             console.error("Ошибка при удалении NFT:", error);
         }
     }
+
 
 
 
@@ -149,38 +155,86 @@ const OneItem = () => {
         return ethPrice !== null ? (ethAmount * ethPrice).toFixed(2) : "-";
     };
 
-    return (
-        <div className={`${s.oneItem} ${s.container}`}>
-            <img src={nft?.image} alt={nft?.name} className={s.oneItem__image} />
 
-            <div className={s.oneItem__info}>
-                <h1>{nft?.name}</h1>
-                <div className={s.pricesAndStock}>
-                    <div className={s.discover__card__price}>{nft?.price} BTC</div>
-                    <div className={s.discover__card__price_dark}>${calculateValue(2.5)}</div>
-                    <div className={s.pricesAndStock__inStock}>10 in stock</div>
+
+
+// const handleEditLink = async () => {
+//     if (!token) {
+//         alert("Not token");
+//         return
+//     }else{
+//         // navigate(`/editNft/${id}`);
+//          await fetchGetNftData();
+
+//     //   console.log("result", result)
+//     }
+
+// const fetchGetNftData = async () => {
+//     try {
+//         const response = await axios.get(`https://nft-market-as0q.onrender.com/nfts/${id}`, {
+//             headers: { Authorization: `Bearer ${token}` },
+//         });
+//         if (response.status === 200) {
+//             navigate(`/editNft/${id}`);
+//         }
+
+//         // Если данные вложены в response.data.data, либо в response.data:
+//         const nftData = response.data.data || response.data;
+//         console.log(nftData)
+//         console.log("response data", response.data);
+//     } catch (error) {
+//         console.error("Error fetching NFT data:", error);
+//     }
+// };
+// fetchGetNftData();
+
+
+
+return (
+    <div className={`${s.oneItem} ${s.container}`}>
+        <img src={nft?.image} alt={nft?.name} className={s.oneItem__image} />
+
+        <div className={s.oneItem__info}>
+            <h1>{nft?.name}</h1>
+            <div className={s.pricesAndStock}>
+                <div className={s.discover__card__price}>{nft?.price} BTC</div>
+                <div className={s.discover__card__price_dark}>${calculateValue(2.5)}</div>
+                <div className={s.pricesAndStock__inStock}>10 in stock</div>
+            </div>
+
+            <div className={s.oneItem__desc}>
+                This NFT Card will give you Access to Special Airdrops. To learn more about UI8 please visit <br />
+                <a className={s.oneItem__desc__link} target="_blank" href="https://ui8.net">https://ui8.net</a>
+            </div>
+
+            <div className={s.peopleFilter}>
+                <div className={s.catogories}>
+                    {['Info', 'Owners', 'History', 'Bids'].map((category) => (
+                        <div
+                            key={category}
+                            className={`${s.category} ${activeCategory === category ? s.active : ''}`}
+                            onClick={() => handleCategoryClick(category)}
+                        >
+                            {category}
+                        </div>
+                    ))}
                 </div>
 
-                <div className={s.oneItem__desc}>
-                    This NFT Card will give you Access to Special Airdrops. To learn more about UI8 please visit <br />
-                    <a className={s.oneItem__desc__link} target="_blank" href="https://ui8.net">https://ui8.net</a>
-                </div>
-
-                <div className={s.peopleFilter}>
-                    <div className={s.catogories}>
-                        {['Info', 'Owners', 'History', 'Bids'].map((category) => (
-                            <div
-                                key={category}
-                                className={`${s.category} ${activeCategory === category ? s.active : ''}`}
-                                onClick={() => handleCategoryClick(category)}
-                            >
-                                {category}
+                <div className={s.filterResult}>
+                    {filteredDataByCategory.map((item) => (
+                        <div key={item.id} className={s.filterResult__item}>
+                            <div className={s.avatarWrapper}>
+                                <img src={avatar} alt="Avatar" className={s.avatar} />
                             </div>
-                        ))}
-                    </div>
+                            <div className={s.peopleInfo}>
+                                <div className={s.assignment}>{item.assignment}</div>
+                                <div className={s.name}>{item.name}</div>
+                            </div>
+                        </div>
+                    ))}
 
-                    <div className={s.filterResult}>
-                        {filteredDataByCategory.map((item) => (
+                    <div className={s.creatorSection}>
+                        {creatorsData.map((item) => (
                             <div key={item.id} className={s.filterResult__item}>
                                 <div className={s.avatarWrapper}>
                                     <img src={avatar} alt="Avatar" className={s.avatar} />
@@ -191,66 +245,53 @@ const OneItem = () => {
                                 </div>
                             </div>
                         ))}
-
-                        <div className={s.creatorSection}>
-                            {creatorsData.map((item) => (
-                                <div key={item.id} className={s.filterResult__item}>
-                                    <div className={s.avatarWrapper}>
-                                        <img src={avatar} alt="Avatar" className={s.avatar} />
-                                    </div>
-                                    <div className={s.peopleInfo}>
-                                        <div className={s.assignment}>{item.assignment}</div>
-                                        <div className={s.name}>{item.name}</div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-
-                <div className={s.highestBid}>
-                    <div className={s.highestBid__head}>
-                        <img src={avatar} alt="" />
-                        <div className={s.bidInfo}>
-                            <div className={s.bidInfo__head}>
-                                Highest bid by <span className={s.name}>{username}</span>
-                            </div>
-                            <div className={s.bidInfo__price}>
-                                <span className={s.ethereum}>1.46 ETH</span> ${calculateValue(1.46)}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className={s.highestBid__buttons}>
-                        <button className={s.button_blue}>Purchase now</button>
-                        <button className={s.button_dark}>Place a bid</button>
-                    </div>
-
-                    <div className={s.highestBid__bottom}>
-                        <span>Service fee</span>
-                        <span className={s.whiteText}>1.5%</span>
-                        <span>2.563 ETH</span>
-                        <span>${calculateValue(2.563)}</span>
                     </div>
                 </div>
             </div>
 
-            <div className={s.buttons}>
-                <button className={s.buttons__button}>
-                    <img src={closeIcon} alt="" />
-                </button>
-                <button className={s.buttons__button} onClick={handleDeleteNft}>
-                    <img src={binIcon} alt="" className={s.deleteIcon} />
-                </button>
-                <button className={s.buttons__button} onClick={handleClick}>
-                    <img src={isFavorite ? redHert : heart} alt="" />
-                </button>
-                <button className={s.buttons__button}>
-                    <img src={more} alt="" />
-                </button>
+            <div className={s.highestBid}>
+                <div className={s.highestBid__head}>
+                    <img src={avatar} alt="" />
+                    <div className={s.bidInfo}>
+                        <div className={s.bidInfo__head}>
+                            Highest bid by <span className={s.name}>{username}</span>
+                        </div>
+                        <div className={s.bidInfo__price}>
+                            <span className={s.ethereum}>1.46 ETH</span> ${calculateValue(1.46)}
+                        </div>
+                    </div>
+                </div>
+
+                <div className={s.highestBid__buttons}>
+                    <button className={s.button_blue}>Purchase now</button>
+                    <button className={s.button_dark}>Place a bid</button>
+                </div>
+
+                <div className={s.highestBid__bottom}>
+                    <span>Service fee</span>
+                    <span className={s.whiteText}>1.5%</span>
+                    <span>2.563 ETH</span>
+                    <span>${calculateValue(2.563)}</span>
+                </div>
             </div>
         </div>
-    );
+
+        <div className={s.buttons}>
+            <button className={s.buttons__button}>
+                <img src={closeIcon} alt="" />
+            </button>
+            <button className={s.buttons__button} onClick={handleDeleteNft}>
+                <img src={binIcon} alt="" className={s.deleteIcon} />
+            </button>
+            <button className={s.buttons__button} onClick={handleClick}>
+                <img src={isFavorite ? redHert : heart} alt="" />
+            </button>
+            <button className={s.buttons__button} onClick={() => id && fetchGetNftData(id)}>
+            <img src={editIcon} alt="" className={s.editIcon} />
+            </button>
+        </div>
+    </div>
+);
 };
 
 export default OneItem;

@@ -150,35 +150,6 @@ const Edit = () => {
                                         />
                                     </div>
 
-
-                                    {/* <div className={s.formBlock}>
-                                        <label htmlFor="password" className={s.formLabel}>
-                                            Password
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="password"
-                                            name="password"
-                                            value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
-                                            className={s.formInput}
-                                            placeholder="password"
-                                        />
-                                    </div> */}
-                                    {/* <div className={s.formBlock}>
-                                        <label htmlFor="email" className={s.formLabel}>
-                                            Email
-                                        </label>
-                                        <input
-                                            name="email"
-                                            id="email"
-                                            value={email}
-                                            onChange={(e) => updateEmail(e.target.value)}  // Обновляем username
-                                            className={s.formBio}
-                                            placeholder="email"
-                                        />
-                                    </div> */}
-
                                     <h2 className={s.formSocial}>Social</h2>
 
 

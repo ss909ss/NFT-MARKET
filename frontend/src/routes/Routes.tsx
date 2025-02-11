@@ -13,6 +13,7 @@ import Login from "../pages/Register/Login"
 import OnSale from "../components/onSale/onSale"
 
 import Collectibles from "../components/Collectibles/Collectibles"
+import EditNft from "../pages/EditNft/EditNft"
 
 const routes = [
     {
@@ -51,6 +52,10 @@ const routes = [
     {
         path: "/nft/:id",
         element: <OneItem />
+    },
+    {
+        path: "/editNft/:id",
+        element: <EditNft />
     },
     {
         path: "/register",

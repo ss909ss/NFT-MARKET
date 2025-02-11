@@ -9,7 +9,8 @@ interface AuthContextType {
     email: string;
     updateEmail: (newEmail: string) => void;
     avatar: string;
-    balance: number
+    balance: number;
+    
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
