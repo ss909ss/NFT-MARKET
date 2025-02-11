@@ -1,6 +1,6 @@
 import s from "./OneItem.module.scss"
 import nft from "../../assets/oneItemNft.jpg"
-import avatar from "../../assets/avatar.png"
+// import avatar from "../../assets/avatar.png"
 import ownerAvatarDec from "../../assets/ownerAvatarDecoration.svg"
 import React, { useEffect, useState } from "react";
 import { ETH_PRICE_API } from "../../store/api/cryptoApi";
@@ -17,6 +17,7 @@ import { useAuth } from "../../context/authContenxt";
 import { useFavorites } from "../../context/favorites";
 import redHert from '../../assets/red-heart.png'
 import binIcon from '../../assets/bin.svg'
+import { useInfo } from "../../context/UserInfo";
 
 const OneItem = () => {
     const { id } = useParams();
@@ -28,6 +29,7 @@ const OneItem = () => {
     const { token } = useAuth();
     const { addFavorite, getFavorites, removeFavorite } = useFavorites();
     const navigate = useNavigate();
+    const {avatar, username} = useInfo();
 
     useEffect(() => {
         const fetchNftDetail = async () => {
@@ -154,7 +156,7 @@ const OneItem = () => {
             <div className={s.oneItem__info}>
                 <h1>{nft?.name}</h1>
                 <div className={s.pricesAndStock}>
-                    <div className={s.discover__card__price}>2.5 ETH</div>
+                    <div className={s.discover__card__price}>{nft?.price} BTC</div>
                     <div className={s.discover__card__price_dark}>${calculateValue(2.5)}</div>
                     <div className={s.pricesAndStock__inStock}>10 in stock</div>
                 </div>
@@ -211,7 +213,7 @@ const OneItem = () => {
                         <img src={avatar} alt="" />
                         <div className={s.bidInfo}>
                             <div className={s.bidInfo__head}>
-                                Highest bid by <span className={s.name}>Kohaku Tora</span>
+                                Highest bid by <span className={s.name}>{username}</span>
                             </div>
                             <div className={s.bidInfo__price}>
                                 <span className={s.ethereum}>1.46 ETH</span> ${calculateValue(1.46)}

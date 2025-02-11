@@ -96,10 +96,10 @@ const Profile = () => {
 
         <div className={s.content}>
           <div className={s.tabs}>
-            <NavLink to="/profile/on-sale" className={({ isActive }) => isActive ? `${s.tabsButton} ${s.active}` : s.tabsButton}>
+            {/* <NavLink to="/profile/on-sale" className={({ isActive }) => isActive ? `${s.tabsButton} ${s.active}` : s.tabsButton}>
               On Sale
-            </NavLink>
-            <NavLink to="/created" className={({ isActive }) => isActive ? `${s.tabsButton} ${s.active}` : s.tabsButton}>
+            </NavLink> */}
+            <NavLink to="/profile/on-sale" className={({ isActive }) => isActive ? `${s.tabsButton} ${s.active}` : s.tabsButton}>
               Created
             </NavLink>
             <NavLink to="/profile/favorites" className={({ isActive }) => isActive ? `${s.tabsButton} ${s.active}` : s.tabsButton}>

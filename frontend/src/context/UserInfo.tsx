@@ -8,18 +8,23 @@ interface AuthContextType {
     token: string | null;
     email: string;
     updateEmail: (newEmail: string) => void;
-    avatar: string
+    avatar: string;
+    balance: number
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const UserInfoProvider = ({ children }: { children: React.ReactNode }) => {
     const [username, setUsername] = useState("");
-    const [avatar, setAvatar] = useState("")
+    const [avatar, setAvatar] = useState("");
+    const [email, setEmail] = useState("");
+    const [balance, setBalance] = useState(0);
+    const { token } = useAuth();
+
+    console.log(balance)
     console.log(avatar)
     console.log(username)
-    const [email, setEmail] = useState("");
-    const { token } = useAuth();
+
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -46,6 +51,25 @@ export const UserInfoProvider = ({ children }: { children: React.ReactNode }) =>
         console.log('Username updated in context:', username);
     }, [username]);
 
+    useEffect(() => {
+        const fetchWallets = async () => {
+            if (!token) {
+                alert("You have not token, please register/login")
+                return
+            }
+            try {
+                const response = await axios.get("https://nft-market-as0q.onrender.com/wallets/", {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+
+                setBalance(response.data.data.balance)
+            } catch (e) {
+                console.error("Error fetching balance:", e);
+            }
+        }
+        fetchWallets()
+    }, [token])
+
     const updateUsername = async (newUsername: string) => {
         try {
             const response = await axios.put("https://nft-market-as0q.onrender.com/auth/profile",
@@ -65,7 +89,7 @@ export const UserInfoProvider = ({ children }: { children: React.ReactNode }) =>
     }
 
     return (
-        <AuthContext.Provider value={{ username, updateUsername, token, email, updateEmail, avatar }}>
+        <AuthContext.Provider value={{ username, updateUsername, token, email, updateEmail, avatar, balance }}>
             {children}
         </AuthContext.Provider>
     );

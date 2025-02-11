@@ -90,11 +90,11 @@ const Discover = () => {
                                             value={price}
                                             onChange={handlePriceChange}
                                         />
-                                        <div className={s.filter__range__value}>{price} ETH</div>
+                                        <div className={s.filter__range__value}>{price} BTC</div>
                                     </div>
                                     <div className={s.filter__range__labels}>
-                                        <span>0.01 ETH</span>
-                                        <span>10 ETH</span>
+                                        <span>0.01 BTC</span>
+                                        <span>10 BTC</span>
                                     </div>
                                 </div>
 
