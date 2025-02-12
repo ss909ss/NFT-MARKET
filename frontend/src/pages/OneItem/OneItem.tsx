@@ -140,19 +140,6 @@ const OneItem = () => {
         }
     }
 
-    const handleGetdAuction = async () => {
-        const auctionId = localStorage.getItem("auctionId");
-      
-        try {
-
-            const response = await axios.get(`https://nft-market-as0q.onrender.com/auctions/${auctionId}`)
-                if(response.status === 200){
-                    alert(" Получили данные об аукционе");
-                }
-        } catch (e) {
-            console.error("Error placing bid:", e);
-        }
-    }
 
 
 
