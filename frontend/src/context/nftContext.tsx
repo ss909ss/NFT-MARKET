@@ -5,11 +5,13 @@ import { INft } from "../types/NFT";
 import { useNavigate, useParams } from "react-router";
 
 interface NFTContextType {
+    _id: string
     name: string;
     description: string;
     price: number;
     auctionEndTime: string;
     // collection: string;
+    auctionCreate:boolean;
     image: string | File | null;
     updateNFT: (
         id: string,
@@ -21,6 +23,9 @@ interface NFTContextType {
         // collection: string
     ) => Promise<void>;
     fetchGetNftData: (id: string) => Promise<void>
+    fetchGetNftAuction: (id: string) => Promise<void>
+    isOpenModalAuction: boolean
+    setIsOpenModalAuction: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const UpdateNftContext = createContext<NFTContextType | null>(null);
@@ -31,17 +36,15 @@ export const UpdateNftProvider = ({ children }: { children: React.ReactNode }) =
     const [price, setPrice] = useState(0);
     const [auctionEndTime, setAuctionEndTime] = useState("");
     const [image, setImage] = useState<File | string>("");
-    // const [collection, setColletion] = useState("");
+    const [itemId, setItemId] = useState("");
+    const [auctionCreate, setAuctionCreated] = useState(false)
+    const [isOpenModalAuction, setIsOpenModalAuction] = useState(false);
+    const navigate = useNavigate();
     const { token } = useAuth();
     const { id } = useParams();
-    console.log(id)
-    const navigate = useNavigate();
-
-
-
-
 
     const fetchGetNftData = async (id: string): Promise<void> => {
+
         if (!token) {
             alert("You have not token");
         }
@@ -54,8 +57,9 @@ export const UpdateNftProvider = ({ children }: { children: React.ReactNode }) =
             console.log(response.data)
             console.log(data)
 
-            if(response.status === 200){
-navigate(`/editNft/${id}`)
+            if (response.status === 200) {
+                navigate(`/editNft/${id}`)
+                localStorage.setItem(`auctionCreate_${id}`, "true");
             }
 
             setName(data.name || "");
@@ -63,24 +67,16 @@ navigate(`/editNft/${id}`)
             setPrice(data.price || 0);
             setAuctionEndTime(data.auctionEndTime || "");
             setImage(data.image || "");
-            // setColletion(data.collection || "");
-
         } catch (error) {
             console.error("Error fetching NFT data:", error);
-
         }
     };
-
-
     // Вызываем fetchGetNftData при изменении token или id
     useEffect(() => {
         if (id) {
             fetchGetNftData(id);
         }
-
     }, [token, id]);
-
-
 
     const updateNFT = async (
         id: string,
@@ -89,13 +85,10 @@ navigate(`/editNft/${id}`)
         price: number,
         auctionEndTime: string,
         image: string | null,
-        // collection: string
     ) => {
-
-        if(!token || !id){
+        if (!token || !id) {
             alert("error")
         }
-        
 
         try {
             const response = await axios.put<INft>(
@@ -105,8 +98,7 @@ navigate(`/editNft/${id}`)
                     description,
                     price,
                     auctionEndTime,
-                    image, // передаём Base64-строку, если сервер ожидает именно её
-                    // collection,
+                    image, 
                 },
                 {
                     headers: { Authorization: `Bearer ${token}` },
@@ -114,8 +106,8 @@ navigate(`/editNft/${id}`)
             );
 
             // Обновляем данные в контексте, если сервер возвращает обновлённые данные в response.data.data
-            const data = response.data.data;
-            if(response.status === 200){
+            const data = response.data?.data;
+            if (response.status === 200) {
                 navigate("/profile")
             }
             console.log(response.data)
@@ -126,24 +118,67 @@ navigate(`/editNft/${id}`)
             setPrice(data?.price);
             setAuctionEndTime(data?.auctionEndTime);
             setImage(data?.image);
-            // setColletion(data.collection);
         } catch (error) {
             console.error("Error updating NFT:", error);
         }
     };
 
+    const fetchGetNftAuction = async (id: string): Promise<void> => {
+        if (!token) {
+            alert("You have not token");
+        }
+
+        try {
+            const response = await axios.get(`https://nft-market-as0q.onrender.com/nfts/${id}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            if (response.status === 200) {
+                setIsOpenModalAuction(true);
+                setAuctionCreated(true)
+            }
+            const data = response.data.data;
+            console.log(response.data)
+            console.log(data)
+
+            if (response.status === 200) {
+                setIsOpenModalAuction(true)
+            }
+
+            setName(data.name || "");
+            setDescription(data.description || "");
+            setPrice(data.price || 0);
+            setAuctionEndTime(data.auctionEndTime || "");
+            setImage(data.image || "");
+            setItemId(data._id || "")
+
+        } catch (error) {
+            console.error("Error fetching NFT data:", error);
+        }
+    };
+
+    useEffect(() => {
+        const auctionStatus = localStorage.getItem(`auctionCreate_${id}`);
+        if (auctionStatus === "true") {
+            setAuctionCreated(true);
+        }
+    }, [id]);
+    
 
     return (
         <UpdateNftContext.Provider
             value={{
+                _id: itemId,
                 name,
                 description,
                 price,
                 auctionEndTime,
                 image,
-                // collection,
                 updateNFT,
-                fetchGetNftData
+                fetchGetNftData,
+                fetchGetNftAuction,
+                isOpenModalAuction,
+                setIsOpenModalAuction,
+                auctionCreate
             }}
         >
             {children}

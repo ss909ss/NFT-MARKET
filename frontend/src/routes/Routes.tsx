@@ -14,6 +14,7 @@ import OnSale from "../components/onSale/onSale"
 
 import Collectibles from "../components/Collectibles/Collectibles"
 import EditNft from "../pages/EditNft/EditNft"
+import ModalFollowSteps from "../components/modalFollowSteps/ModalFollowSteps"
 
 const routes = [
     {
@@ -60,6 +61,10 @@ const routes = [
     {
         path: "/register",
         element: <Register />
+    },
+    {
+        path: "/nextStep",
+        element: <ModalFollowSteps />
     },
 
     // {
