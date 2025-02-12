@@ -192,7 +192,7 @@ const CreatorSingle = () => {
                 </div>
 
             </div>
-            <ModalBid isOpen={isOpenModal} onClose={() => setIsOpenMOdal(false)} />
+            {/* <ModalBid isOpen={isOpenModal} onClose={() => setIsOpenMOdal(false)} /> */}
         </section>
      
 

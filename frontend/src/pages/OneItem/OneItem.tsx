@@ -39,14 +39,16 @@ const OneItem = () => {
     const navigate = useNavigate();
     const { avatar, username } = useInfo();
     const { fetchGetNftData } = useNft();
-    // const [isOpenModal, setIsOpenMOdal] = useState(false);
-    // const [isOpenModalAuction, setIsOpenModalAuction] = useState(false);
-    const { isOpenModalAuction, setIsOpenModalAuction, fetchGetNftAuction,   price, _id,  auctionEndTime, auctionCreate } = useNft();
+    const currentBid = localStorage.getItem("newBidPrice")
+
+    const { isOpenModalAuction, setIsOpenModalAuction, fetchGetNftAuction, price, _id, auctionEndTime, auctionCreate, isOpenBidAuction,
+        setIsOpenBidAuction } = useNft();
+
 
     //переобразование
-    const nft =_id;
-    const startingPrice =price
-    const endTime =auctionEndTime
+    const nft = _id;
+    const startingPrice = price
+    const endTime = auctionEndTime
 
     useEffect(() => {
         const fetchNftDetail = async () => {
@@ -138,7 +140,22 @@ const OneItem = () => {
         }
     }
 
- 
+    const handleGetdAuction = async () => {
+        const auctionId = localStorage.getItem("auctionId");
+      
+        try {
+
+            const response = await axios.get(`https://nft-market-as0q.onrender.com/auctions/${auctionId}`)
+                if(response.status === 200){
+                    alert(" Получили данные об аукционе");
+                }
+        } catch (e) {
+            console.error("Error placing bid:", e);
+        }
+    }
+
+
+
 
 
 
@@ -170,6 +187,18 @@ const OneItem = () => {
     const calculateValue = (ethAmount: number) => {
         return ethPrice !== null ? (ethAmount * ethPrice).toFixed(2) : "-";
     };
+
+    const handleAddBid = () => {
+        if (!token) {
+            alert("You have not token")
+        }
+
+        try {
+            setIsOpenBidAuction(true)
+        } catch (e) {
+
+        }
+    }
 
 
     return (
@@ -239,14 +268,14 @@ const OneItem = () => {
                                 Highest bid by <span className={s.name}>{username}</span>
                             </div>
                             <div className={s.bidInfo__price}>
-                                <span className={s.ethereum}>1.46 ETH</span> ${calculateValue(1.46)}
+                                <span className={s.ethereum}>{currentBid} BTC</span> ${calculateValue(1.46)}
                             </div>
                         </div>
                     </div>
 
                     <div className={s.highestBid__buttons}>
                         <button className={s.button_blue}>Purchase now</button>
-                        <button className={s.button_dark}>Place a bid</button>
+                        <button className={s.button_dark} onClick={handleAddBid} type="button">Place a bid</button>
                     </div>
 
                     <div className={s.highestBid__bottom}>
@@ -259,8 +288,8 @@ const OneItem = () => {
             </div>
 
             <div className={s.buttons}>
-            
-                <button className={s.buttons__button} onClick={() => id && fetchGetNftAuction(id)}  disabled={auctionCreate===true}>
+
+                <button className={s.buttons__button} onClick={() => id && fetchGetNftAuction(id)} >
                     <img src={addIcon} alt="" className={s.addBudAuction} />
                 </button>
                 <button className={s.buttons__button} onClick={handleDeleteNft}>
@@ -273,14 +302,17 @@ const OneItem = () => {
                     <img src={editIcon} alt="" className={s.editIcon} />
                 </button>
             </div>
-          
+
             {isOpenModalAuction && (
                 <ModalAuction isOpen={isOpenModalAuction} onClose={() => setIsOpenModalAuction(false)} nft={nft} startingPrice={startingPrice} endTime={endTime} />
+            )}
+            {isOpenBidAuction && (
+                <ModalBid isOpenBidAuction={isOpenBidAuction} onClose={() => setIsOpenBidAuction(false)} startingPrice={startingPrice} />
             )}
         </section>
     );
 };
 
 export default OneItem;
- 
+
 

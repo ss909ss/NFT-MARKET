@@ -24,8 +24,10 @@ interface NFTContextType {
     ) => Promise<void>;
     fetchGetNftData: (id: string) => Promise<void>
     fetchGetNftAuction: (id: string) => Promise<void>
-    isOpenModalAuction: boolean
+    isOpenModalAuction: boolean;
+    isOpenBidAuction:boolean;
     setIsOpenModalAuction: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsOpenBidAuction: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const UpdateNftContext = createContext<NFTContextType | null>(null);
@@ -39,6 +41,7 @@ export const UpdateNftProvider = ({ children }: { children: React.ReactNode }) =
     const [itemId, setItemId] = useState("");
     const [auctionCreate, setAuctionCreated] = useState(false)
     const [isOpenModalAuction, setIsOpenModalAuction] = useState(false);
+        const [isOpenBidAuction, setIsOpenBidAuction] = useState(false);
     const navigate = useNavigate();
     const { token } = useAuth();
     const { id } = useParams();
@@ -169,7 +172,9 @@ export const UpdateNftProvider = ({ children }: { children: React.ReactNode }) =
                 fetchGetNftAuction,
                 isOpenModalAuction,
                 setIsOpenModalAuction,
-                auctionCreate
+                auctionCreate,
+                isOpenBidAuction,
+                setIsOpenBidAuction
             }}
         >
             {children}

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 import { useAuth } from '../../context/authContenxt';
 import axios from 'axios';
 import { useNft } from '../../context/nftContext';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 
 interface ModalAuction {
@@ -18,7 +18,13 @@ interface ModalAuction {
 
 const ModalAuction = ({ isOpen, onClose, nft, startingPrice, endTime }: ModalAuction) => {
     const { token } = useAuth();
-    
+    const [auctionId, setAuctionId] = useState(null)
+    // console.log(auctionId )
+
+    useEffect(() => {
+        console.log("Id обновился")
+    }, [auctionId])
+
     if (!isOpen) return null;
 
     const createAuction = async () => {
@@ -28,37 +34,44 @@ const ModalAuction = ({ isOpen, onClose, nft, startingPrice, endTime }: ModalAuc
 
         try {
 
-            const response = await axios.post(`https://nft-market-as0q.onrender.com/auctions/`,{
+            const response = await axios.post(`https://nft-market-as0q.onrender.com/auctions/`, {
                 nft, startingPrice, endTime
             }, {
 
                 headers: { Authorization: `Bearer ${token}` },
             })
-        if (response.status === 201) {
-            alert("Auction was successfully created")
-            onClose();
-        } 
-    } catch (e) {
-        console.log(e)
+            console.log(response.data)
+            const result = response.data
+            if (response.status === 201) {
+                alert("Auction was successfully created");
+                setAuctionId(result?._id);
+                console.log("auctionId set to:", result?._id);
+                localStorage.setItem("auctionId", result?._id);
+
+                onClose();
+            }
+
+        } catch (e) {
+            console.log(e)
+        }
     }
-}
 
 
-return (
-    <section className={s.modal}>
-        <div className={s.modalContent}>
+    return (
+        <section className={s.modal}>
+            <div className={s.modalContent}>
 
-            <h1 className={s.createTitle}>Create Auction?</h1>
+                <h1 className={s.createTitle}>Create Auction?</h1>
 
-            <div className={s.modalButtons}>
-                
-                <button className={s.modalAdd} onClick={createAuction} >Create Auction</button>
-                <button className={s.modalCancel} onClick={onClose}>Cancel</button>
+                <div className={s.modalButtons}>
+
+                    <button className={s.modalAdd} onClick={createAuction} >Create Auction</button>
+                    <button className={s.modalCancel} onClick={onClose}>Cancel</button>
+                </div>
             </div>
-        </div>
 
-    </section >
-)
+        </section >
+    )
 }
 
 export default ModalAuction
