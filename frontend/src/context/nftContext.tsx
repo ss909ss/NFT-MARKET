@@ -59,7 +59,6 @@ export const UpdateNftProvider = ({ children }: { children: React.ReactNode }) =
 
             if (response.status === 200) {
                 navigate(`/editNft/${id}`)
-                localStorage.setItem(`auctionCreate_${id}`, "true");
             }
 
             setName(data.name || "");
@@ -155,14 +154,6 @@ export const UpdateNftProvider = ({ children }: { children: React.ReactNode }) =
             console.error("Error fetching NFT data:", error);
         }
     };
-
-    useEffect(() => {
-        const auctionStatus = localStorage.getItem(`auctionCreate_${id}`);
-        if (auctionStatus === "true") {
-            setAuctionCreated(true);
-        }
-    }, [id]);
-    
 
     return (
         <UpdateNftContext.Provider

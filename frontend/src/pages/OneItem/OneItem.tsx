@@ -270,8 +270,7 @@ const OneItem = () => {
                     <img src={editIcon} alt="" className={s.editIcon} />
                 </button>
             </div>
-            {/* <ModalBid isOpen={isOpenModal} onClose={() => setIsOpenMOdal(false)} /> */}
-            {/* <ModalAuction isOpen={isOpenModalAuction} onClose={() => setIsOpenModalAuction(false)} /> */}
+          
             {isOpenModalAuction && (
                 <ModalAuction isOpen={isOpenModalAuction} onClose={() => setIsOpenModalAuction(false)} nft={nft} startingPrice={startingPrice} endTime={endTime} />
             )}
