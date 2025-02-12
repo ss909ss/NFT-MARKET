@@ -1,3 +1,6 @@
+
+
+
 import s from "./OneItem.module.scss"
 import nft from "../../assets/oneItemNft.jpg"
 // import avatar from "../../assets/avatar.png"
@@ -13,6 +16,7 @@ import closeIcon from "../../assets/closeIcon.svg"
 import share from "../../assets/share.svg"
 import editIcon from '../../assets/editIcon.svg'
 import more from "../../assets/more.svg"
+import addIcon from '../../assets/addIcon.svg'
 import heart from "../../assets/heart.svg"
 import { useAuth } from "../../context/authContenxt";
 import { useFavorites } from "../../context/favorites";
@@ -20,10 +24,12 @@ import redHert from '../../assets/red-heart.png'
 import binIcon from '../../assets/bin.svg'
 import { useInfo } from "../../context/UserInfo";
 import { useNft } from "../../context/nftContext";
+import ModalBid from "../../components/modalBid/modalBid";
+import ModalAuction from "../../components/ModalAuction/ModalAuction";
 
 const OneItem = () => {
     const { id } = useParams();
-    const [nft, setNft] = useState<INft | null>(null);
+    const [nftData, setNft] = useState<INft | null>(null);
     const [ethPrice, setEthPrice] = useState<number | null>(null);
     const [isFavorite, setIsFavorite] = useState(false);
     const dispatch = useDispatch();
@@ -33,6 +39,14 @@ const OneItem = () => {
     const navigate = useNavigate();
     const { avatar, username } = useInfo();
     const { fetchGetNftData } = useNft();
+    // const [isOpenModal, setIsOpenMOdal] = useState(false);
+    // const [isOpenModalAuction, setIsOpenModalAuction] = useState(false);
+    const { isOpenModalAuction, setIsOpenModalAuction, fetchGetNftAuction,   price, _id,  auctionEndTime, auctionCreate } = useNft();
+
+    //переобразование
+    const nft =_id;
+    const startingPrice =price
+    const endTime =auctionEndTime
 
     useEffect(() => {
         const fetchNftDetail = async () => {
@@ -124,6 +138,8 @@ const OneItem = () => {
         }
     }
 
+ 
+
 
 
 
@@ -156,85 +172,38 @@ const OneItem = () => {
     };
 
 
+    return (
+        <section className={`${s.oneItem} ${s.container}`}>
+            <img src={nftData?.image} alt={nftData?.name} className={s.oneItem__image} />
 
-
-// const handleEditLink = async () => {
-//     if (!token) {
-//         alert("Not token");
-//         return
-//     }else{
-//         // navigate(`/editNft/${id}`);
-//          await fetchGetNftData();
-
-//     //   console.log("result", result)
-//     }
-
-// const fetchGetNftData = async () => {
-//     try {
-//         const response = await axios.get(`https://nft-market-as0q.onrender.com/nfts/${id}`, {
-//             headers: { Authorization: `Bearer ${token}` },
-//         });
-//         if (response.status === 200) {
-//             navigate(`/editNft/${id}`);
-//         }
-
-//         // Если данные вложены в response.data.data, либо в response.data:
-//         const nftData = response.data.data || response.data;
-//         console.log(nftData)
-//         console.log("response data", response.data);
-//     } catch (error) {
-//         console.error("Error fetching NFT data:", error);
-//     }
-// };
-// fetchGetNftData();
-
-
-
-return (
-    <div className={`${s.oneItem} ${s.container}`}>
-        <img src={nft?.image} alt={nft?.name} className={s.oneItem__image} />
-
-        <div className={s.oneItem__info}>
-            <h1>{nft?.name}</h1>
-            <div className={s.pricesAndStock}>
-                <div className={s.discover__card__price}>{nft?.price} BTC</div>
-                <div className={s.discover__card__price_dark}>${calculateValue(2.5)}</div>
-                <div className={s.pricesAndStock__inStock}>10 in stock</div>
-            </div>
-
-            <div className={s.oneItem__desc}>
-                This NFT Card will give you Access to Special Airdrops. To learn more about UI8 please visit <br />
-                <a className={s.oneItem__desc__link} target="_blank" href="https://ui8.net">https://ui8.net</a>
-            </div>
-
-            <div className={s.peopleFilter}>
-                <div className={s.catogories}>
-                    {['Info', 'Owners', 'History', 'Bids'].map((category) => (
-                        <div
-                            key={category}
-                            className={`${s.category} ${activeCategory === category ? s.active : ''}`}
-                            onClick={() => handleCategoryClick(category)}
-                        >
-                            {category}
-                        </div>
-                    ))}
+            <div className={s.oneItem__info}>
+                <h1>{nftData?.name}</h1>
+                <div className={s.pricesAndStock}>
+                    <div className={s.discover__card__price}>{nftData?.price} BTC</div>
+                    <div className={s.discover__card__price_dark}>${calculateValue(2.5)}</div>
+                    <div className={s.pricesAndStock__inStock}>10 in stock</div>
                 </div>
 
-                <div className={s.filterResult}>
-                    {filteredDataByCategory.map((item) => (
-                        <div key={item.id} className={s.filterResult__item}>
-                            <div className={s.avatarWrapper}>
-                                <img src={avatar} alt="Avatar" className={s.avatar} />
-                            </div>
-                            <div className={s.peopleInfo}>
-                                <div className={s.assignment}>{item.assignment}</div>
-                                <div className={s.name}>{item.name}</div>
-                            </div>
-                        </div>
-                    ))}
+                <div className={s.oneItem__desc}>
+                    This NFT Card will give you Access to Special Airdrops. To learn more about UI8 please visit <br />
+                    <a className={s.oneItem__desc__link} target="_blank" href="https://ui8.net">https://ui8.net</a>
+                </div>
 
-                    <div className={s.creatorSection}>
-                        {creatorsData.map((item) => (
+                <div className={s.peopleFilter}>
+                    <div className={s.catogories}>
+                        {['Info', 'Owners', 'History', 'Bids'].map((category) => (
+                            <div
+                                key={category}
+                                className={`${s.category} ${activeCategory === category ? s.active : ''}`}
+                                onClick={() => handleCategoryClick(category)}
+                            >
+                                {category}
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className={s.filterResult}>
+                        {filteredDataByCategory.map((item) => (
                             <div key={item.id} className={s.filterResult__item}>
                                 <div className={s.avatarWrapper}>
                                     <img src={avatar} alt="Avatar" className={s.avatar} />
@@ -245,53 +214,74 @@ return (
                                 </div>
                             </div>
                         ))}
+
+                        <div className={s.creatorSection}>
+                            {creatorsData.map((item) => (
+                                <div key={item.id} className={s.filterResult__item}>
+                                    <div className={s.avatarWrapper}>
+                                        <img src={avatar} alt="Avatar" className={s.avatar} />
+                                    </div>
+                                    <div className={s.peopleInfo}>
+                                        <div className={s.assignment}>{item.assignment}</div>
+                                        <div className={s.name}>{item.name}</div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                <div className={s.highestBid}>
+                    <div className={s.highestBid__head}>
+                        <img src={avatar} alt="" />
+                        <div className={s.bidInfo}>
+                            <div className={s.bidInfo__head}>
+                                Highest bid by <span className={s.name}>{username}</span>
+                            </div>
+                            <div className={s.bidInfo__price}>
+                                <span className={s.ethereum}>1.46 ETH</span> ${calculateValue(1.46)}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className={s.highestBid__buttons}>
+                        <button className={s.button_blue}>Purchase now</button>
+                        <button className={s.button_dark}>Place a bid</button>
+                    </div>
+
+                    <div className={s.highestBid__bottom}>
+                        <span>Service fee</span>
+                        <span className={s.whiteText}>1.5%</span>
+                        <span>2.563 ETH</span>
+                        <span>${calculateValue(2.563)}</span>
                     </div>
                 </div>
             </div>
 
-            <div className={s.highestBid}>
-                <div className={s.highestBid__head}>
-                    <img src={avatar} alt="" />
-                    <div className={s.bidInfo}>
-                        <div className={s.bidInfo__head}>
-                            Highest bid by <span className={s.name}>{username}</span>
-                        </div>
-                        <div className={s.bidInfo__price}>
-                            <span className={s.ethereum}>1.46 ETH</span> ${calculateValue(1.46)}
-                        </div>
-                    </div>
-                </div>
-
-                <div className={s.highestBid__buttons}>
-                    <button className={s.button_blue}>Purchase now</button>
-                    <button className={s.button_dark}>Place a bid</button>
-                </div>
-
-                <div className={s.highestBid__bottom}>
-                    <span>Service fee</span>
-                    <span className={s.whiteText}>1.5%</span>
-                    <span>2.563 ETH</span>
-                    <span>${calculateValue(2.563)}</span>
-                </div>
+            <div className={s.buttons}>
+            
+                <button className={s.buttons__button} onClick={() => id && fetchGetNftAuction(id)}  disabled={auctionCreate===true}>
+                    <img src={addIcon} alt="" className={s.addBudAuction} />
+                </button>
+                <button className={s.buttons__button} onClick={handleDeleteNft}>
+                    <img src={binIcon} alt="" className={s.deleteIcon} />
+                </button>
+                <button className={s.buttons__button} onClick={handleClick}>
+                    <img src={isFavorite ? redHert : heart} alt="" />
+                </button>
+                <button className={s.buttons__button} onClick={() => id && fetchGetNftData(id)}>
+                    <img src={editIcon} alt="" className={s.editIcon} />
+                </button>
             </div>
-        </div>
-
-        <div className={s.buttons}>
-            <button className={s.buttons__button}>
-                <img src={closeIcon} alt="" />
-            </button>
-            <button className={s.buttons__button} onClick={handleDeleteNft}>
-                <img src={binIcon} alt="" className={s.deleteIcon} />
-            </button>
-            <button className={s.buttons__button} onClick={handleClick}>
-                <img src={isFavorite ? redHert : heart} alt="" />
-            </button>
-            <button className={s.buttons__button} onClick={() => id && fetchGetNftData(id)}>
-            <img src={editIcon} alt="" className={s.editIcon} />
-            </button>
-        </div>
-    </div>
-);
+            {/* <ModalBid isOpen={isOpenModal} onClose={() => setIsOpenMOdal(false)} /> */}
+            {/* <ModalAuction isOpen={isOpenModalAuction} onClose={() => setIsOpenModalAuction(false)} /> */}
+            {isOpenModalAuction && (
+                <ModalAuction isOpen={isOpenModalAuction} onClose={() => setIsOpenModalAuction(false)} nft={nft} startingPrice={startingPrice} endTime={endTime} />
+            )}
+        </section>
+    );
 };
 
 export default OneItem;
+ 
+

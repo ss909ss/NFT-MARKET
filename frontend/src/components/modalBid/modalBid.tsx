@@ -2,6 +2,7 @@ import React from 'react'
 import s from './modalBid.module.scss'
 import closeIcon from '../../assets/cancel.png'
 import { useInfo } from '../../context/UserInfo';
+import { useNavigate } from 'react-router';
 
 
 interface ModalBidProps {
@@ -10,9 +11,13 @@ interface ModalBidProps {
 }
 
 const ModalBid = ({ isOpen, onClose }: ModalBidProps) => {
+    const navigate =useNavigate();
     const {balance} = useInfo();
 
     if (!isOpen) return null
+
+
+  
     return (
         <section className={s.modal}>
             <div className={s.modalContent}>
@@ -27,7 +32,7 @@ const ModalBid = ({ isOpen, onClose }: ModalBidProps) => {
                 <div className={s.bidInfo}>
 
                     <div className={s.bidCategory}>
-                        <p className={s.bidLeft}>Enter bid</p>
+                            <input type="number"  className={s.bidLeft}/>
                         <p className={s.bidRight}>ETH</p>
                     </div>
                     <span className={s.bidLine}></span>
@@ -45,13 +50,10 @@ const ModalBid = ({ isOpen, onClose }: ModalBidProps) => {
                         <p className={s.bidLeft}>Total bid amount</p>
                         <p className={s.bidRight}>0 ETH</p>
                     </div>
-
-
-
                 </div>
 
                 <div className={s.bidButtons}>
-                    <button className={s.bidAdd}>Place a bid</button>
+                    <button className={s.bidAdd} >Place a bid</button>
                     <button className={s.bidCancel} onClick={onClose}>Cancel</button>
                 </div>
 

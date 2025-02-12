@@ -1,3 +1,5 @@
+
+
 @import '../../index.module.scss';
 
 .oneItem {
@@ -218,11 +220,11 @@
       background: transparent;
       border-radius: 50%;
       border: 2px solid #353945;
-      padding: 17px 15px;
+      padding: 22px 25px;
       cursor: pointer;
 
 
-      .deleteIcon, .editIcon{
+      .deleteIcon, .editIcon, .addBudAuction{
         width: 24px;
         height: 24px;
       }
@@ -232,10 +234,9 @@
       }
     }
 
-    &__button:first-child {
-      background: #FCFCFD;
-      border: none;
-      padding: 25px 27px;
-    }
+    // &__button:first-child {
+    //   background: $black-color;
+    //   border: none;
+    //   padding: 25px 27px;
+    // }
   }
-}

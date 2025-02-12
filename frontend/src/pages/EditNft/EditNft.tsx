@@ -1,16 +1,11 @@
+
 import s from './EditNFt.module.scss';
-// import fileUploadIcon from '../../assets/upload field.png';
-import plusIcon from '../../assets/plusIcon.svg';
 import nft from "../../assets/MultipleNft.png"
 import removeIcon from '../../assets/removeIcon.png'
-import axios, { AxiosError } from 'axios'
 import { useEffect, useState } from 'react';
-import { useAuth } from '../../context/authContenxt';
-// import { IAddNft } from '../../types/NftType';
 import { useNavigate, useParams } from 'react-router';
 import { useNft } from '../../context/nftContext';
-import { INft } from '../../types/NFT';
-// import { usePostAddNftMutation } from '../../store/api/AddNfts';
+
 
 
 interface IAddNft {
@@ -250,4 +245,6 @@ const EditNft = () => {
   );
 };
 
-export default EditNft;
+export default EditNft; 
+
+
