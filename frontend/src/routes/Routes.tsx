@@ -1,4 +1,4 @@
-import Create from "../pages/Create/Create"
+ import Create from "../pages/Create/Create"
 import Discover from "../pages/Discover/Discover"
 import Edit from "../pages/Edit/Edit"
 import Error from "../pages/Error/Error"

@@ -1,3 +1,4 @@
+
 import s from './EditNFt.module.scss';
 import nft from "../../assets/MultipleNft.png"
 import removeIcon from '../../assets/removeIcon.png'
@@ -244,4 +245,6 @@ const EditNft = () => {
   );
 };
 
-export default EditNft;
+export default EditNft; 
+
+

@@ -1,3 +1,6 @@
+
+
+
 import s from "./OneItem.module.scss"
 import nft from "../../assets/oneItemNft.jpg"
 // import avatar from "../../assets/avatar.png"
@@ -280,3 +283,5 @@ const OneItem = () => {
 };
 
 export default OneItem;
+ 
+

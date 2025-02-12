@@ -59,7 +59,6 @@ export const UpdateNftProvider = ({ children }: { children: React.ReactNode }) =
 
             if (response.status === 200) {
                 navigate(`/editNft/${id}`)
-                localStorage.setItem(`auctionCreate_${id}`, "true");
             }
 
             setName(data.name || "");
@@ -156,14 +155,6 @@ export const UpdateNftProvider = ({ children }: { children: React.ReactNode }) =
         }
     };
 
-    useEffect(() => {
-        const auctionStatus = localStorage.getItem(`auctionCreate_${id}`);
-        if (auctionStatus === "true") {
-            setAuctionCreated(true);
-        }
-    }, [id]);
-    
-
     return (
         <UpdateNftContext.Provider
             value={{
@@ -191,3 +182,7 @@ export const useNft = () => {
     if (!context) throw new Error("useNft must be used within an UpdateNftProvider");
     return context;
 };
+ 
+
+
+
