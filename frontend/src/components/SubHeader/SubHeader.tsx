@@ -2,21 +2,31 @@ import imageIcon from '../../assets/image.svg'
 import pencilIcon from '../../assets/pencil.svg'
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { logout,  } from '../../store/authSlice/authSlice';
+import { logout, } from '../../store/authSlice/authSlice';
 import s from './SubHeader.module.scss';
+import { useLogoutFormMutation } from '../../store/api/authApi';
 
 
 const SubHeader = () => {
-const navigate = useNavigate();
-    const dispatch = useDispatch(); // Получаем dispatch
-    const logoutFunction = () => {
-        dispatch(logout());
-        navigate('/')
-        alert("Вышел с аккаунта успешно")
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const [logoutForm] = useLogoutFormMutation();
+
+    const logoutFunction = async () => {
+        try {
+            await logoutForm().unwrap();
+            dispatch(logout());
+            navigate('/')
+            alert("Вышел с аккаунта успешно")
+        } catch (e) {
+            console.error("Logout failed", e);
+            alert("Logout request failed");
+        }
     }
 
 
- 
+
 
     return (
         <section className={s.subHeader}>
@@ -38,7 +48,7 @@ const navigate = useNavigate();
                     <button
                         type='button'
                         className={s.subHeaderButton}
-                        onClick={logoutFunction} // Диспатчим logout
+                        onClick={logoutFunction}
                     >
                         logout
                     </button>

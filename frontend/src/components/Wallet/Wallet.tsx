@@ -9,10 +9,13 @@ import { useEffect, useState } from "react";
 import { IProfile } from "../../types/profileType";
 import { useAuth } from "../../context/authContenxt";
 import axios from "axios";
+import { useInfo } from "../../context/UserInfo";
 
 const Wallet = () => {
     const { token } = useAuth();
+    const {balance} = useInfo()
     const [profileInfo, setProfileInfo] = useState<IProfile | null>(null);
+    const walletId = localStorage.getItem("walletId")
 
     useEffect(() => {
         const fetchProfileInfo = async () => {
@@ -43,7 +46,7 @@ const Wallet = () => {
         <section className={s.myWallet}>
             <h2>{profileInfo?.username}</h2>
             <div className={s.myWallet__link}>
-                0xc4c16ab5ac7d...b21a
+                {walletId}
                 <img src={coinsIcon} alt="" />
             </div>
             <div className={s.myWallet__balance}>
@@ -54,7 +57,7 @@ const Wallet = () => {
                             Balance
                         </div>
                         <div className={s.myWallet__balance__value}>
-                            4.689 ETH
+                        {balance} BTC
                         </div>
                     </div>
                 </div>
