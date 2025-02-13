@@ -22,55 +22,7 @@ interface FormData {
   
     const { register, handleSubmit } = useForm<FormData>();
   
-    // const onSubmitJHandler: SubmitHandler<FormData> = async (data) => {
-    //   try {
-    //     setLoading(true);
-    //     const response = await axios.post('https://nft-market-as0q.onrender.com/auth/login', {
-    //       email: data.email,
-    //       password: data.password,
-    //     });
-  
-    //     if (response.data.token) {
-    //       setToken(response.data.token); // Устанавливаем токен через контекст
-    //       navigate('/profile');
-    //     }
-    //   } catch (error) {
-    //     console.error('Ошибка при отправке формы:', error);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-  //   const onSubmitJHandler: SubmitHandler<FormData> = async (data) => {
-  //     try {
-  //         setLoading(true);
-  //         const response = await axios.post('https://nft-market-as0q.onrender.com/auth/login', {
-  //             email: data.email,
-  //             password: data.password,
-  //         });
-  
-  //         if (response.data.token) {
-  //             setToken(response.data.token); // Устанавливаем токен
-  
-  //             // Загружаем данные профиля сразу после входа
-  //             try {
-  //                 const profileResponse = await axios.get("https://nft-market-as0q.onrender.com/auth/profile", {
-  //                     headers: { Authorization: `Bearer ${response.data.token}` },
-  //                 });
-  
-  //                 updateUsername(profileResponse.data.data.username || "");
-  //                 updateEmail(profileResponse.data.data.email || ""); // Обновляем email
-  //             } catch (error) {
-  //                 console.error("Ошибка при загрузке профиля после входа:", error);
-  //             }
-  
-  //             navigate('/profile');
-  //         }
-  //     } catch (error) {
-  //         console.error('Ошибка при отправке формы:', error);
-  //     } finally {
-  //         setLoading(false);
-  //     }
-  // };
+
   const onSubmitJHandler: SubmitHandler<FormData> = async (data) => {
     try {
         setLoading(true);
