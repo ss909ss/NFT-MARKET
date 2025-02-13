@@ -19,6 +19,9 @@ const OnSale = () => {
 
     useEffect(() => {
         const fetchItemsSale = async () => {
+            const currentUserId = localStorage.getItem("userId");
+            console.log("Обновленный userId:", currentUserId);
+
             if (!token) {
                 alert("No token, please login or register");
                 return;
@@ -26,25 +29,20 @@ const OnSale = () => {
 
             try {
                 const response = await axios.get<INftsResponse>("https://nft-market-as0q.onrender.com/nfts", {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
+                    headers: { Authorization: `Bearer ${token}` },
                 });
-                console.log("SaleData", response.data);
-                setSaleData(response.data.data);
+
+                const createdNfts = response.data?.data.filter(nft => nft.creator === currentUserId);
+                console.log("NFT, принадлежащие пользователю:", createdNfts);
+
+                setSaleData(createdNfts);
             } catch (e) {
-                if (axios.isAxiosError(e)) {
-                    console.error("Axios error:", e.response?.data);
-                    console.error("Status code:", e.response?.status);
-                } else {
-                    console.error("Unexpected error:", e);
-                }
+                console.error("Ошибка загрузки NFT:", e);
             }
         };
 
         fetchItemsSale();
-    }, [token]);
+    }, [token, localStorage.getItem("userId")]); // Добавляем userId в зависимости
 
     return (
         <section className={s.onSale}>

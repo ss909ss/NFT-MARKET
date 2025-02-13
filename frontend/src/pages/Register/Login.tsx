@@ -22,85 +22,81 @@ interface FormData {
   
     const { register, handleSubmit } = useForm<FormData>();
   
-    // const onSubmitJHandler: SubmitHandler<FormData> = async (data) => {
-    //   try {
-    //     setLoading(true);
-    //     const response = await axios.post('https://nft-market-as0q.onrender.com/auth/login', {
-    //       email: data.email,
-    //       password: data.password,
-    //     });
+    const onSubmitJHandler: SubmitHandler<FormData> = async (data) => {
+      try {
+          setLoading(true);
+          console.log("Отправка формы:", data); // Проверяем, отправляются ли данные
   
-    //     if (response.data.token) {
-    //       setToken(response.data.token); // Устанавливаем токен через контекст
-    //       navigate('/profile');
-    //     }
-    //   } catch (error) {
-    //     console.error('Ошибка при отправке формы:', error);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-  //   const onSubmitJHandler: SubmitHandler<FormData> = async (data) => {
-  //     try {
-  //         setLoading(true);
-  //         const response = await axios.post('https://nft-market-as0q.onrender.com/auth/login', {
-  //             email: data.email,
-  //             password: data.password,
-  //         });
+          const response = await axios.post('https://nft-market-as0q.onrender.com/auth/login', {
+              email: data.email,
+              password: data.password,
+          });
   
-  //         if (response.data.token) {
-  //             setToken(response.data.token); // Устанавливаем токен
+          console.log("Ответ от сервера:", response.data); // Проверяем, получили ли мы ответ
   
-  //             // Загружаем данные профиля сразу после входа
-  //             try {
-  //                 const profileResponse = await axios.get("https://nft-market-as0q.onrender.com/auth/profile", {
-  //                     headers: { Authorization: `Bearer ${response.data.token}` },
-  //                 });
+          if (response.status === 200) {
+              const userId = response.data?.data?.id;
+              console.log("userId:", userId);
+              localStorage.setItem("userId", userId);
+          }
   
-  //                 updateUsername(profileResponse.data.data.username || "");
-  //                 updateEmail(profileResponse.data.data.email || ""); // Обновляем email
-  //             } catch (error) {
-  //                 console.error("Ошибка при загрузке профиля после входа:", error);
-  //             }
+          if (response.data.token) {
+              setToken(response.data.token);
   
-  //             navigate('/profile');
-  //         }
-  //     } catch (error) {
-  //         console.error('Ошибка при отправке формы:', error);
-  //     } finally {
-  //         setLoading(false);
-  //     }
-  // };
-  const onSubmitJHandler: SubmitHandler<FormData> = async (data) => {
-    try {
-        setLoading(true);
-        const response = await axios.post('https://nft-market-as0q.onrender.com/auth/login', {
-            email: data.email,
-            password: data.password,
-        });
+              try {
+                  const profileResponse = await axios.get("https://nft-market-as0q.onrender.com/auth/profile", {
+                      headers: { Authorization: `Bearer ${response.data.token}` },
+                  });
+  
+                  updateUsername(profileResponse.data.data.username);
+                  updateEmail(profileResponse.data.data.email);
+              } catch (error) {
+                  console.error("Ошибка загрузки профиля после входа:", error);
+              }
+  
+              navigate('/profile');
+          }
+      } catch (error) {
+          console.error('Ошибка при отправке формы:', error);
+  
+          if (axios.isAxiosError(error)) {
+              console.error("Axios ошибка:", error.response?.data);
+          }
+      } finally {
+          setLoading(false);
+      }
+  };
 
-        if (response.data.token) {
-            setToken(response.data.token);
+//   const onSubmitJHandler: SubmitHandler<FormData> = async (data) => {
+//     try {
+//         setLoading(true);
+//         const response = await axios.post('https://nft-market-as0q.onrender.com/auth/login', {
+//             email: data.email,
+//             password: data.password,
+//         });
 
-            try {
-                const profileResponse = await axios.get("https://nft-market-as0q.onrender.com/auth/profile", {
-                    headers: { Authorization: `Bearer ${response.data.token}` },
-                });
+//         if (response.data.token) {
+//             setToken(response.data.token);
 
-                updateUsername(profileResponse.data.data.username);
-                updateEmail(profileResponse.data.data.email);
-            } catch (error) {
-                console.error("Ошибка загрузки профиля после входа:", error);
-            }
+//             try {
+//                 const profileResponse = await axios.get("https://nft-market-as0q.onrender.com/auth/profile", {
+//                     headers: { Authorization: `Bearer ${response.data.token}` },
+//                 });
 
-            navigate('/profile');
-        }
-    } catch (error) {
-        console.error('Ошибка при отправке формы:', error);
-    } finally {
-        setLoading(false);
-    }
-};
+//                 updateUsername(profileResponse.data.data.username);
+//                 updateEmail(profileResponse.data.data.email);
+//             } catch (error) {
+//                 console.error("Ошибка загрузки профиля после входа:", error);
+//             }
+
+//             navigate('/profile');
+//         }
+//     } catch (error) {
+//         console.error('Ошибка при отправке формы:', error);
+//     } finally {
+//         setLoading(false);
+//     }
+// };
   
   
   return (
