@@ -26,6 +26,7 @@ import { useInfo } from "../../context/UserInfo";
 import { useNft } from "../../context/nftContext";
 import ModalBid from "../../components/modalBid/modalBid";
 import ModalAuction from "../../components/ModalAuction/ModalAuction";
+import ModalToken from "../../components/ModalToken/ModalToken";
 
 const OneItem = () => {
     const { id } = useParams();
@@ -42,7 +43,7 @@ const OneItem = () => {
     const currentBid = localStorage.getItem("newBidPrice")
 
     const { isOpenModalAuction, setIsOpenModalAuction, fetchGetNftAuction, price, _id, auctionEndTime, auctionCreate, isOpenBidAuction,
-        setIsOpenBidAuction } = useNft();
+        setIsOpenBidAuction, isOpenBuyModal, setIsOpenBuyModal } = useNft();
 
 
     //переобразование
@@ -183,7 +184,18 @@ const OneItem = () => {
         try {
             setIsOpenBidAuction(true)
         } catch (e) {
+            alert(e)
+        }
+    }
 
+    const handleBuyNft = () => {
+        if (!token) {
+            alert("Ypu have not token")
+        }
+        try {
+            setIsOpenBuyModal(true)
+        } catch (e) {
+            alert(e)
         }
     }
 
@@ -261,7 +273,7 @@ const OneItem = () => {
                     </div>
 
                     <div className={s.highestBid__buttons}>
-                        <button className={s.button_blue}>Purchase now</button>
+                        <button className={s.button_blue} onClick={handleBuyNft}>Purchase now</button>
                         <button className={s.button_dark} onClick={handleAddBid} type="button">Place a bid</button>
                     </div>
 
@@ -295,6 +307,10 @@ const OneItem = () => {
             )}
             {isOpenBidAuction && (
                 <ModalBid isOpenBidAuction={isOpenBidAuction} onClose={() => setIsOpenBidAuction(false)} startingPrice={startingPrice} />
+            )}
+            {isOpenBuyModal && (
+                <ModalToken isOpenBuyModal={isOpenBuyModal} onClose={() => setIsOpenBuyModal(false)} />
+
             )}
         </section>
     );

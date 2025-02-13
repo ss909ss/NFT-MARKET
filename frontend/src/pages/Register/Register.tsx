@@ -1,47 +1,74 @@
 import s from './Auth.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectAuth, setAuth, setLoginUser, setToken, setUser } from '../../store/authSlice/authSlice'
+import {   setAuth, setUser } from '../../store/authSlice/authSlice'
 import { SubmitHandler, useForm } from "react-hook-form"
-import { FormData } from '../../types/Form'
-import {  usePostFormRegisterMutation } from '../../store/api/authApi'
+import { FormData, IFormRegister } from '../../types/Form'
+import { usePostFormRegisterMutation } from '../../store/api/authApi'
 import { useNavigate } from 'react-router'
 
 
 const Register = () => {
     const dispatch = useDispatch();
-    const auth = useSelector(selectAuth)
     const { register, handleSubmit, reset } = useForm<FormData>();
     const navigate = useNavigate();
-    const [postRegister, { isLoading: isRegistering }] = usePostFormRegisterMutation();
-   
+    const [postRegister] = usePostFormRegisterMutation();
 
 
-
-    const onSubmit: SubmitHandler<FormData> = async (data) => {
+    const onSubmit: SubmitHandler<IFormRegister> = async (data) => {
         try {
-
+            console.log("Отправка данных:", data);
+    
             const responseRegister = await postRegister({
-                username: data.username, email: data.email, password: data.password
+                username: data.username,
+                email: data.email,
+                password: data.password,
+                id: data.id,
+                wallet: {
+                    walletId: ''
+                }
             }).unwrap();
-
+    
+            console.log("Ответ от сервера:", responseRegister);
+    
             if (responseRegister) {
-
+                // const userId = responseRegister?.user?._id; // Достаём userId
+                const walletId = responseRegister?.wallet?.walletId; // Достаём walletId
+    
+                // if (userId) {
+                //     localStorage.setItem("userId", userId);
+                //     console.log("userId сохранен:", userId);
+                // } 
+                // else {
+                //     console.warn("userId отсутствует в ответе сервера");
+                // }
+    
+                if (walletId) {
+                    localStorage.setItem("walletId", walletId);
+                    console.log("walletId сохранен:", walletId);
+                } else {
+                    console.warn("walletId отсутствует в ответе сервера");
+                }
+    
                 dispatch(setAuth(true));
-                dispatch(setUser({ username: data.username, email: data.email, password: data.password }));
-             
+                dispatch(setUser({ 
+                    username: data.username, 
+                    email: data.email, 
+                    password: data.password
+                }));
+    
                 console.log("Пользователь зарегистрирован:", responseRegister);
             } else {
-                console.error("Ошибка регистрации");
+                console.error("Ошибка регистрации: пустой ответ от сервера");
             }
-
-            dispatch(setAuth(true));
+    
             reset();
         } catch (error) {
             console.error("Ошибка при отправке формы:", error);
         }
     };
-
-    const handleNavigate = () =>{
+    
+    
+    const handleNavigate = () => {
         navigate("/login")
     }
 
@@ -58,15 +85,15 @@ const Register = () => {
 
 
                         <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-                       
-                                <input
-                                    type="text"
-                                    className={s.authInput}
-                                    placeholder="Username"
-                                    {...register("username", { required: true })}
-                                    autoComplete="off"
-                                />
-                    
+
+                            <input
+                                type="text"
+                                className={s.authInput}
+                                placeholder="Username"
+                                {...register("username", { required: true })}
+                                autoComplete="off"
+                            />
+
                             <input
                                 type="email"
                                 className={s.authInput}
@@ -83,12 +110,12 @@ const Register = () => {
                             />
 
                             <div className={s.authBtns}>
-                     
+
                                 <button type="submit" className={s.authSubLinkBtn} onClick={handleNavigate}>
-                              Register
+                                    Register
                                 </button>
-                          
-                              
+
+
                             </div>
                         </form>
 

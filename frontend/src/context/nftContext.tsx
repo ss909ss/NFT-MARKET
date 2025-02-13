@@ -11,7 +11,7 @@ interface NFTContextType {
     price: number;
     auctionEndTime: string;
     // collection: string;
-    auctionCreate:boolean;
+    auctionCreate: boolean;
     image: string | File | null;
     updateNFT: (
         id: string,
@@ -25,9 +25,11 @@ interface NFTContextType {
     fetchGetNftData: (id: string) => Promise<void>
     fetchGetNftAuction: (id: string) => Promise<void>
     isOpenModalAuction: boolean;
-    isOpenBidAuction:boolean;
+    isOpenBidAuction: boolean;
+    isOpenBuyModal: boolean
     setIsOpenModalAuction: React.Dispatch<React.SetStateAction<boolean>>;
     setIsOpenBidAuction: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsOpenBuyModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const UpdateNftContext = createContext<NFTContextType | null>(null);
@@ -41,7 +43,8 @@ export const UpdateNftProvider = ({ children }: { children: React.ReactNode }) =
     const [itemId, setItemId] = useState("");
     const [auctionCreate, setAuctionCreated] = useState(false)
     const [isOpenModalAuction, setIsOpenModalAuction] = useState(false);
-        const [isOpenBidAuction, setIsOpenBidAuction] = useState(false);
+    const [isOpenBidAuction, setIsOpenBidAuction] = useState(false);
+    const [isOpenBuyModal, setIsOpenBuyModal] = useState(false);
     const navigate = useNavigate();
     const { token } = useAuth();
     const { id } = useParams();
@@ -100,7 +103,7 @@ export const UpdateNftProvider = ({ children }: { children: React.ReactNode }) =
                     description,
                     price,
                     auctionEndTime,
-                    image, 
+                    image,
                 },
                 {
                     headers: { Authorization: `Bearer ${token}` },
@@ -174,7 +177,9 @@ export const UpdateNftProvider = ({ children }: { children: React.ReactNode }) =
                 setIsOpenModalAuction,
                 auctionCreate,
                 isOpenBidAuction,
-                setIsOpenBidAuction
+                setIsOpenBidAuction,
+                isOpenBuyModal,
+                setIsOpenBuyModal
             }}
         >
             {children}
@@ -187,7 +192,7 @@ export const useNft = () => {
     if (!context) throw new Error("useNft must be used within an UpdateNftProvider");
     return context;
 };
- 
+
 
 
 

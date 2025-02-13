@@ -102,10 +102,10 @@ const CreatorSingle = () => {
 
 
     const handleCreateBid = () => {
-        if (!token) {
-            alert("You havn;t token, please register/login")
-            return
-        }
+        // if (!token) {
+        //     alert("You havn;t token, please register/login")
+        //     return
+        // }
 
         try {
             setIsOpenMOdal(true)
