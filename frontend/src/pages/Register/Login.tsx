@@ -23,37 +23,53 @@ interface FormData {
     const { register, handleSubmit } = useForm<FormData>();
   
 
-  const onSubmitJHandler: SubmitHandler<FormData> = async (data) => {
-    try {
-        setLoading(true);
-        const response = await axios.post('https://nft-market-as0q.onrender.com/auth/login', {
-            email: data.email,
-            password: data.password,
-        });
-
-        if (response.data.token) {
-            setToken(response.data.token);
-
-            try {
-                const profileResponse = await axios.get("https://nft-market-as0q.onrender.com/auth/profile", {
-                    headers: { Authorization: `Bearer ${response.data.token}` },
-                });
-
-                updateUsername(profileResponse.data.data.username);
-                updateEmail(profileResponse.data.data.email);
-            } catch (error) {
-                console.error("Ошибка загрузки профиля после входа:", error);
-            }
-
-            navigate('/profile');
-        }
-    } catch (error) {
-        console.error('Ошибка при отправке формы:', error);
-    } finally {
-        setLoading(false);
-    }
-};
+    const onSubmitJHandler: SubmitHandler<FormData> = async (data) => {
+      try {
+          setLoading(true);
+          console.log("Отправка формы:", data); // Проверяем, отправляются ли данные
   
+          const response = await axios.post('https://nft-market-as0q.onrender.com/auth/login', {
+              email: data.email,
+              password: data.password,
+          });
+  
+          console.log("Ответ от сервера:", response.data); // Проверяем, получили ли мы ответ
+  
+          if (response.status === 200) {
+            const userId = response.data?._id;
+
+              console.log("userId:", userId);
+              localStorage.setItem("userId", userId);
+          }
+  
+          if (response.data.token) {
+              setToken(response.data.token);
+  
+              try {
+                  const profileResponse = await axios.get("https://nft-market-as0q.onrender.com/auth/profile", {
+                      headers: { Authorization: `Bearer ${response.data.token}` },
+                  });
+  
+                  updateUsername(profileResponse.data.data.username);
+                  updateEmail(profileResponse.data.data.email);
+              } catch (error) {
+                  console.error("Ошибка загрузки профиля после входа:", error);
+              }
+  
+              navigate('/profile');
+          }
+      } catch (error) {
+          console.error('Ошибка при отправке формы:', error);
+  
+          if (axios.isAxiosError(error)) {
+              console.error("Axios ошибка:", error.response?.data);
+          }
+      } finally {
+          setLoading(false);
+      }
+  };
+
+
   
   return (
       <section className="auth">

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import s from './modalBid.module.scss'
 import closeIcon from '../../assets/cancel.png'
 import { useInfo } from '../../context/UserInfo';
@@ -15,6 +15,15 @@ interface ModalBidProps {
 const ModalBid = ({ isOpenBidAuction, onClose, startingPrice }: ModalBidProps) => {
 const navigate = useNavigate();
 const { token, balance } = useInfo();
+const [bidder, setBidder] = useState<string | null>(null);
+console.log(bidder)
+useEffect(() => {
+    if (bidder) {
+      localStorage.setItem("bidder", bidder);
+    }
+  }, [bidder]);
+  
+  
 
     const [bidAmount, setBidAmount] = useState<number | "">("");
 
@@ -46,11 +55,15 @@ const { token, balance } = useInfo();
                       }
                       
                 })
+                console.log(response.data)
+                setBidder(response.data?.bids?.at(-1)?.bidder);
                 if(response.status === 200){
                     alert("Bid placed successfully:");
-                    navigate('/profile')
+                  onClose();
                     const bidPrice = localStorage.setItem("newBidPrice", response.data?.currentBid)
                     console.log(bidPrice)
+                    
+
                 }
          
         } catch (e) {

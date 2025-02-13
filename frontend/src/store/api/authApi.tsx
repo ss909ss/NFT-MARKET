@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
-import { IFormRegister, IFormLogin } from "../../types/Form";
+import { IFormRegister } from "../../types/Form";
 
 export const backendURL = "https://nft-market-as0q.onrender.com";
 
@@ -9,16 +9,21 @@ const baseQuery = fetchBaseQuery({
     prepareHeaders: (headers) => {
         const token = localStorage.getItem("token");
 
-console.log("authorization")
+        console.log("authorization")
         if (token) {
             headers.set("authorization", `Bearer ${token}`);
         }
 
         return headers;
+
+
+
     }
 });
 
 const fetchBaseWithRetry = retry(baseQuery, { maxRetries: 1 });
+
+console.log(backendURL)
 
 export const apiAuthSlice = createApi({
     reducerPath: "authApi",

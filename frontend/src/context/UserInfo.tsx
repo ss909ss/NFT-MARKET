@@ -10,7 +10,7 @@ interface AuthContextType {
     updateEmail: (newEmail: string) => void;
     avatar: string;
     balance: number;
-    
+    userId: string |  null
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -20,6 +20,8 @@ export const UserInfoProvider = ({ children }: { children: React.ReactNode }) =>
     const [avatar, setAvatar] = useState("");
     const [email, setEmail] = useState("");
     const [balance, setBalance] = useState(0);
+    const [userId, setUserId] = useState<string | null>(null)
+    console.log(userId)
     const { token } = useAuth();
 
     console.log(balance)
@@ -39,6 +41,7 @@ export const UserInfoProvider = ({ children }: { children: React.ReactNode }) =>
                 setUsername(response.data.data.username || "");
                 setEmail(response.data.data.email || "")
                 setAvatar(response.data.data.profileImage || "")
+                setUserId(response.data.data._id || null)
             } catch (error) {
                 console.error("Error fetching profile:", error);
             }
@@ -90,7 +93,7 @@ export const UserInfoProvider = ({ children }: { children: React.ReactNode }) =>
     }
 
     return (
-        <AuthContext.Provider value={{ username, updateUsername, token, email, updateEmail, avatar, balance }}>
+        <AuthContext.Provider value={{ username, updateUsername, token, email, updateEmail, avatar, balance, userId }}>
             {children}
         </AuthContext.Provider>
     );
