@@ -18,7 +18,12 @@ interface ModalAuction {
 
 const ModalAuction = ({ isOpen, onClose, nft, startingPrice, endTime }: ModalAuction) => {
     const { token } = useAuth();
-    const [auctionId, setAuctionId] = useState(null)
+    const [auctionId, setAuctionId] = useState(null);
+   
+
+    
+  
+      
     // console.log(auctionId )
 
     useEffect(() => {
@@ -47,6 +52,7 @@ const ModalAuction = ({ isOpen, onClose, nft, startingPrice, endTime }: ModalAuc
                 setAuctionId(result?._id);
                 console.log("auctionId set to:", result?._id);
                 localStorage.setItem("auctionId", result?._id);
+              
 
                 onClose();
             }

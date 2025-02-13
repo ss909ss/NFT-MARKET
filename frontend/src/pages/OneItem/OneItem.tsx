@@ -38,12 +38,16 @@ const OneItem = () => {
     const { token } = useAuth();
     const { addFavorite, getFavorites, removeFavorite } = useFavorites();
     const navigate = useNavigate();
-    const { avatar, username } = useInfo();
-    const { fetchGetNftData } = useNft();
+    const { avatar, username, userId } = useInfo();
     const currentBid = localStorage.getItem("newBidPrice")
-
-    const { isOpenModalAuction, setIsOpenModalAuction, fetchGetNftAuction, price, _id, auctionEndTime, auctionCreate, isOpenBidAuction,
-        setIsOpenBidAuction, isOpenBuyModal, setIsOpenBuyModal } = useNft();
+const bidder = localStorage.getItem("bidder")
+console.log(
+    bidder
+)
+console.log(userId)
+console.log(username)
+    const { isOpenModalAuction, setIsOpenModalAuction, fetchGetNftAuction, price, _id, auctionEndTime,  isOpenBidAuction,
+        setIsOpenBidAuction, isOpenBuyModal, setIsOpenBuyModal, fetchGetNftData } = useNft();
 
 
     //переобразование
@@ -264,7 +268,8 @@ const OneItem = () => {
                         <img src={avatar} alt="" />
                         <div className={s.bidInfo}>
                             <div className={s.bidInfo__head}>
-                                Highest bid by <span className={s.name}>{username}</span>
+                                Highest bid by <span className={s.name}>{username && userId === bidder ? username : "lalala"}
+                                </span>
                             </div>
                             <div className={s.bidInfo__price}>
                                 <span className={s.ethereum}>{currentBid} BTC</span> ${calculateValue(1.46)}

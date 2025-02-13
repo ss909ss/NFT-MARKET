@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { INft } from '../../types/NFT'
 import { Link } from 'react-router'
+import { useInfo } from '../../context/UserInfo'
 
 interface INftsResponse {
     data: INft[];
@@ -15,27 +16,30 @@ interface INftsResponse {
 
 const OnSale = () => {
     const { token } = useAuth();
+    const {userId} = useInfo();
     const [saleData, setSaleData] = useState<INft[] | null>([]);
 
     useEffect(() => {
         const fetchItemsSale = async () => {
-            const currentUserId = localStorage.getItem("userId");
-            console.log("Обновленный userId:", currentUserId);
+        
 
             if (!token) {
                 alert("No token, please login or register");
                 return;
             }
 
+           
             try {
                 const response = await axios.get<INftsResponse>("https://nft-market-as0q.onrender.com/nfts", {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
-                const createdNfts = response.data?.data.filter(nft => nft.creator === currentUserId);
+                const createdNfts = response.data?.data?.filter(nft => nft.creator === userId);
+                console.log(createdNfts)
                 console.log("NFT, принадлежащие пользователю:", createdNfts);
 
                 setSaleData(createdNfts);
+                console.log('Profile data:', response.data);
             } catch (e) {
                 console.error("Ошибка загрузки NFT:", e);
             }

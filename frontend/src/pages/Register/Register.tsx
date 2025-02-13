@@ -12,8 +12,7 @@ const Register = () => {
     const { register, handleSubmit, reset } = useForm<FormData>();
     const navigate = useNavigate();
     const [postRegister] = usePostFormRegisterMutation();
-
-
+    
     const onSubmit: SubmitHandler<IFormRegister> = async (data) => {
         try {
             console.log("Отправка данных:", data);

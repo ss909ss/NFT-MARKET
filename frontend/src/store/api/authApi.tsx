@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
-import { IFormRegister, IFormLogin } from "../../types/Form";
+import { IFormRegister } from "../../types/Form";
 
 export const backendURL = "https://nft-market-as0q.onrender.com";
 
@@ -9,37 +9,15 @@ const baseQuery = fetchBaseQuery({
     prepareHeaders: (headers) => {
         const token = localStorage.getItem("token");
 
-console.log("authorization")
+        console.log("authorization")
         if (token) {
             headers.set("authorization", `Bearer ${token}`);
         }
 
-        return headers; useEffect(() => {
-    const fetchItemsSale = async () => {
-        const currentUserId = localStorage.getItem("userId");
-        console.log("Обновленный userId:", currentUserId);
+        return headers;
 
-        if (!token) {
-            alert("No token, please login or register");
-            return;
-        }
 
-        try {
-            const response = await axios.get<INftsResponse>("https://nft-market-as0q.onrender.com/nfts", {
-                headers: { Authorization: `Bearer ${token}` },
-            });
 
-            const createdNfts = response.data?.data.filter(nft => nft.creator === currentUserId);
-            console.log("NFT, принадлежащие пользователю:", createdNfts);
-
-            setSaleData(createdNfts);
-        } catch (e) {
-            console.error("Ошибка загрузки NFT:", e);
-        }
-    };
-
-    fetchItemsSale();
-}, [token, localStorage.getItem("userId")]); // Добавляем userId в зависимости
     }
 });
 
