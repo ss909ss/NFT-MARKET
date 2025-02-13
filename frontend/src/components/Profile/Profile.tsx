@@ -36,7 +36,7 @@ const Profile = () => {
 
       try {
         const response = await axios.get<IProfile>(
-          "https://nft-market-as0q.onrender.com/auth/profile",
+          "https://nft-market-as0q.onrender.com/nfts",
           {
             headers: {
               Authorization: `Bearer ${token}`,

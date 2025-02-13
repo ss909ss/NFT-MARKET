@@ -14,11 +14,38 @@ console.log("authorization")
             headers.set("authorization", `Bearer ${token}`);
         }
 
-        return headers;
+        return headers; useEffect(() => {
+    const fetchItemsSale = async () => {
+        const currentUserId = localStorage.getItem("userId");
+        console.log("Обновленный userId:", currentUserId);
+
+        if (!token) {
+            alert("No token, please login or register");
+            return;
+        }
+
+        try {
+            const response = await axios.get<INftsResponse>("https://nft-market-as0q.onrender.com/nfts", {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            const createdNfts = response.data?.data.filter(nft => nft.creator === currentUserId);
+            console.log("NFT, принадлежащие пользователю:", createdNfts);
+
+            setSaleData(createdNfts);
+        } catch (e) {
+            console.error("Ошибка загрузки NFT:", e);
+        }
+    };
+
+    fetchItemsSale();
+}, [token, localStorage.getItem("userId")]); // Добавляем userId в зависимости
     }
 });
 
 const fetchBaseWithRetry = retry(baseQuery, { maxRetries: 1 });
+
+console.log(backendURL)
 
 export const apiAuthSlice = createApi({
     reducerPath: "authApi",
