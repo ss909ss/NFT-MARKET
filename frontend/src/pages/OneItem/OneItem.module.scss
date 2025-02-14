@@ -1,10 +1,9 @@
-
-
 @import '../../index.module.scss';
 
 .oneItem {
   padding: 80px 0;
-  display: flex;
+  @include flex-center;
+  align-items: start;
   gap: 96px;
 
   .oneItem__image {
@@ -15,56 +14,63 @@
 
   .oneItem__info {
     h1 {
-      color: #FCFCFD;
-      font-size: 48px;
-      margin-bottom: 8px;
+      color: $white-color;
+      @include text-style($text-color: $white-color,
+        $fz: 48px,
+        $lh: 20px,
+        $fw: 500);
+      margin-bottom: 50px;
     }
 
     .pricesAndStock {
-      display: flex;
-      align-items: center;
+      @include flex-center;
       gap: 8px;
 
       .discover__card__price,
       .discover__card__price_dark,
       .pricesAndStock__inStock {
         display: inline-block;
-        color: #45B26B;
-        border: 1px solid #45B26B;
+        color: $light-green-color;
+        border: 1px solid $light-green-color;
         border-radius: 4px;
         padding: 6px 8px;
-        font-size: 16px;
+        @include text-style($text-color: $light-green-color,
+          $fz: 16px,
+          $lh: 20px,
+          $fw: 500);
 
         &_dark {
           border: 1px solid #353945;
-          color: #777E90;
+          color: $muted-blue;
         }
       }
 
       .pricesAndStock__inStock {
-        color: #777E90;
+        color: $muted-blue;
         border: none;
       }
     }
 
     .oneItem__desc {
-      color: #353945;
-      font-size: 16px;
+      @include text-style($text-color: $dark-gray,
+        $fz: 16px,
+        $lh: 20px,
+        $fw: 500);
       margin: 40px 0;
 
       &__link {
         display: block;
-        color: #f7f7f7;
+        color: $white-color;
       }
     }
 
     .peopleFilter {
       .catogories {
-        display: flex;
-        justify-content: space-between;
-        color: #777E90;
+        @include flex-container;
+        align-items: start;
+        color: $muted-blue;
         border-radius: 36px;
-        border: 2px solid #353945;
+        border: 2px solid $dark-gray;
         padding: 6px;
         gap: 20px;
 
@@ -77,11 +83,10 @@
         margin-top: 16px;
 
         &__item {
-          display: flex;
-          align-items: center;
+          @include flex-center;
           margin-top: 16px;
           padding: 16px 0;
-          border-bottom: 2px solid #353945;
+          border-bottom: 2px solid $dark-gray;
 
           .avatarWrapper {
             position: relative;
@@ -102,14 +107,17 @@
             margin-left: 16px;
 
             .assignment {
-              color: #777E90;
-              font-size: 14px;
+              color: $muted-blue;
+              @include text-style($text-color: $dark-gray,
+                $fz: 16px,
+                $lh: 20px,
+                $fw: 500);
               margin-bottom: 8px;
             }
 
             .name {
               font-size: 14px;
-              color: #FCFCFD;
+              color: $white-color;
             }
           }
         }
@@ -117,16 +125,15 @@
     }
 
     .highestBid {
-      background-color: #23262F;
+      background-color: $slate-gray;
       border-radius: 16px;
       padding: 24px;
       margin-top: 68px;
 
       .highestBid__head {
-        display: flex;
-        align-items: center;
+        @include flex-center;
         gap: 16px;
-        color: #777E90;
+        color: $muted-blue;
         font-size: 24px;
 
         .bidInfo {
@@ -156,81 +163,86 @@
 
         .name,
         .ethereum {
-          color: #FCFCFD;
+          color: $white-color;
         }
       }
 
       &__buttons {
         margin: 32px 0;
         gap: 8px;
-        display: flex;
-        align-items: center;
+        @include flex-center;
 
         button {
           display: block;
           background: transparent;
           border: none;
-          color: #FCFCFD;
+          color: $white-color;
           padding: 16px 30px;
           border-radius: 90px;
           transition: all .3s ease-in-out;
         }
 
         .button_blue {
-          background-color: #4244d0;
+          background-color: $blue-color;
         }
 
         .button_blue:hover {
-          background: #5876d0;
+          background: $blue-color;
         }
 
         .button_dark {
-          border: 2px solid #353945;
+          border: 2px solid $dark-gray;
           padding: 16px 40px;
         }
 
         .button_dark:hover {
-          background-color: #766e7a;
+          background-color: $muted-blue;
         }
       }
 
       &__bottom {
-        font-size: 14px;
+        @include text-style($text-color: $muted-blue,
+          $fz: 14px,
+          $lh: 20px,
+          $fw: 500);
         gap: 12px;
-        color: #777E90;
-        display: flex;
+        @include flex-center;
+        align-items: start;
 
         span {
           display: block;
         }
 
         .whiteText {
-          color: #FCFCFD;
+          color: $white-color;
         }
       }
     }
   }
 
   .buttons {
-    display: flex;
+    @include flex-center;
+    align-items: start;
     flex-direction: column;
     gap: 16px;
 
     &__button {
       background: transparent;
       border-radius: 50%;
-      border: 2px solid #353945;
+      border: 2px solid $dark-gray;
       padding: 22px 25px;
       cursor: pointer;
 
 
-      .deleteIcon, .editIcon, .addBudAuction{
+      .deleteIcon,
+      .editIcon,
+      .addBudAuction {
         width: 24px;
         height: 24px;
       }
 
-      &:hover{
-        background-color:rgb(70, 70, 70);
+      &:hover {
+        background-color: rgb(70, 70, 70);
       }
     }
 

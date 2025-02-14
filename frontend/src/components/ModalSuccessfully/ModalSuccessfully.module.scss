@@ -3,17 +3,19 @@
 .modal {
   margin: 20px 0 0 20px;
   color: #f4f5f6;
-  display: flex;
+  @include flex-center;
+  align-items: start;
   flex-direction: column;
   max-width: 448px;
-  background-color: #141416;
-  border: 2px solid #23262f;
+  background-color: $black-color;
+  border: 2px solid $slate-gray;
   border-radius: 20px;
   padding: 32px;
 
   .gapWrapper {
     gap: 32px;
-    display: flex;
+    @include flex-center;
+    align-items: start;
     flex-direction: column;
     width: 100%;
   }
@@ -35,38 +37,36 @@
 
   &__content {
     width: 100%;
-    border: 1px solid #353945;
+    border: 1px solid $dark-gray;
     padding: 24px;
     border-radius: 12px;
     display: flex;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 
-    &__left,
+    @include flex-container &__left,
     &__right {
-      display: flex;
+      @include flex-center;
+      align-items: start;
       flex-direction: column;
       gap: 10px;
     }
 
     &__left {
       &_status {
-        color: #777e90;
+        color: $muted-blue;
       }
 
       &_processing {
-        color: #9757d7;
+        color: $blue-color;
       }
     }
 
     &__right {
       &_transaction {
-        color: #777e90;
+        color: $muted-blue;
       }
 
       &_wallet {
-        color: #fcfcfd;
+        color: $white-color;
       }
     }
   }
@@ -75,18 +75,16 @@
     text-align: center;
 
     .modal__socials {
-      display: flex;
-      align-items: center;
+      @include flex-center;
       justify-content: center;
       gap: 16px;
       margin-top: 16px;
 
       &__social {
-        border: 2px solid #353945;
+        border: 2px solid $dark-gray;
         padding: 12px;
         border-radius: 50%;
-        display: flex;
-        align-items: center;
+        @include flex-center;
         justify-self: center;
 
         &_img {

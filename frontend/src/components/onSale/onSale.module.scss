@@ -4,6 +4,11 @@
   display: flex;
   flex-wrap: wrap;
   gap: 32px;
+
+  .noItem {
+    color: $white-color;
+  }
+  
   .tabBlock {
     @include flex-center;
     align-items: center;

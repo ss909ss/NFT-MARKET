@@ -6,7 +6,6 @@
   gap: 32px;
   .tabBlock {
     @include flex-center;
-    align-items: center;
     flex-direction: column;
     .nftImg {
       width: 245px;
@@ -16,12 +15,10 @@
     }
     .nftInfo {
       @include flex-center;
-      align-items: center;
       flex-direction: column;
 
       .infoTop {
         @include flex-container;
-        justify-content: space-between;
         width: 100%;
         margin-bottom: 12px;
 
@@ -59,8 +56,6 @@
 
       .infoBottom {
         @include flex-container;
-        align-items: center;
-        justify-content: space-between;
         width: 100%;
 
         .bottomTitle {

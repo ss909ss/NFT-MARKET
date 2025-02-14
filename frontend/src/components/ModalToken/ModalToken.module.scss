@@ -2,26 +2,27 @@
 
 .modalWrapper {
   &__purshasing {
-    color: #777e90;
+    color: $muted-blue;
     font-size: 18px;
   }
 
   &__form {
-    display: flex;
+    @include flex-center;
+    align-items: start;
     flex-direction: column;
     gap: 16px;
     font-weight: 600;
 
     label {
       font-size: 24px;
-      color: #fcfcfd;
+      color: $white-color;
     }
 
     .modalWrapper__input {
-      color: #777e90;
+      color: $muted-blue;
       padding-bottom: 12px;
       border: none;
-      border-bottom: 1px solid #353945;
+      border-bottom: 1px solid $dark-gray;
       background: none;
       font-size: 16px;
     }

@@ -2,8 +2,7 @@
 
 .accordionItem {
   .accordionBlock {
-    @include flex-center;
-    justify-content: space-between;
+    @include flex-container;
     border-top: 2px solid $dark-gray;
     padding: 32px 0;
 

@@ -5,7 +5,6 @@
   border-bottom: 1px solid $dark-gray;
   @include flex-container;
   align-items: flex-start;
-  justify-content: space-between;
   width: 1120px;
   .aside {
     background-color: $slate-gray;

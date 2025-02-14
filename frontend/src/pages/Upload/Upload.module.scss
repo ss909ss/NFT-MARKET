@@ -66,7 +66,7 @@
             @include button($btn-color:$white-color, $bg-color:$blue-color, $br-radius:90px, $cursor:pointer);
           padding: 12px 16px;
          border: none;
-         transition: .3s;
+         transition: .3s;А
          &:hover{
             background-color: $white-color;
             color: $blue-color;
