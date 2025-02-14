@@ -33,14 +33,12 @@ $ln-height:20px;
 $fnt-size: 12px;
 
 
-
 @mixin single-text ($text-singleColor, $fnt-size, $ln-height, $fnt-weight){
   color: $text-singleColor;
   font-size: $fnt-size;
   line-height: $ln-height;
   font-weight: $fnt-weight;
 }
-
 
 @mixin clear-button{
   color: $muted-blue;
@@ -62,7 +60,6 @@ border-radius: $br-radius;
  cursor: $cursor;
 }
 
-
 @mixin text-style($text-color, $fz, $lh, $fw){
   color: $text-color;
   font-size: $fz;
@@ -80,8 +77,6 @@ font-weight: $fw;
   display: flex;
   align-items: center;
 }
-
-
 
 *{
   padding: 0;

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "./authContenxt";
+import { toast } from "react-toastify";
 
 interface AuthContextType {
     username: string;
@@ -57,7 +58,7 @@ export const UserInfoProvider = ({ children }: { children: React.ReactNode }) =>
     useEffect(() => {
         const fetchWallets = async () => {
             if (!token) {
-                alert("You have not token, please register/login")
+                toast.error("You have not token, please register/login")
                 return
             }
             try {

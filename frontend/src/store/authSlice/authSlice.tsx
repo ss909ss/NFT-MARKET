@@ -13,7 +13,6 @@ interface AuthState {
     favorites:string | null;
     newBidPrice:string | null;
     walletId:string | null;
-    // bidder: string | null
 }
 
 const initialState: AuthState = {
@@ -27,7 +26,6 @@ const initialState: AuthState = {
     favorites:localStorage.getItem("favorites") || null,
     newBidPrice: localStorage.getItem("newBidPrice") || null,
     walletId:localStorage.getItem("walletId" ) || null,
-    // bidder: localStorage.getItem("bidder") || null
 };
 
 const authSlice = createSlice({
@@ -36,7 +34,6 @@ const authSlice = createSlice({
     reducers: {
         setAuth: (state, action: PayloadAction<boolean>) => {
             state.auth = action.payload;
-            // Сохраняем флаг авторизации в localStorage
             localStorage.setItem("auth", JSON.stringify(action.payload));
         },
         setToken: (state, action: PayloadAction<string>) => {
@@ -69,9 +66,6 @@ const authSlice = createSlice({
             localStorage.removeItem("favorites");
             localStorage.removeItem("newBidPrice");
             localStorage.removeItem("walletId");
-            // localStorage.removeItem("userId");
-            // localStorage.removeItem("bidder");
-         
         }
     },
 });
