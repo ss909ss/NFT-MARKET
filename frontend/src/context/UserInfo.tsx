@@ -50,7 +50,6 @@ export const UserInfoProvider = ({ children }: { children: React.ReactNode }) =>
         fetchProfile();
     }, [token]);
 
-
     useEffect(() => {
         console.log('Username updated in context:', username);
     }, [username]);
@@ -81,7 +80,7 @@ export const UserInfoProvider = ({ children }: { children: React.ReactNode }) =>
                 {
                     headers: { Authorization: `Bearer ${token}` }
                 });
-
+                
             setUsername(response.data.data.username);
         } catch (error) {
             console.error("Ошибка при обновлении username:", error);

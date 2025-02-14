@@ -2,6 +2,7 @@ import { FC } from "react";
 import s from './Accordion.module.scss'
 import arrowDown from '../../assets/arrow-down.png'
 import { Link } from "react-router";
+
 export interface IAccordion {
     title: string;
     content: string;
@@ -9,6 +10,7 @@ export interface IAccordion {
     activeIndex: number;
     onAccordionClick: (index: number) => void;
 }
+
 const Accordion: FC<IAccordion> = ({ title, content, index, activeIndex, onAccordionClick }) => {
     const isActive = index === activeIndex;
     return (

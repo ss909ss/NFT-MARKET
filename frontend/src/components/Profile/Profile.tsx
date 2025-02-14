@@ -10,13 +10,10 @@ import axios from 'axios';
 import { IProfile } from '../../types/profileType';
 import { useAuth } from '../../context/authContenxt';
 import { useInfo } from '../../context/UserInfo';
-import OnSale from '../onSale/onSale';
-
-
 
 const Profile = () => {
   const { username, email } = useInfo();
-  const { token } = useAuth(); // Получаем токен из контекста
+  const { token } = useAuth(); 
   const [profileData, setProfileData] = useState<IProfile | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -96,10 +93,7 @@ const Profile = () => {
 
         <div className={s.content}>
           <div className={s.tabs}>
-            {/* <NavLink to="/profile/on-sale" className={({ isActive }) => isActive ? `${s.tabsButton} ${s.active}` : s.tabsButton}>
-              On Sale
-            </NavLink> */}
-            <NavLink to="/profile/on-sale" className={({ isActive }) => isActive ? `${s.tabsButton} ${s.active}` : s.tabsButton}>
+            <NavLink to="/profile/created" className={({ isActive }) => isActive ? `${s.tabsButton} ${s.active}` : s.tabsButton}>
               Created
             </NavLink>
             <NavLink to="/profile/favorites" className={({ isActive }) => isActive ? `${s.tabsButton} ${s.active}` : s.tabsButton}>

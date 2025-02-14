@@ -6,11 +6,9 @@ import { logout, } from '../../store/authSlice/authSlice';
 import s from './SubHeader.module.scss';
 import { useLogoutFormMutation } from '../../store/api/authApi';
 
-
 const SubHeader = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
     const [logoutForm] = useLogoutFormMutation();
 
     const logoutFunction = async () => {
@@ -25,9 +23,6 @@ const SubHeader = () => {
         }
     }
 
-
-
-
     return (
         <section className={s.subHeader}>
             <div className={s.container}>
@@ -38,7 +33,6 @@ const SubHeader = () => {
                             <img src={imageIcon} alt="" className={s.subHeaderImage} />
                         </div>
                     </Link>
-
                     <Link to='/editProfile'>
                         <div className={s.subHeaderButton}>
                             Edit profile
@@ -52,7 +46,6 @@ const SubHeader = () => {
                     >
                         logout
                     </button>
-
                 </div>
             </div>
         </section>

@@ -6,7 +6,7 @@ export interface INft {
     description: string;
     price: number;
     auctionEndTime: string;
-    likes: string[]; // Исправлено! Теперь это массив строк
+    likes: string[]; 
     creator: string;
     image: string;
     __v: number;

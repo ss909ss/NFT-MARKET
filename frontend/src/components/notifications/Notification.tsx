@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 interface NotificationData {
     id: string;
-    image?: string; // optional image URL
+    image?: string; 
     message: string;
     date: string;
 }
@@ -31,32 +31,26 @@ const Notification = () => {
                     },
                 }
             );
-            console.log(response.data); // Logs the object with _id, nftLikes, walletTransfers, auctionBids
+            console.log(response.data); 
 
-            // Destructure the arrays from the response
             const { walletTransfers } = response.data;
 
             if (Array.isArray(walletTransfers) && walletTransfers.length > 0) {
-                // Map walletTransfers to your NotificationData shape
                 const notifications = walletTransfers.map((transfer: any) => ({
                     id: transfer._id,
-                    // You can add an image if available or use the fallback
                     image: nft,
                     message: `Transferred ${transfer.amount} tokens`,
-                    // Format the timestamp as desired
                     date: new Date(transfer.timestamp).toLocaleString(),
                 }));
                 setData(notifications);
             } else {
-                setData([]); // No walletTransfers, so nothing to display
+                setData([]); 
             }
         } catch (error) {
             console.error("Error fetching notifications:", error);
         }
     };
 
-
-    // Fetch notifications when component mounts or when token changes
     useEffect(() => {
         getNotifications();
     }, []);
@@ -73,11 +67,6 @@ const Notification = () => {
                 ) : (
                     data.map((notification) => (
                         <div key={notification.id} className={s.notificationContent}>
-                            {/* <img
-                                src={notification.image || nft}
-                                alt="Notification"
-                                className={s.notificationImage}
-                            /> */}
                             <div className={s.notificationBlockInfo}>
                                 <p className={s.notificationContTitle}>
                                     {notification.message}
@@ -87,7 +76,6 @@ const Notification = () => {
                         </div>
                     ))
                 )}
-
             </div>
         </section>
     )

@@ -31,7 +31,6 @@ const ModalToken = ({ isOpenBuyModal, onClose }: IModalBuy) => {
             alert("ВЫ не имеете токен")
         }
 
-
         try {
             const response = await axios.post(
                 "https://nft-market-as0q.onrender.com/wallets/transfer",
@@ -53,7 +52,6 @@ const ModalToken = ({ isOpenBuyModal, onClose }: IModalBuy) => {
         }
     };
 
-
     if (!isOpenBuyModal) return null;
     return (
         <section className={s.modalWrapper}>
@@ -61,11 +59,9 @@ const ModalToken = ({ isOpenBuyModal, onClose }: IModalBuy) => {
                 <h1 className={s.modalWrapper__top__title}>Transfer token</h1>
                 <img src={closeIcon} alt="" className={s.closeIcon} onClick={onClose} />
             </div>
-
             <div className={s.modalWrapper__purshasing}>
                 You can transfer tokens from your address to another
             </div>
-
             <form className={s.modalWrapper__form}>
                 <label htmlFor="modalWrapper__input">Receiver address</label>
                 <input
@@ -88,12 +84,10 @@ const ModalToken = ({ isOpenBuyModal, onClose }: IModalBuy) => {
                     placeholder="Amount"
                 />
             </form>
-
             <div className={s.modalWrapper__buttons}>
                 <button className={s.modalWrapper__buttons__countine} onClick={handleAddTransaction}>
                     Continue
                 </button>
-
                 <button className={s.modalWrapper__buttons__cancel}>
                     Cancel
                 </button>

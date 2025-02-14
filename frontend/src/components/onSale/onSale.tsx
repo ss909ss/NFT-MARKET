@@ -1,6 +1,4 @@
-
 import s from './onSale.module.scss'
-import nft from "../../assets/nft-image.png"
 import candlesticks from '../../assets/candlesticks.png'
 import { useAuth } from '../../context/authContenxt'
 import { useEffect, useState } from 'react'
@@ -13,7 +11,6 @@ interface INftsResponse {
     data: INft[];
 }
 
-
 const OnSale = () => {
     const { token } = useAuth();
     const {userId} = useInfo();
@@ -22,13 +19,11 @@ const OnSale = () => {
     useEffect(() => {
         const fetchItemsSale = async () => {
         
-
             if (!token) {
                 alert("No token, please login or register");
                 return;
             }
 
-           
             try {
                 const response = await axios.get<INftsResponse>("https://nft-market-as0q.onrender.com/nfts", {
                     headers: { Authorization: `Bearer ${token}` },
@@ -37,7 +32,6 @@ const OnSale = () => {
                 const createdNfts = response.data?.data?.filter(nft => nft.creator === userId);
                 console.log(createdNfts)
                 console.log("NFT, принадлежащие пользователю:", createdNfts);
-
                 setSaleData(createdNfts);
                 console.log('Profile data:', response.data);
             } catch (e) {
@@ -46,7 +40,7 @@ const OnSale = () => {
         };
 
         fetchItemsSale();
-    }, [token, localStorage.getItem("userId")]); // Добавляем userId в зависимости
+    }, [token, localStorage.getItem("userId")]); 
 
     return (
         <section className={s.onSale}>
@@ -57,15 +51,14 @@ const OnSale = () => {
                             <img src={nft.image} alt={nft.name} className={s.nftImg} />
                             <div className={s.nftInfo}>
                                 <div className={s.infoTop}>
-                                    <p className={s.nftTitle}>{nft.name}</p> {/* Исправлено */}
-                                    <p className={s.nftPrice}>{nft.price} ETH</p> {/* Исправлено */}
+                                    <p className={s.nftTitle}>{nft.name}</p> 
+                                    <p className={s.nftPrice}>{nft.price} BTC</p> 
                                 </div>
                                 <span className={s.nftInfoLine}></span>
-
                                 <div className={s.infoBottom}>
                                     <img src={candlesticks} alt="candlesticks-image" />
                                     <p className={s.bottomTitle}>
-                                        Highest bid <span className={s.bottomPRoce}>0.001 ETH</span>
+                                        Highest bid <span className={s.bottomPRoce}>0.001 BTC</span>
                                     </p>
                                     <p className={s.bottomNewBild}>New bid 🔥</p>
                                 </div>
@@ -74,9 +67,8 @@ const OnSale = () => {
                     </Link>
                 ))
             ) : (
-                <p>No items on sale</p>
+                <p className={s.noItem}>No items on sale</p>
             )}
-
         </section>
     );
 };
