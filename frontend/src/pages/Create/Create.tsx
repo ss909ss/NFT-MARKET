@@ -1,22 +1,14 @@
 import s from './Create.module.scss';
-// import fileUploadIcon from '../../assets/upload field.png';
-import plusIcon from '../../assets/plusIcon.svg';
 import nft from "../../assets/MultipleNft.png"
 import removeIcon from '../../assets/removeIcon.png'
 import axios, { AxiosError } from 'axios'
 import { useState } from 'react';
-import { useAuth } from '../../context/authContenxt';
 import { IAddNft } from '../../types/NftType';
 import { useNavigate } from 'react-router';
-// import { usePostAddNftMutation } from '../../store/api/AddNfts';
+import { toast } from 'react-toastify';
 
-
-
-
-//на видео открытие инпута для чек боксов
 
 const Create = () => {
-    const { token } = useAuth(); // Get token from context
     const [isChecked, setIsChecked] = useState(false);
     const [image, setImage] = useState<File | null>(null);
     const navigate = useNavigate();
@@ -24,7 +16,7 @@ const Create = () => {
         name: "",
         description: "",
         price: 0,
-        auctionEndTime: null, // Дата теперь хранится как объект Date
+        auctionEndTime: null, 
         collection: "",
     });
 
@@ -33,119 +25,36 @@ const Create = () => {
         const { name, value } = e.target;
 
         if (name === "auctionEndTime") {
-            const localDate = new Date(value);  // Создаем объект Date из значения ввода
-            const utcDate = new Date(Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate()));  // Конвертируем в UTC
+            const localDate = new Date(value);  
+            const utcDate = new Date(Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate()));  
             setData((prevData) => ({
                 ...prevData,
-                auctionEndTime: utcDate,  // Устанавливаем в стейт дату в UTC
+                auctionEndTime: utcDate,  
             }));
         } else {
             setData((prevData) => ({ ...prevData, [name]: value }));
         }
     };
 
-
-
-
     const handleCheckeCheckbox = () => {
         setIsChecked(!isChecked);
     };
 
-    const handleCollectionSelect = (collectionName: string) => {
-        setData((prevData) => ({
-            ...prevData,
-            collection: collectionName,
-        }));
-    };
-
-  
-    // const onSubmitHandler = async (e: React.FormEvent) => {
-    //     e.preventDefault();
-
-    //     // Проверка обязательных полей (убираем проверку коллекции, если её значение некорректно)
-    //     if (
-    //         !data.name ||
-    //         !data.description ||
-    //         !data.price ||
-    //         !data.auctionEndTime
-    //     ) {
-    //         alert("Please fill in all fields!");
-    //         return;
-    //     }
-
-    //     // Формирование JSON-пейлоада
-    //     const payload = {
-    //         name: data.name,
-    //         description: data.description,
-    //         price: data.price,
-    //         auctionEndTime: data.auctionEndTime.toISOString(),
-    //         // Не отправляем поле collection, чтобы избежать ошибки приведения к ObjectId
-    //         image: image ? image.name : undefined,
-    //     };
-
-    //     console.log("Payload:", payload);
-
-    //     if (!token) {
-    //         alert("No token found! You need to be logged in.");
-    //         return;
-    //     }
-
-    //     try {
-    //         console.log(token, "token");
-    //         const response = await axios.post(
-    //             "https://nft-market-as0q.onrender.com/nfts",
-    //             payload,
-    //             {
-    //                 headers: {
-    //                     Authorization: `Bearer ${token}`,
-    //                     "Content-Type": "application/json",
-    //                 },
-    //             }
-    //         );
-    //         console.log("Data sent successfully:", response.data);
-    //         if (response.status === 201) {
-    //             // Сброс формы и состояния изображения
-    //             setImage(null);
-    //             setData({
-    //                 name: "",
-    //                 description: "",
-    //                 price: 0,
-    //                 auctionEndTime: null,
-    //                 collection: "",
-    //             });
-    //             navigate("/");
-    //         }
-    //     } catch (e) {
-    //         if (e instanceof AxiosError) {
-    //             console.error(
-    //                 "Error sending data:",
-    //                 e.response ? e.response.data : e.message
-    //             );
-    //         } else {
-    //             console.error("Unknown error:", e);
-    //         }
-    //         alert("There was an error sending your data.");
-    //     }
-    // };
-
-
-    
     const onSubmitHandler = async (e: React.FormEvent) => {
         e.preventDefault();
       
-        // Проверка обязательных полей
+     
         if (!data.name || !data.description || !data.price || !data.auctionEndTime) {
-          alert("Please fill in all fields!");
+          toast.error("Please fill in all fields!");
           return;
         }
       
         const token = localStorage.getItem("token");
         if (!token) {
-          alert("No token found! You need to be logged in.");
+          toast.error("No token found! You need to be logged in.");
           return;
         }
       
-        // Функция для отправки payload
         const sendPayload = async (payload: any) => {
           try {
             const response = await axios.post(
@@ -160,16 +69,16 @@ const Create = () => {
             );
             console.log("Data sent successfully:", response.data);
             if (response.status === 201) {
-              // Сброс формы
               setImage(null);
               setData({
                 name: "",
                 description: "",
                 price: 0,
-                auctionEndTime: new Date(), // либо другое значение по умолчанию
+                auctionEndTime: new Date(), 
                 collection: "",
               });
               navigate("/");
+              toast.success("You create new NFT, please wait ")
             }
           } catch (e: unknown) {
             if (e instanceof AxiosError) {
@@ -180,17 +89,15 @@ const Create = () => {
             } else {
               console.error("Unknown error:", e);
             }
-            alert("There was an error sending your data.");
+            toast.error("There was an error sending your data.");
           }
         };
       
-        // Если изображение выбрано, преобразуем его в base64
         if (image) {
           const reader = new FileReader();
           reader.readAsDataURL(image);
           reader.onloadend = async () => {
             const base64Image = reader.result as string;
-            // Формирование payload
             const payload: any = {
               name: data.name,
               description: data.description,
@@ -201,7 +108,6 @@ const Create = () => {
               ).toISOString(),
               image: base64Image,
             };
-            // Добавляем поле collection только если оно задано и не равно "Create collection"
             if (data.collection && data.collection !== "Create collection") {
               payload.collection = data.collection;
             }
@@ -209,7 +115,6 @@ const Create = () => {
             await sendPayload(payload);
           };
         } else {
-          // Если изображение не выбрано, отправляем payload без него
           const payload: any = {
             name: data.name,
             description: data.description,
@@ -228,7 +133,6 @@ const Create = () => {
         }
       };
       
-
     return (
         <section className={s.createPage}>
             <div className={s.container}>
@@ -240,13 +144,9 @@ const Create = () => {
                                 Switch to Multiple
                             </button>
                         </div>
-
-
                         <h2 className={s.uploadTitle}>Upload file</h2>
                         <p className={s.uploadContenttTitle}>Drag or choose your file to upload</p>
-
                         <div className={s.uploadContent}>
-
                             <input
                                 type="file"
                                 onChange={(e) => setImage(e.target.files ? e.target.files[0] : null)}
@@ -264,10 +164,8 @@ const Create = () => {
                                 id='name'
                                 placeholder='e. g. "Redeemable Bitcoin Card with logo"'
                                 className={s.detailsFiled}
-
                             />
                         </div>
-
                         <div className={s.detailsBlock}>
                             <label htmlFor="description" >DESCRIPTION</label>
                             <input
@@ -280,26 +178,19 @@ const Create = () => {
                                 className={s.detailsFiled}
                             />
                         </div>
-
                         <span className={s.line}></span>
-
                         <div className={s.detailsInfo}>
-
                             <label htmlFor="start">Choose Date</label>
                             <input
                                 type="date"
                                 id="start"
                                 name="auctionEndTime"
-                                value={data.auctionEndTime ? data.auctionEndTime.toISOString().split("T")[0] : ""} // Преобразуем в формат YYYY-MM-DD
+                                value={data.auctionEndTime ? data.auctionEndTime.toISOString().split("T")[0] : ""} 
                                 onChange={onChangeHandler}
                                 min="2025-02-09"
                                 max="2030-02-09"
                             />
-
-
-
                         </div>
-
                         <div className={s.detailsInfo}>
                             <div className={s.detailsInfoLeft}>
                                 <h3>Instant sale price</h3>
@@ -314,42 +205,11 @@ const Create = () => {
                                 value={data.price}
                                 type="number" placeholder="Enter price" name='price' className={s.detailsCheckedInput} />
                         )}
-
-
-
-
                         <div className={s.detailsCollection}>
-                            {/* <h3 className={s.collectionTitle}>Choose collection</h3>
-                            <p className={s.collectionSubtitle}>Choose an exiting collection or create a new one</p> */}
-
-                            {/* <div className={s.detailsCollections}>
-                                <div className={s.collection} onClick={() => handleCollectionSelect("Create collection")}>
-                                    <img src={plusIcon} alt="" />
-                                    <p className={s.collectionCrypto}>Create collection</p>
-                                </div>
-
-                                <div className={s.collection} onClick={() => handleCollectionSelect("Crypto Legend - Professor")}>
-                                    <img src={plusIcon} alt="icon" />
-                                    <p className={s.collectionCrypto}>Crypto Legend - Professor</p>
-                                </div>
-
-                                <div className={s.collection} onClick={() => handleCollectionSelect("Legend Photography")}>
-                                    <img src={plusIcon} alt="icon" />
-                                    <p className={s.collectionCrypto}>Legend Photography</p>
-                                </div>
-
-                                <div className={s.collection} onClick={() => handleCollectionSelect("Crypto Legend - Professor")}>
-                                    <img src={plusIcon} alt="icon" />
-                                    <p className={s.collectionCrypto}>Crypto Legend - Professor</p>
-                                </div>
-                            </div> */}
-
-
                             <button type='submit' className={s.createNft}>
                                 Create item
                             </button>
                         </div>
-
                     </div>
                     <div className={s.rightContent}>
                         <div className={s.rightBlock}>

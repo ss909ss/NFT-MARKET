@@ -3,6 +3,7 @@ import s from './modalBid.module.scss'
 import closeIcon from '../../assets/cancel.png'
 import { useInfo } from '../../context/UserInfo';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 interface ModalBidProps {
@@ -37,7 +38,7 @@ const ModalBid = ({ isOpenBidAuction, onClose, startingPrice }: ModalBidProps) =
             alert("You have not token")
         }
         else if (startingPrice > Number(bidAmount)) {
-            alert("Ставка не может быть меньше рыночной цены")
+            toast.error("The rate cannot be less than the market price")
         }
         const auctionId = localStorage.getItem("auctionId");
         try {
@@ -52,7 +53,7 @@ const ModalBid = ({ isOpenBidAuction, onClose, startingPrice }: ModalBidProps) =
             console.log(response.data)
             setBidder(response.data?.bids?.at(-1)?.bidder);
             if (response.status === 200) {
-                alert("Bid placed successfully:");
+                toast.success("Bid placed successfully:");
                 onClose();
                 const bidPrice = localStorage.setItem("newBidPrice", response.data?.currentBid)
                 console.log(bidPrice)

@@ -10,6 +10,7 @@ import axios from 'axios';
 import { IProfile } from '../../types/profileType';
 import { useAuth } from '../../context/authContenxt';
 import { useInfo } from '../../context/UserInfo';
+import { toast } from 'react-toastify';
 
 const Profile = () => {
   const { username, email } = useInfo();
@@ -27,7 +28,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       if (!token) {
-        console.error('No token found!');
+        toast.error('No token found!');
         return;
       }
 

@@ -3,6 +3,7 @@ import closeIcon from '../../assets/cancel.png'
 import { useState } from "react";
 import { useInfo } from "../../context/UserInfo";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 interface IModalBuy {
     isOpenBuyModal: boolean;
@@ -25,10 +26,10 @@ const ModalToken = ({ isOpenBuyModal, onClose }: IModalBuy) => {
 
     const handleAddTransaction = async () => {
         if (Number(amount) > balance) {
-            alert("Перевод не может быть больше, чем на балансе");
+            toast.error("The transfer cannot be more than the balance on hand");
             return;
         } else if (!token) {
-            alert("ВЫ не имеете токен")
+            toast.error("You don't have the token")
         }
 
         try {
@@ -44,11 +45,11 @@ const ModalToken = ({ isOpenBuyModal, onClose }: IModalBuy) => {
             );
 
             if (response.status === 200) {
-                alert("Successful");
+                toast.success("Successful");
             }
         } catch (e) {
             console.error(e);
-            alert("An error occurred during the transaction.");
+            toast.error("An error occurred during the transaction.");
         }
     };
 
