@@ -8,11 +8,9 @@ const ModalFollowSteps = () => {
         <section className={s.modalWrapper}>
             <div className={s.modalWrapper__top}>
                 <h1 className={s.modalWrapper__top__title}>Follow steps</h1>
-                <img src={closeIcon} alt="" className={s.closeIcon} />
+                <img src={closeIcon} alt="close-icon" className={s.closeIcon} />
             </div>
-
             <div className={s.modalWrapper__purshasing}>
-                {/*тут фото с загрузкой*/}
                 <div>
                     <div className={s.modalWrapper__purshasing__title}>
                         Purchasing
@@ -22,29 +20,24 @@ const ModalFollowSteps = () => {
                     </div>
                 </div>
             </div>
-
             <div className={s.modalWrapper__infoError}>
-                <img src={infoError} alt="" />
+                <img src={infoError} alt="error" />
                 <div>
                     <div className={s.modalWrapper__infoError__title}>
                         This creator is not verified
                     </div>
-
                     <div className={s.modalWrapper__infoError__subtitle}>
                         Purchase this item at your own risk
                     </div>
                 </div>
-
                 <img src={avatar}
-                    alt=""
+                    alt="user-avatar"
                     className={s.modalWrapper__infoError__avatar} />
             </div>
-
             <div className={s.modalWrapper__buttons}>
                 <button className={s.modalWrapper__buttons__countine}>
                     I understand, continue
                 </button>
-
                 <button className={s.modalWrapper__buttons__cancel}>
                     Cancel
                 </button>

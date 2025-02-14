@@ -1,6 +1,5 @@
 export interface IFormRegister {
     id: any;
- 
     token?: string;
     username: string;
     email: string;
@@ -9,7 +8,6 @@ export interface IFormRegister {
         walletId: string;
     };
 }
-
 
 export interface IFormLogin{
     id:string;

@@ -1,4 +1,3 @@
-import React from 'react'
 import s from './Seller.module.scss'
 import arrowDown from '../../../assets/arrow-down.png';
 import cup from '../../../assets/cup.svg';
@@ -28,15 +27,9 @@ const Seller = () => {
                             <div className={s.timeFrame}>
                                 TIMEFRAME
                             </div>
-                            {/*<select name="" id="" className={s.rightBlockSelect}>*/}
-                            {/*    <option value="" className={s.optionSelect}>*/}
-                            {/*    Today*/}
-                            {/*    </option>*/}
-                            {/*</select>*/}
                         </div>
                     </div>
                 </div>
-
                 <div className={s.sellerContent}>
                     <div className={s.sellerCard}>
                         <div className={s.cardHead}>
@@ -44,13 +37,11 @@ const Seller = () => {
                                 <img src={cup} alt=""/>
                                 #1
                             </div>
-
                             <div className={s.cardHead__icons}>
                                 <img src={plus} alt=""/>
                                 <img src={arrow} alt=""/>
                             </div>
                         </div>
-
                         <div className={s.filterResult__item}>
                             <div className={s.avatarWrapper}>
                                 <img src={avatar} alt="Avatar" className={s.avatar}/>
@@ -68,13 +59,11 @@ const Seller = () => {
                                 <img src={cup} alt=""/>
                                 #1
                             </div>
-
                             <div className={s.cardHead__icons}>
                                 <img src={plus} alt=""/>
                                 <img src={arrow} alt=""/>
                             </div>
                         </div>
-
                         <div className={s.filterResult__item}>
                             <div className={s.avatarWrapper}>
                                 <img src={avatar} alt="Avatar" className={s.avatar}/>
@@ -92,13 +81,11 @@ const Seller = () => {
                                 <img src={cup} alt=""/>
                                 #1
                             </div>
-
                             <div className={s.cardHead__icons}>
                                 <img src={plus} alt=""/>
                                 <img src={arrow} alt=""/>
                             </div>
                         </div>
-
                         <div className={s.filterResult__item}>
                             <div className={s.avatarWrapper}>
                                 <img src={avatar} alt="Avatar" className={s.avatar}/>
@@ -116,13 +103,11 @@ const Seller = () => {
                                 <img src={cup} alt=""/>
                                 #1
                             </div>
-
                             <div className={s.cardHead__icons}>
                                 <img src={plus} alt=""/>
                                 <img src={arrow} alt=""/>
                             </div>
                         </div>
-
                         <div className={s.filterResult__item}>
                             <div className={s.avatarWrapper}>
                                 <img src={avatar} alt="Avatar" className={s.avatar}/>
@@ -140,13 +125,11 @@ const Seller = () => {
                                 <img src={cup} alt=""/>
                                 #1
                             </div>
-
                             <div className={s.cardHead__icons}>
                                 <img src={plus} alt=""/>
                                 <img src={arrow} alt=""/>
                             </div>
                         </div>
-
                         <div className={s.filterResult__item}>
                             <div className={s.avatarWrapper}>
                                 <img src={avatar} alt="Avatar" className={s.avatar}/>

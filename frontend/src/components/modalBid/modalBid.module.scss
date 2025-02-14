@@ -1,131 +1,76 @@
-@import '../../index.module.scss';
-
+@import "../../index.module.scss";
 
 .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(70, 70, 70, 0.795); // затемнение фона
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(70, 70, 70, 0.795);
 
-    .modalContent {
+  .modalContent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background-color: $black-color;
+    width: 448px;
+    height: 200px;
+    border-radius: 20px;
+    padding: 32px;
 
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1000;
-        background-color: $black-color;
-        width: 448px;
-        height: 546px;
-        border-radius: 20px;
-        padding: 32px;
-
-
-        .modalTop {
-            @include flex-center;
-            align-items: center;
-            justify-content: space-between;
-
-            .bidTitle {
-                @include text-style($text-color: $white-color, $fz: 32px, $lh: 40px, $fw: 700);
-                margin-bottom: 32px;
-            }
-
-        }
-
-        .bidSubtitle {
-            @include text-style($text-color: $white-color, $fz: 16px, $lh: 24px, $fw: 400);
-            margin-bottom: 32px;
-        }
-
-        .titleBid {
-            @include text-style($text-color: $white-color, $fz: 32px, $lh: 40px, $fw: 600);
-            margin-bottom: 16px;
-        }
-
-        .bidInfo {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 32px;
-
-            .bidLine {
-                height: 1px;
-                background-color: $muted-blue;
-                display: block;
-                width: 100%;
-                margin-bottom: 12px;
-            }
-
-            .bidCategory,
-            .bidBalance,
-            .bidService {
-                @include flex-container;
-                justify-content: space-between;
-                margin-bottom: 12px;
-
-                .bidLeft {
-                    @include text-style($text-color: $muted-blue, $fz: 16px, $lh: 24px, $fw: 500);
-                    font-family: $font-family-alt;
-                    background: none;
-                    border: none;
-
-                    &:focus{
-                        outline: none;
-                    }
-                }
-
-                .bidRight {
-                    @include text-style($text-color: $white-color, $fz: 16px, $lh: 24px, $fw: 500);
-                    font-family: $font-family-alt;
-                }
-            }
-
-        }
-
-        .bidButtons{
-            
-            .bidAdd{
-
-                width: 100%;
-                @include button($btn-color,
-                    $bg-color: $blue-color,
-                    $br-radius: $br-radius,
-                    $cursor: $cursor );
-                padding:  16px 0;
-                color: $white-color;
-                border: none;
-                text-decoration: none;
-                margin-bottom: 8px;
-    
-                &:hover {
-                    transition: 0.3s ease-out;
-                    background-color: $white-color;
-                    color: $blue-color;
-                }
-            }
-            .bidCancel{
-                width: 100%;
-                @include clear-button();
-                padding: 12px 16px;
-                color: $white-color;
-                border:  2px solid $dark-gray;
-                text-decoration: none;
-                justify-content: center;
-    
-                &:hover {
-                    transition: 0.3s ease-out;
-                    background-color: $white-color;
-                    color: $blue-color;
-                }
-            }
-
-
-        
-        }
+    .createTitle {
+      @include text-style(
+        $text-color: $white-color,
+        $fz: 23px,
+        $lh: 24px,
+        $fw: 500
+      );
+      font-family: $font-family-alt;
+      margin-bottom: 60px;
     }
+
+    .modalButtons {
+      @include flex-container;
+      justify-content: space-between;
+      width: 100%;
+      .modalAdd {
+        width: 172px;
+        @include button(
+          $btn-color,
+          $bg-color: $blue-color,
+          $br-radius: $br-radius,
+          $cursor: $cursor
+        );
+        padding: 16px;
+        color: $white-color;
+        border: none;
+
+        &:hover {
+          transition: 0.3s ease-out;
+          background-color: $white-color;
+          color: $blue-color;
+        }
+      }
+      .modalCancel {
+        width: 172px;
+        @include clear-button();
+        padding: 12px 16px;
+        color: $white-color;
+        border: 2px solid $dark-gray;
+        text-decoration: none;
+        justify-content: center;
+
+        &:hover {
+          transition: 0.3s ease-out;
+          background-color: $white-color;
+          color: $blue-color;
+        }
+      }
+    }
+  }
 }

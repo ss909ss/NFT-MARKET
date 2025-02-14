@@ -61,12 +61,10 @@ const Wallet = () => {
                         </div>
                     </div>
                 </div>
-
                 <button className={s.myWallet__balance__manageFun}>
                     Manage fun on Coinbase
                 </button>
             </div>
-
             <div className={s.myWallet__navs}>
                 <button className={s.myWallet__navs__nav}>
                     <img src={user} alt="" />

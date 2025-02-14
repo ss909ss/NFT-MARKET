@@ -20,7 +20,6 @@ const Footer = () => {
                                 <p className={s.footerColumnSubtitle}>Create item</p>
                             </div>
                         </div>
-
                         <div className={s.footerContentColumn}>
                             <h3 className={s.footerColumnTitle}>Info</h3>
                             <div className={s.footerContentBlock}>
@@ -29,7 +28,6 @@ const Footer = () => {
                                 <p className={s.footerColumnSubtitle}>Support</p>
                             </div>
                         </div>
-
                         <div className={s.footerContentColumn}>
                             <h3 className={s.footerTitleNewsseller}>Join Newsletter</h3>
                                 <p className={s.footerNewssellerDesc}>Subscribe our newsletter to get more free design course and resource</p>

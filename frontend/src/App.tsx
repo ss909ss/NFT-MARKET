@@ -1,14 +1,11 @@
 import { Route, Routes } from 'react-router'
-import './App.module.scss'
 import routes from './routes/Routes'
 import Layout from './Layout/Layout'
 import ProfilePage from './pages/Profile/Profile'
 import OnSale from './components/onSale/onSale'
-import Collectibles from './components/Collectibles/Collectibles'
 import Favorites from './components/Favorites/Favorites'
 
 const App = () => {
-
   return (
     <Routes>
       <Route element={<Layout />}>
@@ -16,16 +13,10 @@ const App = () => {
           <Route key={route.path} path={route.path} element={route.element} />
         ))}
         <Route path="/profile/*" element={<ProfilePage />}>
-          <Route path="on-sale" element={<OnSale />} />
-          <Route path="collectibles" element={<Collectibles />} />
+          <Route path="created" element={<OnSale />} />
           <Route path="favorites" element={<Favorites />} />
-          {/* <Route path="created" element={<Created />} />
-
-        <Route path="following" element={<Following />} />
-        <Route path="followers" element={<Followers />} /> */}
         </Route>
       </Route >
-
     </Routes>
   )
 }

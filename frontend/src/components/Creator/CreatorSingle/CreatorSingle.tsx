@@ -1,28 +1,20 @@
 import { useEffect, useState } from 'react'
 import styles from './CreatorSingle.module.scss';
-// import userAvatar from '../../../assets/avatar.png';
 import cryptoImage from '../../../assets/crypto.png'
 import arrowLeft from '../../../assets/Left arrow.png';
 import arrowRight from '../../../assets/Right arrow.svg';
-// import singleImage from '../../../assets/singleImage.png'
 import { Link } from "react-router";
-// import { ETH_PRICE_API } from "../../../store/api/cryptoApi";
 import { INft } from '../../../types/NFT';
-// import { useAuth } from '../../../context/authContenxt';
 import axios from 'axios';
 import { useInfo } from '../../../context/UserInfo';
-import ModalBid from '../../modalBid/modalBid';
 
 interface INftsResponse {
     data: INft[];
 }
 
 const CreatorSingle = () => {
-    const { avatar, token, username } = useInfo();
+    const { avatar} = useInfo();
     const [singleData, setSingleData] = useState<INft[]>([]);
-    const [isOpenModal, setIsOpenMOdal] = useState(false);
-
-    // const [ethPrice, setEthPrice] = useState<number | null>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [auctionEndTime, setAuctionEndTime] = useState<Date | null>(null);
     const [timeLeft, setTimeLeft] = useState({
@@ -36,7 +28,6 @@ const CreatorSingle = () => {
             try {
                 const response = await axios.get<INftsResponse>("https://nft-market-as0q.onrender.com/nfts");
                 if (response?.data?.data?.length > 0) {
-                    // setSingleData(response.data.data[0]); 
                     setSingleData(response?.data?.data || []);
 
                     const validateNfts = response.data.data.filter(nft => new Date(nft.auctionEndTime) > new Date())
@@ -45,21 +36,21 @@ const CreatorSingle = () => {
                         setSingleData(validateNfts);
                         setAuctionEndTime(new Date(validateNfts[currentIndex].auctionEndTime));
                     } else {
-                        setSingleData([]); // Если нет актуальных NFT
+                        setSingleData([]); 
                     }
                 }
             } catch (e) {
                 console.error("Ошибка загрузки NFT", e);
             }
         };
-
+        
         fetchSingleData();
-    }, [currentIndex]); // Загружаем данные один раз
+    }, [currentIndex]); 
 
 
 
     useEffect(() => {
-        if (!auctionEndTime) return; // Если auctionEndTime ещё не задано, ничего не делать
+        if (!auctionEndTime) return; 
 
         const interval = setInterval(() => {
             if (auctionEndTime) {
@@ -68,7 +59,7 @@ const CreatorSingle = () => {
 
                 if (diff <= 0) {
                     setTimeLeft({ hours: 0, minutes: 0, seconds: 0 });
-                    clearInterval(interval); // Останавливаем таймер
+                    clearInterval(interval); 
                 } else {
                     setTimeLeft({
                         hours: Math.floor(diff / (1000 * 60 * 60)),
@@ -80,40 +71,19 @@ const CreatorSingle = () => {
         }, 1000);
 
         return () => {
-            clearInterval(interval); // Очищаем интервал при размонтировании компонента или изменении auctionEndTime
+            clearInterval(interval); 
         };
     }, [auctionEndTime]);
-    // const calculateValue = (ethAmount: number) => {
-    //     return ethPrice !== null ? (ethAmount * ethPrice).toFixed(2) : "-";
-    // };
-
-
+  
     const handleNext = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % singleData.length);
     };
 
-    // Переключение на предыдущий NFT
     const handlePrev = () => {
         setCurrentIndex((prevIndex) => (prevIndex - 1 + singleData.length) % singleData.length);
     };
 
     const currentNft = singleData[currentIndex];
-
-
-
-    const handleCreateBid = () => {
-        // if (!token) {
-        //     alert("You havn;t token, please register/login")
-        //     return
-        // }
-
-        try {
-            setIsOpenMOdal(true)
-        } catch (e) {
-
-        }
-    }
-
 
     return (
         <section className={styles.creator__container}>
@@ -122,7 +92,6 @@ const CreatorSingle = () => {
                     <div className={styles.creator__left}>
                         <img src={currentNft?.image} alt="NFT" className={styles.creatorLeftImage} />
                     </div>
-
                     <div className={styles.creator__right}>
                         <div className={styles.right__block}>
                             <div className={styles.rightBlockTop}>
@@ -144,12 +113,10 @@ const CreatorSingle = () => {
                                     </div>
                                 </div>
                             </div>
-
                             <div className={styles.rightBlockInfo}>
                                 <div className={styles.rightBlockInfoTop}>
                                     <span className={styles.rightBlockInfoBid}>Current Bid</span>
                                     <h2 className={styles.rightBlockInfoEtn}>{currentNft?.price} BTC</h2>
-                                    {/* <p className={styles.rightBlockInfoPrice}>${calculateValue(1.0)}</p> */}
                                 </div>
                                 <div className={styles.rightBlockInfoBottom}>
                                     <p className={styles.rightBlockInfoAuction}>Auction ending in</p>
@@ -169,16 +136,11 @@ const CreatorSingle = () => {
                                     </div>
                                 </div>
                             </div>
-
                             <div className={styles.rightBlockBottom}>
-                                <button className={styles.rightBlockBottomButon} type="button" onClick={handleCreateBid}>
-                                    Place a bid
-                                </button>
                                 <Link to={`/nft/${currentNft?._id}`} className={styles.rightBlockBottomButonDefault}>
                                     View item
                                 </Link>
                             </div>
-
                             <div className={styles.rightBlockBottomPagination}>
                                 <button onClick={handlePrev} className={styles.leftBlockBottomButon}>
                                     <img src={arrowLeft} alt="Left" className={styles.arrowLeft} />
@@ -190,12 +152,8 @@ const CreatorSingle = () => {
                         </div>
                     </div>
                 </div>
-
             </div>
-            {/* <ModalBid isOpen={isOpenModal} onClose={() => setIsOpenMOdal(false)} /> */}
         </section>
-     
-
     )
 }
 export default CreatorSingle;

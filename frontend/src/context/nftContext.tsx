@@ -10,7 +10,6 @@ interface NFTContextType {
     description: string;
     price: number;
     auctionEndTime: string;
-    // collection: string;
     auctionCreate: boolean;
     image: string | File | null;
     updateNFT: (
@@ -20,7 +19,6 @@ interface NFTContextType {
         price: number,
         auctionEndTime: string,
         image: string | null,
-        // collection: string
     ) => Promise<void>;
     fetchGetNftData: (id: string) => Promise<void>
     fetchGetNftAuction: (id: string) => Promise<void>
@@ -76,7 +74,7 @@ export const UpdateNftProvider = ({ children }: { children: React.ReactNode }) =
             console.error("Error fetching NFT data:", error);
         }
     };
-    // Вызываем fetchGetNftData при изменении token или id
+
     useEffect(() => {
         if (id) {
             fetchGetNftData(id);
@@ -110,14 +108,12 @@ export const UpdateNftProvider = ({ children }: { children: React.ReactNode }) =
                 }
             );
 
-            // Обновляем данные в контексте, если сервер возвращает обновлённые данные в response.data.data
             const data = response.data?.data;
             if (response.status === 200) {
                 navigate("/profile")
             }
             console.log(response.data)
             console.log(data)
-
             setName(data?.name);
             setDescription(data?.description);
             setPrice(data?.price);
@@ -155,7 +151,6 @@ export const UpdateNftProvider = ({ children }: { children: React.ReactNode }) =
             setAuctionEndTime(data.auctionEndTime || "");
             setImage(data.image || "");
             setItemId(data._id || "")
-
         } catch (error) {
             console.error("Error fetching NFT data:", error);
         }

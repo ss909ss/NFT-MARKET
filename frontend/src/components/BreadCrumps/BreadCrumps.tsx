@@ -1,9 +1,7 @@
-
 import s from './BreadCrumps.module.scss';
 import { Link, useLocation } from 'react-router';
 import arrowLeft from '../../assets/Left arrow.png'
 import arrowRight from '../../assets/ArrowRight.png'
-
 
 const BreadCrumps = () => {
     const location = useLocation();
@@ -26,10 +24,9 @@ const BreadCrumps = () => {
                         <img src={arrowRight} alt="Icon" />
                         {pathSegments.length > 0 && (
                             <>
-
                                 <p className={s.breadCrumpsSegment}>            {(() => {
                                     const text = pathSegments[pathSegments.length - 1];
-                                    const words = text.split(/(?=[A-Z])|[-_]/); // Разбивает по заглавным буквам, дефису или подчеркиванию
+                                    const words = text.split(/(?=[A-Z])|[-_]/); 
                                     if (words.length > 1) {
                                         return words[0].charAt(0).toUpperCase() + words[0].slice(1) + ' ' + words.slice(1).join('');
                                     }

@@ -7,9 +7,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from "react";
 import Notification from "../notifications/Notification";
 import userIcon from '../../assets/userI.svg'
-import { useDispatch, useSelector } from 'react-redux';
-import { setAuth } from "../../store/authSlice";
-import { selectAuth } from "../../store/authSlice/authSlice";
 import Wallet from "../Wallet/Wallet";
 import { useAuth } from "../../context/authContenxt";
 
@@ -17,8 +14,6 @@ const Header = () => {
     const [open, setIsOpen] = useState(false);
     const navigate = useNavigate();
     const {token} = useAuth();
-    const dispatch = useDispatch();
-    const auth = useSelector(selectAuth)
     const [isProfileOnClick, setIsProfileOnClick] = useState(false)
 
     const handleClick = () => {
@@ -74,9 +69,7 @@ const Header = () => {
                                         </ul>
                                     </div>
                                 }
-
-
-
+                                
                                 {token &&
                                     <button className={s.button__upload} onClick={handleClickUpload}>
                                         Upload

@@ -15,14 +15,12 @@ const ModalSuccessfully = () => {
                     You successfully purchased <br />
                     C O I N Z from UI8
                 </div>
-
                 <div className={s.modal__content}>
                     <div className={s.modal__content__left}>
                         <div className={`${s.modal__content__left_status}
                          ${s.rowItem}`}>
                             Status
                         </div>
-
                         <div className={`${s.modal__content__left_processing} 
                         ${s.rowItem}`}>
                             Processing
@@ -33,17 +31,14 @@ const ModalSuccessfully = () => {
                         ${s.rowItem}`}>
                             Transaction ID
                         </div>
-
                         <div className={`${s.modal__content__right_wallet} 
                         ${s.rowItem}`}>
                             0msx836930...87r398
                         </div>
                     </div>
                 </div>
-
                 <div className={s.modal__socialsBlock}>
                     Time to show-off
-
                     <div className={s.modal__socials}>
                         <div className={s.modal__socials__social}>
                             <img src={facebook} alt="" className={s.modal__socials__social_img} />
@@ -63,6 +58,5 @@ const ModalSuccessfully = () => {
         </section>
     )
 }
-
 
 export default ModalSuccessfully

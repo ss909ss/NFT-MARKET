@@ -1,33 +1,33 @@
 @import "../modalFollowSteps/ModalFollowSteps.module.scss";
 
 .modalWrapper {
-    &__purshasing {
-        color: #777E90;
-        font-size: 18px;
+  &__purshasing {
+    color: #777e90;
+    font-size: 18px;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-weight: 600;
+
+    label {
+      font-size: 24px;
+      color: #fcfcfd;
     }
 
-    &__form {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-        font-weight: 600;
-
-        label {
-            font-size: 24px;
-            color: #FCFCFD;
-        }
-
-        .modalWrapper__input {
-            color: #777E90;
-            padding-bottom: 12px;
-            border: none;
-            border-bottom: 1px solid #353945;
-            background: none;
-            font-size: 16px;
-        }
-
-        .modalWrapper__input:focus {
-            outline: none;
-        }
+    .modalWrapper__input {
+      color: #777e90;
+      padding-bottom: 12px;
+      border: none;
+      border-bottom: 1px solid #353945;
+      background: none;
+      font-size: 16px;
     }
+
+    .modalWrapper__input:focus {
+      outline: none;
+    }
+  }
 }
