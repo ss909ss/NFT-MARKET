@@ -42,7 +42,6 @@
           .rightTopBottom {
             margin-top: 20px;
             @include flex-container;
-            justify-content: space-between;
 
             .rightBlockBotomLeft {
               @include flex-container;

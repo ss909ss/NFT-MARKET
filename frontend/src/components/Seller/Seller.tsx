@@ -1,10 +1,10 @@
 import s from './Seller.module.scss'
-import arrowDown from '../../../assets/arrow-down.png';
-import cup from '../../../assets/cup.svg';
-import arrow from '../../../assets/arrow.svg';
-import avatar from "../../../assets/avatar.png";
-import ownerAvatarDec from "../../../assets/ownerAvatarDecoration.svg"
-import plus from "../../../assets/plus-icon.svg"
+import arrowDown from '../../assets/arrow-down.png';
+import cup from '../../assets/cup.svg';
+import arrow from '../../assets/arrow.svg';
+import avatar from "../../assets/avatar.png";
+import ownerAvatarDec from "../../assets/ownerAvatarDecoration.svg"
+import plus from "../../assets/plus-icon.svg"
 
 const Seller = () => {
     return (

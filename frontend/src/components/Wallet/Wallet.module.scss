@@ -1,23 +1,28 @@
 @import "../../index.module.scss";
 
 .myWallet {
+    text-decoration: none;
+
     margin-left: 50px;
-    margin-top: 20px; 
-    color: #777E90;
+    margin-top: 20px;
+    color: $muted-blue;
     padding: 32px 16px;
-    background-color: #23262F;
+    background-color: $slate-gray;
     width: fit-content;
     border-radius: 12px;
 
     h2 {
-        color: #FCFCFD;
+        color: $white-color;
         margin-bottom: 4px;
     }
 
     &__link {
-        font-size: 14px;
+        @include text-style($text-color: $white-color,
+            $fz: 14px,
+            $lh: 20px,
+            $fw: 700);
+
         margin-bottom: 16px;
-        font-weight: 700;
         display: flex;
         align-items: center;
         gap: 8px;
@@ -29,33 +34,38 @@
         border-radius: 16px;
 
         &_flex {
-            display: flex;
-            align-items: center;
+            @include flex-center;
         }
 
         img {
-            background-color: #627EEA;
+            background-color: $blue-color;
             border-radius: 50%;
             padding: 7px 12px;
             margin-right: 16px;
         }
 
         &__title {
-            font-size: 12px;
+            @include text-style($text-color: $white-color,
+                $fz: 12px,
+                $lh: 20px,
+                $fw: 500);
         }
 
         &__value {
-            font-size: 24px;
-            color: #FCFCFD;
+            @include text-style($text-color: $white-color,
+                $fz: 24px,
+                $lh: 20px,
+                $fw: 500);
             font-weight: 700;
         }
 
         &__manageFun {
-            font-size: 14px;
-            font-weight: 700;
-            color: #FCFCFD;
+            @include text-style($text-color: $white-color,
+                $fz: 14px,
+                $lh: 20px,
+                $fw: 700);
             background: none;
-            border: 2px solid #353945;
+            border: 2px solid $dark-gray;
             border-radius: 90px;
             padding: 8px 20px;
             margin-top: 10px;
@@ -68,16 +78,18 @@
         flex-direction: column;
 
         &__nav {
-            display: flex;
-            align-items: center;
+            @include flex-center;
             gap: 12px;
-            font-size: 14px;
-            font-weight: 700;
+
+            @include text-style($text-color: $muted-blue,
+            $fz: 14px,
+            $lh: 20px,
+            $fw: 700);
+
             padding: 16px 0;
             border: none;
-            border-bottom: 2px solid #353945;
+            border-bottom: 2px solid $dark-gray;
             background-color: transparent;
-            color: #777E90;
         }
 
         &__nav:last-child {
