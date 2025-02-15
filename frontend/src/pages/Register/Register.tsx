@@ -1,61 +1,52 @@
 import s from './Auth.module.scss'
-import { useDispatch} from 'react-redux'
-import {   setAuth, setUser } from '../../store/authSlice/authSlice'
+import { useDispatch } from 'react-redux'
+import { setAuth, setUser } from '../../store/authSlice/authSlice'
 import { SubmitHandler, useForm } from "react-hook-form"
-import { FormData, IFormRegister } from '../../types/Form'
-import { usePostFormRegisterMutation } from '../../store/api/authApi'
+import { IFormRegister } from '../../types/Form'
+import { postRegister } from '../../store/api/authApi' // Импортируем axios функцию
 import { useNavigate } from 'react-router'
 
 const Register = () => {
     const dispatch = useDispatch();
-    const { register, handleSubmit, reset } = useForm<FormData>();
+    const { register, handleSubmit, reset } = useForm<IFormRegister>();
     const navigate = useNavigate();
-    const [postRegister] = usePostFormRegisterMutation();
-    
+
     const onSubmit: SubmitHandler<IFormRegister> = async (data) => {
         try {
             console.log("Sending data", data);
-    
-            const responseRegister = await postRegister({
-                username: data.username,
-                email: data.email,
-                password: data.password,
-                id: data.id,
-                wallet: {
-                    walletId: ''
-                }
-            }).unwrap();
-    
-            console.log("Response from the server:”", responseRegister);
-    
+
+            const responseRegister = await postRegister(data);
+
+            console.log("Response from the server:", responseRegister);
+
             if (responseRegister) {
-                const walletId = responseRegister?.wallet?.walletId; 
-    
+                const walletId = responseRegister?.wallet?.walletId;
+
                 if (walletId) {
                     localStorage.setItem("walletId", walletId);
                     console.log("walletId saved:", walletId);
                 } else {
                     console.warn("walletId is missing from the server response");
                 }
-    
+
                 dispatch(setAuth(true));
-                dispatch(setUser({ 
-                    username: data.username, 
-                    email: data.email, 
+                dispatch(setUser({
+                    username: data.username,
+                    email: data.email,
                     password: data.password
                 }));
-    
+
                 console.log("User registered:", responseRegister);
             } else {
                 console.error("Registration error: empty response from the server");
             }
-    
+
             reset();
         } catch (error) {
             console.error("Error when submitting a form:", error);
         }
     };
-    
+
     const handleNavigate = () => {
         navigate("/login")
     }

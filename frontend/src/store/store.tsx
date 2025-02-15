@@ -1,23 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './authSlice/authSlice';
-import profileReducer from './authSlice/profileSlice'
-import { apiAuthSlice } from './api/authApi';
+import profileReducer from './authSlice/profileSlice';
 import peopleReducer from './peopleCategorySlice/peopleCategorySlice';
 import { apiProfileSlice } from './api/profileApi';
 // import { apiNftSlice } from './api/AddNfts';
 
-
 const store = configureStore({
     reducer: {
-        auth: authReducer,
         [apiProfileSlice.reducerPath]: apiProfileSlice.reducer,
         profile: profileReducer,
-        [apiAuthSlice.reducerPath]: apiAuthSlice.reducer,
-        // [apiNftSlice.reducerPath]: apiNftSlice.reducer,
-        people: peopleReducer, // добавляем сюда peopleReducer
+        people: peopleReducer,
     },
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(apiAuthSlice.middleware, apiProfileSlice.middleware)
+        getDefaultMiddleware().concat(apiProfileSlice.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
