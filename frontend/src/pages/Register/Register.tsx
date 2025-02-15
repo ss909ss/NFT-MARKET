@@ -1,26 +1,47 @@
 import s from './Auth.module.scss'
 import { useDispatch } from 'react-redux'
-import { setAuth, setUser } from '../../store/authSlice/authSlice'
+// import { setAuth, setUser } from '../../store/authSlice/authSlice'
 import { SubmitHandler, useForm } from "react-hook-form"
 import { IFormRegister } from '../../types/Form'
-import { postRegister } from '../../store/api/authApi' // Импортируем axios функцию
+// import { usePostFormRegisterMutation } from '../../store/api/authApi'
 import { useNavigate } from 'react-router'
+import axios from 'axios'
+import { useState } from 'react'
 
 const Register = () => {
     const dispatch = useDispatch();
     const { register, handleSubmit, reset } = useForm<IFormRegister>();
     const navigate = useNavigate();
+    // const [postRegister] = usePostFormRegisterMutation();
+    const [auth, setAuth] = useState(false);
+    const [username, setUsername] = useState<null | string>(null);
+    const [email, setEmail] = useState<null | string>(null);
+    const [password, setPassword] = useState<string>("");
+    const [token, setToken] = useState<null | string>(null);
+    const [avatar, setAvatar] = useState<null | string>(null);
+    const [auctionId, setAuctionId] = useState<null | string>(null);
+    const [favorites, setFavorites] = useState<null | string>(null);
+    const [newBidPrice, setNewBidPrice] = useState<null | string>(null);
+    const [walletId, setWalletId] = useState<null | string>(null);
 
     const onSubmit: SubmitHandler<IFormRegister> = async (data) => {
         try {
             console.log("Sending data", data);
 
-            const responseRegister = await postRegister(data);
+            const responseRegister = await axios.post('https://nft-market-as0q.onrender.com/auth/register', {
+                username: data.username,
+                email: data.email,
+                password: data.password,
+                id: data.id,
+                wallet: {
+                    walletId: ''
+                }
+            });
 
             console.log("Response from the server:", responseRegister);
 
             if (responseRegister) {
-                const walletId = responseRegister?.wallet?.walletId;
+                const walletId = responseRegister.data?.wallet?.walletId;
 
                 if (walletId) {
                     localStorage.setItem("walletId", walletId);
@@ -29,12 +50,16 @@ const Register = () => {
                     console.warn("walletId is missing from the server response");
                 }
 
-                dispatch(setAuth(true));
-                dispatch(setUser({
-                    username: data.username,
-                    email: data.email,
-                    password: data.password
-                }));
+                setAuth(true);
+                setUsername(data.username);
+                setEmail(data.email);
+                setPassword(data.password);
+                setToken(responseRegister.data.token || null);
+                setAvatar(responseRegister.data.avatar || null);
+                setAuctionId(responseRegister.data.auctionId || null);
+                setFavorites(responseRegister.data.favorites || null);
+                setNewBidPrice(responseRegister.data.newBidPrice || null);
+                setWalletId(walletId);
 
                 console.log("User registered:", responseRegister);
             } else {
@@ -94,4 +119,4 @@ const Register = () => {
     )
 }
 
-export default Register
+export default Register;

@@ -1,25 +1,22 @@
-import imageIcon from '../../assets/image.svg';
-import pencilIcon from '../../assets/pencil.svg';
+import imageIcon from '../../assets/image.svg'
+import pencilIcon from '../../assets/pencil.svg'
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { logout } from '../../store/authSlice/authSlice';
 import s from './SubHeader.module.scss';
 import { toast } from 'react-toastify';
 
 const SubHeader = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     const logoutFunction = async () => {
         try {
-            await dispatch(logout()).unwrap();
-            navigate('/');
-            toast.success("Logged out successfully");
+            localStorage.clear();
+            navigate('/')
+            toast.success("Logged out of the account successfully")
         } catch (e) {
             console.error("Logout failed", e);
             toast.error("Logout request failed");
         }
-    };
+    }
 
     return (
         <section className={s.subHeader}>
@@ -47,7 +44,7 @@ const SubHeader = () => {
                 </div>
             </div>
         </section>
-    );
-};
+    )
+}
 
-export default SubHeader;
+export default SubHeader
