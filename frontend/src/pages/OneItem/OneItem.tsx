@@ -1,17 +1,17 @@
-import s from "./OneItem.module.scss"
+import s from "./OneItem.module.scss";
 import { useEffect, useState } from "react";
-import { setCategory } from '../../store/peopleCategorySlice/peopleCategorySlice';
+import { setCategory } from "../../store/peopleCategorySlice/peopleCategorySlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { INft } from '../../types/NFT'
-import editIcon from '../../assets/editIcon.svg'
-import addIcon from '../../assets/addIcon.svg'
-import heart from "../../assets/heart.svg"
+import { INft } from "../../types/NFT";
+import editIcon from "../../assets/editIcon.svg";
+import addIcon from "../../assets/addIcon.svg";
+import heart from "../../assets/heart.svg";
+import redHert from "../../assets/red-heart.png";
+import binIcon from "../../assets/bin.svg";
 import { useAuth } from "../../context/authContenxt";
 import { useFavorites } from "../../context/favorites";
-import redHert from '../../assets/red-heart.png'
-import binIcon from '../../assets/bin.svg'
 import { useInfo } from "../../context/UserInfo";
 import { useNft } from "../../context/nftContext";
 import ModalBid from "../../components/modalBid/modalBid";
@@ -19,33 +19,54 @@ import ModalAuction from "../../components/ModalAuction/ModalAuction";
 import ModalToken from "../../components/ModalToken/ModalToken";
 import { toast } from "react-toastify";
 
-const OneItem = () => {
-    const { id } = useParams();
+interface ICategoryData {
+    id: string;
+    category: string;
+    assignment: string;
+    name: string;
+}
+
+interface IReduxState {
+    people: {
+        activeCategory: string;
+        data: ICategoryData[];
+    };
+}
+
+const OneItem: React.FC = () => {
+    const { id } = useParams<{ id: string }>();
     const [nftData, setNft] = useState<INft | null>(null);
-    const [isFavorite, setIsFavorite] = useState(false);
+    const [isFavorite, setIsFavorite] = useState<boolean>(false);
     const dispatch = useDispatch();
-    const { activeCategory, data } = useSelector((state) => state.people);
+    const { activeCategory, data } = useSelector((state: IReduxState) => state.people);
     const { token } = useAuth();
     const { addFavorite, getFavorites, removeFavorite } = useFavorites();
     const navigate = useNavigate();
     const { avatar, username, userId } = useInfo();
-    const currentBid = localStorage.getItem("newBidPrice")
-    const bidder = localStorage.getItem("bidder")
-    console.log(bidder)
-    console.log(userId)
-    console.log(username)
-    const { isOpenModalAuction, setIsOpenModalAuction, fetchGetNftAuction, price, _id, auctionEndTime, isOpenBidAuction,
-        setIsOpenBidAuction, isOpenBuyModal, setIsOpenBuyModal, fetchGetNftData } = useNft();
+    const currentBid = localStorage.getItem("newBidPrice");
+    const bidder = localStorage.getItem("bidder");
+    const {
+        isOpenModalAuction,
+        setIsOpenModalAuction,
+        fetchGetNftAuction,
+        price,
+        _id,
+        auctionEndTime,
+        isOpenBidAuction,
+        setIsOpenBidAuction,
+        isOpenBuyModal,
+        setIsOpenBuyModal,
+        fetchGetNftData,
+    } = useNft();
 
     const nft = _id;
-    const startingPrice = price
-    const endTime = auctionEndTime
+    const startingPrice = price;
+    const endTime = auctionEndTime;
 
     useEffect(() => {
         const fetchNftDetail = async () => {
             try {
                 const response = await axios.get(`https://nft-market-as0q.onrender.com/nfts/${id}`);
-                console.log(response.data.data)
                 setNft(response.data.data);
             } catch (error) {
                 console.error("Error fetching NFT detail:", error);
@@ -57,10 +78,9 @@ const OneItem = () => {
         }
     }, [id]);
 
-
     useEffect(() => {
         const favoritesImage = getFavorites();
-        setIsFavorite(favoritesImage.some(fav => fav._id === id));
+        setIsFavorite(favoritesImage.some((fav) => fav._id === id));
     }, [id, getFavorites]);
 
     const handleClick = async () => {
@@ -79,7 +99,7 @@ const OneItem = () => {
 
                 if (response.status === 200 && id) {
                     removeFavorite(id);
-                    toast.success("You removed from favorite")
+                    toast.success("You removed from favorite");
                 }
                 setNft(response.data.data);
             } else {
@@ -91,14 +111,13 @@ const OneItem = () => {
 
                 if (response.status === 200) {
                     addFavorite(response.data);
-                    toast.success("You add this NFT to favorite")
+                    toast.success("You add this NFT to favorite");
                 }
             }
         } catch (error) {
             console.error("Error when updating favorites:", error);
         }
     };
-
 
     const handleDeleteNft = async () => {
         if (!token) {
@@ -119,47 +138,47 @@ const OneItem = () => {
 
             if (response.status === 200) {
                 removeFavorite(id);
-                toast.error("You successful delete this NFT")
-                navigate("/profile")
+                toast.error("You successful delete this NFT");
+                navigate("/profile");
             }
             setNft(response.data.data);
         } catch (error) {
             console.error("Error when updating favorites:", error);
         }
-    }
+    };
 
     const filteredDataByCategory = data.filter(
-        (item) => item.category === activeCategory && item.assignment === 'Owner'
+        (item) => item.category === activeCategory && item.assignment === "Owner"
     );
 
-    const creatorsData = data.filter((item) => item.assignment === 'Creator');
+    const creatorsData = data.filter((item) => item.assignment === "Creator");
 
-    const handleCategoryClick = (category) => {
+    const handleCategoryClick = (category: string) => {
         dispatch(setCategory(category));
     };
 
     const handleAddBid = () => {
         if (!token) {
-            alert("You have not token")
+            alert("You have not token");
         }
 
         try {
-            setIsOpenBidAuction(true)
+            setIsOpenBidAuction(true);
         } catch (e) {
-            alert(e)
+            alert(e);
         }
-    }
+    };
 
     const handleBuyNft = () => {
         if (!token) {
-            alert("You have not token")
+            alert("You have not token");
         }
         try {
-            setIsOpenBuyModal(true)
+            setIsOpenBuyModal(true);
         } catch (e) {
-            alert(e)
+            alert(e);
         }
-    }
+    };
 
     return (
         <section className={`${s.oneItem} ${s.container}`}>
@@ -172,14 +191,21 @@ const OneItem = () => {
                 </div>
                 <div className={s.oneItem__desc}>
                     This NFT Card will give you Access to Special Airdrops. To learn more about UI8 please visit <br />
-                    <a className={s.oneItem__desc__link} target="_blank" href="https://ui8.net">https://ui8.net</a>
+                    <a
+                        className={s.oneItem__desc__link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://ui8.net"
+                    >
+                        https://ui8.net
+                    </a>
                 </div>
                 <div className={s.peopleFilter}>
                     <div className={s.catogories}>
-                        {['Info', 'Owners', 'History', 'Bids'].map((category) => (
+                        {["Info", "Owners", "History", "Bids"].map((category) => (
                             <div
                                 key={category}
-                                className={`${s.category} ${activeCategory === category ? s.active : ''}`}
+                                className={`${s.category} ${activeCategory === category ? s.active : ""}`}
                                 onClick={() => handleCategoryClick(category)}
                             >
                                 {category}
@@ -198,19 +224,6 @@ const OneItem = () => {
                                 </div>
                             </div>
                         ))}
-                        <div className={s.creatorSection}>
-                            {creatorsData.map((item) => (
-                                <div key={item.id} className={s.filterResult__item}>
-                                    <div className={s.avatarWrapper}>
-                                        <img src={avatar} alt="Avatar" className={s.avatar} />
-                                    </div>
-                                    <div className={s.peopleInfo}>
-                                        <div className={s.assignment}>{item.assignment}</div>
-                                        <div className={s.name}>{item.name}</div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
                     </div>
                 </div>
                 <div className={s.highestBid}>
@@ -218,7 +231,7 @@ const OneItem = () => {
                         <img src={avatar} alt="" />
                         <div className={s.bidInfo}>
                             <div className={s.bidInfo__head}>
-                                Highest bid by <span className={s.name}>{username ? username : "Not bids yet"}
+                                Highest bid by <span className={s.name}>{ userId === bidder ? username : "Not bids yet" }
 
                                 </span>
                             </div>
@@ -239,7 +252,7 @@ const OneItem = () => {
                 </div>
             </div>
             <div className={s.buttons}>
-                <button className={s.buttons__button} onClick={() => id && fetchGetNftAuction(id)} >
+                <button className={s.buttons__button} onClick={() => id && fetchGetNftAuction(id)}>
                     <img src={addIcon} alt="" className={s.addBudAuction} />
                 </button>
                 <button className={s.buttons__button} onClick={handleDeleteNft}>
@@ -253,20 +266,33 @@ const OneItem = () => {
                 </button>
             </div>
 
-            {isOpenModalAuction && (
-                <ModalAuction isOpen={isOpenModalAuction} onClose={() => setIsOpenModalAuction(false)} nft={nft} startingPrice={startingPrice} endTime={endTime} />
-            )}
-            {isOpenBidAuction && (
-                <ModalBid isOpenBidAuction={isOpenBidAuction} onClose={() => setIsOpenBidAuction(false)} startingPrice={startingPrice} />
-            )}
-            {isOpenBuyModal && (
-                <ModalToken isOpenBuyModal={isOpenBuyModal} onClose={() => setIsOpenBuyModal(false)} />
-
-            )}
-        </section>
+            {
+                isOpenModalAuction && (
+                    <ModalAuction
+                        isOpen={isOpenModalAuction}
+                        onClose={() => setIsOpenModalAuction(false)}
+                        nft={nft}
+                        startingPrice={startingPrice}
+                        endTime={endTime}
+                    />
+                )
+            }
+            {
+                isOpenBidAuction && (
+                    <ModalBid
+                        isOpenBidAuction={isOpenBidAuction}
+                        onClose={() => setIsOpenBidAuction(false)}
+                        startingPrice={startingPrice}
+                    />
+                )
+            }
+            {
+                isOpenBuyModal && (
+                    <ModalToken isOpenBuyModal={isOpenBuyModal} onClose={() => setIsOpenBuyModal(false)} />
+                )
+            }
+        </section >
     );
 };
 
 export default OneItem;
-
-

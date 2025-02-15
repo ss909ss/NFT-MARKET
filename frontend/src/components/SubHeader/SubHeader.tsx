@@ -1,21 +1,15 @@
 import imageIcon from '../../assets/image.svg'
 import pencilIcon from '../../assets/pencil.svg'
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { logout, } from '../../store/authSlice/authSlice';
 import s from './SubHeader.module.scss';
-import { useLogoutFormMutation } from '../../store/api/authApi';
 import { toast } from 'react-toastify';
 
 const SubHeader = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const [logoutForm] = useLogoutFormMutation();
 
     const logoutFunction = async () => {
         try {
-            await logoutForm().unwrap();
-            dispatch(logout());
+            localStorage.clear();
             navigate('/')
             toast.success("Logged out of the account successfully")
         } catch (e) {

@@ -16,8 +16,7 @@ const ModalBid = ({ isOpenBidAuction, onClose, startingPrice }: ModalBidProps) =
     const [bidAmount, setBidAmount] = useState<number | "">("");
     const { token, balance } = useInfo();
     const [bidder, setBidder] = useState<string | null>("");
-    console.log(bidder)
-    console.log(bidder)
+   
     useEffect(() => {
         if (bidder) {
             console.log("Updated bidder:", bidder);

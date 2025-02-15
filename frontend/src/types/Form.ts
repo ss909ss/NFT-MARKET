@@ -9,8 +9,8 @@ export interface IFormRegister {
     };
 }
 
-export interface IFormLogin{
-    id:string;
+export interface IFormLogin {
+    id: string;
     token?: string;
     email: string;
     password: string;
@@ -20,9 +20,11 @@ export interface IFormLogin{
     }
 }
 
-export type FormData={
+export type FormData = {
     username: string;
     email: string;
     password: string;
 }
-
+export interface ILogoutResponse {
+    message: string;
+}
