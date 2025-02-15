@@ -50,25 +50,3 @@
 //     usePostFormRegisterMutation,
 //     useLogoutFormMutation
 // } = apiAuthSlice;
-
-// api/authApi.ts
-import axiosInstance from './axiosInstance';
-import { IFormRegister, IFormLogin, ILogoutResponse } from '../../types/Form';
-
-// Регистрация пользователя
-export const postRegister = async (formData: IFormRegister): Promise<IFormRegister> => {
-    const response = await axiosInstance.post<IFormRegister>('/register', formData);
-    return response.data;
-};
-
-// Вход пользователя
-export const postLogin = async (formData: IFormLogin): Promise<{ token: string; username: string; email: string }> => {
-    const response = await axiosInstance.post('/login', formData);
-    return response.data;
-};
-
-// Выход из аккаунта
-export const postLogout = async (): Promise<ILogoutResponse> => {
-    const response = await axiosInstance.post<ILogoutResponse>('/logout');
-    return response.data;
-};
