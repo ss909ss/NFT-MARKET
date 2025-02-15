@@ -218,7 +218,8 @@ const OneItem = () => {
                         <img src={avatar} alt="" />
                         <div className={s.bidInfo}>
                             <div className={s.bidInfo__head}>
-                                Highest bid by <span className={s.name}>{username && userId === bidder ? username : username}
+                                Highest bid by <span className={s.name}>{username ? username : "Not bids yet"}
+
                                 </span>
                             </div>
                             <div className={s.bidInfo__price}>

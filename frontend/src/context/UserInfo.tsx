@@ -57,10 +57,6 @@ export const UserInfoProvider = ({ children }: { children: React.ReactNode }) =>
 
     useEffect(() => {
         const fetchWallets = async () => {
-            if (!token) {
-                toast.error("You have not token, please register/login")
-                return
-            }
             try {
                 const response = await axios.get("https://nft-market-as0q.onrender.com/wallets/", {
                     headers: { Authorization: `Bearer ${token}` },

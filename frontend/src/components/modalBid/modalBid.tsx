@@ -15,16 +15,18 @@ interface ModalBidProps {
 const ModalBid = ({ isOpenBidAuction, onClose, startingPrice }: ModalBidProps) => {
     const [bidAmount, setBidAmount] = useState<number | "">("");
     const { token, balance } = useInfo();
-    const [bidder, setBidder] = useState<string | null>(null);
-
+    const [bidder, setBidder] = useState<string | null>("");
+    console.log(bidder)
     console.log(bidder)
     useEffect(() => {
         if (bidder) {
+            console.log("Updated bidder:", bidder);
             localStorage.setItem("bidder", bidder);
         }
     }, [bidder]);
 
-   
+
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setBidAmount(parseFloat(e.target.value) || 0);
     };
@@ -51,11 +53,22 @@ const ModalBid = ({ isOpenBidAuction, onClose, startingPrice }: ModalBidProps) =
                     }
                 })
             console.log(response.data)
-            setBidder(response.data?.bids?.at(-1)?.bidder);
+            const bids = response.data?.bids || [];
+
+            // Получаем последнего пользователя, сделавшего ставку
+            const lastBid = bids.at(-1); // или bids[bids.length - 1]
+            const lastBidder = lastBid?.bidder;
+            console.log("Last bidder from response:", lastBidder);
+            setBidder(lastBidder);
+
+          
             if (response.status === 200) {
                 toast.success("Bid placed successfully:");
                 onClose();
                 const bidPrice = localStorage.setItem("newBidPrice", response.data?.currentBid)
+                localStorage.setItem("bidder", lastBidder);
+
+                console.log(bidder)
                 console.log(bidPrice)
             }
 
