@@ -7,8 +7,6 @@ import { Link } from "react-router";
 import { INft } from '../../../types/NFT';
 import axios from 'axios';
 import { useInfo } from '../../../context/UserInfo';
-import { toast } from 'react-toastify';
-
 
 interface INftsResponse {
     data: INft[];
@@ -42,11 +40,7 @@ const CreatorSingle = () => {
                     }
                 }
             } catch (e) {
-                if (e instanceof Error) {
-                    toast.error(`NFT download error: ${e.message}`);
-                } else {
-                    toast.error("NFT download error: unknown error");
-                }
+                console.error("Ошибка загрузки NFT", e);
             }
         };
         

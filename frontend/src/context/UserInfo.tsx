@@ -1,7 +1,6 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "./authContenxt";
-import { toast } from "react-toastify";
 
 interface AuthContextType {
     username: string;
@@ -57,6 +56,10 @@ export const UserInfoProvider = ({ children }: { children: React.ReactNode }) =>
 
     useEffect(() => {
         const fetchWallets = async () => {
+            if (!token) {
+                alert("You have not token, please register/login")
+                return
+            }
             try {
                 const response = await axios.get("https://nft-market-as0q.onrender.com/wallets/", {
                     headers: { Authorization: `Bearer ${token}` },

@@ -12,6 +12,7 @@ $dark-gray: #353945;
 $slate-gray: #23262F;
 $light-gray: #B1B5C3;
 $dark-white: #E6E8EC;
+$error-color: #EF466F;
 
 $text-font-style:14px;
 $text-line-height: 16px;
@@ -33,12 +34,14 @@ $ln-height:20px;
 $fnt-size: 12px;
 
 
+
 @mixin single-text ($text-singleColor, $fnt-size, $ln-height, $fnt-weight){
   color: $text-singleColor;
   font-size: $fnt-size;
   line-height: $ln-height;
   font-weight: $fnt-weight;
 }
+
 
 @mixin clear-button{
   color: $muted-blue;
@@ -60,6 +63,7 @@ border-radius: $br-radius;
  cursor: $cursor;
 }
 
+
 @mixin text-style($text-color, $fz, $lh, $fw){
   color: $text-color;
   font-size: $fz;
@@ -77,6 +81,8 @@ font-weight: $fw;
   display: flex;
   align-items: center;
 }
+
+
 
 *{
   padding: 0;

@@ -22,71 +22,64 @@
     border-radius: 20px;
     padding: 32px;
 
-    .modalTop{
+    .modalTop {
       display: flex;
       align-items: center;
       justify-content: space-between;
 
-      .bidTitle{
-        @include text-style(
-          $text-color: $white-color,
+      .bidTitle {
+        @include text-style($text-color: $white-color,
           $fz: 32px,
           $lh: 40px,
-          $fw: 700
-        );
+          $fw: 700);
         margin-bottom: 32px;
       }
 
     }
-    .bidSubtitle{
-      @include text-style(
-        $text-color: $white-color,
+
+    .bidSubtitle {
+      @include text-style($text-color: $white-color,
         $fz: 16px,
         $lh: 24px,
-        $fw: 500
-      );
-      margin-bottom: 32px;
-    }
-    .titleBid{
-      @include text-style(
-        $text-color: $white-color,
-        $fz: 24px,
-        $lh: 32px,
-        $fw: 600
-      );
+        $fw: 500);
       margin-bottom: 32px;
     }
 
-    .bidCategory{
+    .titleBid {
+      @include text-style($text-color: $white-color,
+        $fz: 24px,
+        $lh: 32px,
+        $fw: 600);
+      margin-bottom: 32px;
+    }
+
+    .bidCategory {
       display: flex;
       align-items: center;
       justify-content: space-between;
       width: 100%;
       margin-bottom: 12px;
 
-      input{
+      input {
         background: transparent;
         border: 2px solid $muted-blue;
-     border-radius: 7px;
+        border-radius: 7px;
       }
-     
-      .bidLeft{
-        @include text-style(
-        $text-color: $muted-blue,
-        $fz: 16px,
-        $lh: 24px,
-        $fw: 500
-      );
-      }
-      .bidRight{
-        @include text-style(
-          $text-color: $white-color,
+
+      .bidLeft {
+        @include text-style($text-color: $muted-blue,
           $fz: 16px,
           $lh: 24px,
-          $fw: 500
-        );
+          $fw: 500);
       }
-     
+
+      .bidRight {
+        @include text-style($text-color: $white-color,
+          $fz: 16px,
+          $lh: 24px,
+          $fw: 500);
+      }
+
     }
 
 
@@ -96,14 +89,13 @@
       justify-content: space-between;
       width: 100%;
       margin-top: 40px;
+
       .bidAdd {
         width: 172px;
-        @include button(
-          $btn-color,
+        @include button($btn-color,
           $bg-color: $blue-color,
           $br-radius: $br-radius,
-          $cursor: $cursor
-        );
+          $cursor: $cursor );
         padding: 16px;
         color: $white-color;
         border: none;
@@ -114,6 +106,7 @@
           color: $blue-color;
         }
       }
+
       .bidCancel {
         width: 172px;
         @include clear-button();
