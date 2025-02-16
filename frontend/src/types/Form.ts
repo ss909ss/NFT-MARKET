@@ -1,5 +1,5 @@
 export interface IFormRegister {
-    id: string;
+    id: any;
     token?: string;
     username: string;
     email: string;
@@ -9,22 +9,17 @@ export interface IFormRegister {
     };
 }
 
-export interface IFormLogin {
-    id: string;
+export interface IFormLogin{
+    id:string;
     token?: string;
     email: string;
     password: string;
-    username?:string;
-    wallet:{
-        walletId: string;
-    }
+    username?:string
 }
 
-export type FormData = {
+export type FormData={
     username: string;
     email: string;
     password: string;
 }
-export interface ILogoutResponse {
-    message: string;
-}
+

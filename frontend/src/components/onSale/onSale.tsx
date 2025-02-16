@@ -6,7 +6,6 @@ import axios from 'axios'
 import { INft } from '../../types/NFT'
 import { Link } from 'react-router'
 import { useInfo } from '../../context/UserInfo'
-import { toast } from 'react-toastify'
 
 interface INftsResponse {
     data: INft[];
@@ -21,7 +20,7 @@ const OnSale = () => {
         const fetchItemsSale = async () => {
         
             if (!token) {
-                toast.error("No token, please login or register");
+                alert("No token, please login or register");
                 return;
             }
 
@@ -32,7 +31,7 @@ const OnSale = () => {
 
                 const createdNfts = response.data?.data?.filter(nft => nft.creator === userId);
                 console.log(createdNfts)
-                console.log("NFTs owned by the user:", createdNfts);
+                console.log("NFT, принадлежащие пользователю:", createdNfts);
                 setSaleData(createdNfts);
                 console.log('Profile data:', response.data);
             } catch (e) {
@@ -68,7 +67,7 @@ const OnSale = () => {
                     </Link>
                 ))
             ) : (
-                <p className={s.noItem}>No items  created on sale</p>
+                <p className={s.noItem}>No items on sale</p>
             )}
         </section>
     );

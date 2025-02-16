@@ -1,20 +1,26 @@
+
 import s from './EditNFt.module.scss';
 import nft from "../../assets/MultipleNft.png"
 import removeIcon from '../../assets/removeIcon.png'
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { useNft } from '../../context/nftContext';
+
+
 
 interface IAddNft {
   name: string;
   description: string;
   price: number;
   auctionEndTime: Date | string | null;
+  // collection: string;
   data?: any;
   image: string | File | null;
 }
 
 const EditNft = () => {
+
+
   const { name, description, price, auctionEndTime,  image, updateNFT } = useNft();
   const [isChecked, setIsChecked] = useState(false);
   const { id } = useParams();
@@ -23,21 +29,27 @@ const EditNft = () => {
     description: "",
     price: 0,
     auctionEndTime: null,
+    // collection: "",
     image: ""
   });
+  // Локальное состояние для выбранного файла изображения
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const navigate = useNavigate();
   console.log(name)
   console.log(description)
   console.log(price)
   console.log(auctionEndTime)
   console.log(image)
 
+
+  // При изменении данных из контекста обновляем локальное состояние формы
   useEffect(() => {
     setData({
       name: name,
       description: description,
       price: price,
       auctionEndTime: auctionEndTime ? new Date(auctionEndTime) : null,
+      // collection: collection,
       image: image
     });
   
@@ -64,11 +76,11 @@ const EditNft = () => {
     e.preventDefault();
   
     if (!id) {
-      alert("Error: ID not defined");
+      alert("Ошибка: ID не определён");
       return;
     }
   
-
+    // Преобразуем дату в ISO-формат
     const isoDate = new Date(data.auctionEndTime).toISOString();
   
     if (selectedImage) {
@@ -77,16 +89,18 @@ const EditNft = () => {
       reader.onloadend = async () => {
         const base64Image = reader.result as string;
         await updateNFT(
-          id,
+          id, // передаём id, гарантированно не undefined
           data.name,
           data.description,
           data.price,
           isoDate,
           base64Image,
+          // data.collection
         );
+        // navigate("/profile");
       };
-      console.log("Pre-update data:", data);
-      console.log("Sending updateNFT");
+      console.log("Данные перед обновлением:", data);
+      console.log("Отправка updateNFT...");
     } else {
       await updateNFT(
         id,
@@ -95,7 +109,9 @@ const EditNft = () => {
         data.price,
         isoDate,
         typeof data.image === "string" ? data.image : null,
+        // data.collection
       );
+      // navigate("/profile");
     }
   };
 
@@ -107,6 +123,7 @@ const EditNft = () => {
             <div className={s.contentTop}>
               <p className={s.contentTitle}>Update NFT</p>
             </div>
+
             <h2 className={s.uploadTitle}>Upload file</h2>
             <p className={s.uploadContenttTitle}>Drag or choose your file to upload</p>
             <div className={s.uploadContent}>
@@ -131,6 +148,7 @@ const EditNft = () => {
                 className={s.detailsFiled}
               />
             </div>
+
             <div className={s.detailsBlock}>
               <label htmlFor="description">DESCRIPTION</label>
               <input
@@ -143,7 +161,9 @@ const EditNft = () => {
                 className={s.detailsFiled}
               />
             </div>
+
             <span className={s.line}></span>
+
             <div className={s.detailsInfo}>
               <label htmlFor="start">Choose Date</label>
               <input
@@ -165,6 +185,7 @@ const EditNft = () => {
                 max="2030-02-09"
               />
             </div>
+
             <div className={s.detailsInfo}>
               <div className={s.detailsInfoLeft}>
                 <h3>Instant sale price</h3>
@@ -187,6 +208,7 @@ const EditNft = () => {
                 className={s.detailsCheckedInput}
               />
             )}
+
             <div className={s.detailsCollection}>
               <button type="submit" className={s.createNft} >
                 Update NFT

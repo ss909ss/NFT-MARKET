@@ -2,7 +2,6 @@ import s from './ModalAuction.module.scss'
 import { useAuth } from '../../context/authContenxt';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 
 
 interface ModalAuction {
@@ -18,14 +17,14 @@ const ModalAuction = ({ isOpen, onClose, nft, startingPrice, endTime }: ModalAuc
     const [auctionId, setAuctionId] = useState(null);
 
     useEffect(() => {
-        console.log("Id updated")
+        console.log("Id обновился")
     }, [auctionId])
 
     if (!isOpen) return null;
 
     const createAuction = async () => {
         if (!token) {
-            toast.error("You have not token")
+            alert("You have not token")
         }
 
         try {
@@ -39,7 +38,7 @@ const ModalAuction = ({ isOpen, onClose, nft, startingPrice, endTime }: ModalAuc
             console.log(response.data)
             const result = response.data
             if (response.status === 201) {
-                toast.success("Auction was successfully created");
+                alert("Auction was successfully created");
                 setAuctionId(result?._id);
                 console.log("auctionId set to:", result?._id);
                 localStorage.setItem("auctionId", result?._id);
@@ -53,6 +52,8 @@ const ModalAuction = ({ isOpen, onClose, nft, startingPrice, endTime }: ModalAuc
 
     return (
         <section className={s.modal}>
+            <div className={s.overlay}></div>
+
             <div className={s.modalContent}>
                 <h1 className={s.createTitle}>Create Auction?</h1>
                 <div className={s.modalButtons}>

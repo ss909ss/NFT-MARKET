@@ -8,21 +8,21 @@ import { useEffect, useState } from 'react';
 import { IProfile } from '../../types/profileType';
 import axios from 'axios';
 import { useInfo } from '../../context/UserInfo';
-import { toast } from 'react-toastify';
 
 const Edit = () => {
-    const { username, updateUsername } = useInfo();
-    const [localUsername, setLocalUsername] = useState(username);
-    const { token } = useAuth();
+    const { username, updateUsername, email, updateEmail } = useInfo();
+    const { token } = useAuth(); // Получаем токен из контекста
+
+    const [localUsername, setLocalUsername] = useState(username); // Локальное состояние
 
     useEffect(() => {
-        setLocalUsername(username);
+        setLocalUsername(username); // Если username обновляется извне, синхронизируем
     }, [username]);
 
     useEffect(() => {
         const fetchProfile = async () => {
             if (!token) {
-                toast.error('No token found!');
+                console.error('No token found!');
                 return;
             }
 
@@ -37,8 +37,9 @@ const Edit = () => {
                 );
 
                 console.log('Profile data:', response.data);
-
-                updateUsername(response.data.data.username || ""); 
+               
+                updateUsername(response.data.data.username || ""); // Теперь обновляет состояние в контексте
+                // updateEmail(response.data.data.email.email || "");
             } catch (error) {
                 console.error("Error fetching profile:", error);
             }
@@ -47,9 +48,34 @@ const Edit = () => {
         fetchProfile();
     }, [token]);
 
+    // const handleUpdateProfile = async () => {
+    //     if (!token) return;
+
+    //     try {
+    //         const response = await axios.put(
+    //             "https://nft-market-as0q.onrender.com/auth/profile",
+    //             { username: localUsername },
+    //             {
+    //                 headers: {
+    //                     Authorization: `Bearer ${token}`,
+    //                     "Content-Type": "application/json",
+    //                 },
+    //             }
+    //         );
+
+    //         console.log('Profile updated:', response.data);
+    //         setProfileData(response.data.data);
+    //         updateUsername(response.data.data.username || "");
+    //         // updateEmail(response.data.data.email || "");
+    //         // setPassword(response.data.data)
+    //     } catch (error) {
+    //         console.error("Error updating profile:", error);
+    //     }
+    // };
+
     const handleUpdateProfile = async () => {
         if (!token) return;
-
+    
         try {
             const response = await axios.put(
                 "https://nft-market-as0q.onrender.com/auth/profile",
@@ -61,26 +87,28 @@ const Edit = () => {
                     },
                 }
             );
-            if(response.status === 200){
-                toast.success("You succesfully updated  your Profile,  please  wait")
-            }
-
+    
             console.log('Profile updated:', response.data);
+            // Сначала обновляем данные в локальном состоянии и контексте
+          
             updateUsername(response.data.data.username || "");
-
+            
+    
+            // Перезапрашиваем профиль, чтобы синхронизировать актуальные данные
             const profileResponse = await axios.get("https://nft-market-as0q.onrender.com/auth/profile", {
                 headers: { Authorization: `Bearer ${token}` },
             });
-
+         
             updateUsername(profileResponse.data.data.username || "");
         } catch (error) {
             console.error("Error updating profile:", error);
         }
     };
-
+    
     return (
         <>
             <BreadCrumps />
+
             <section className={s.editPage}>
                 <div className={s.container}>
                     <div className={s.editPageContent}>
@@ -90,6 +118,7 @@ const Edit = () => {
                                 URL</span> and manage other personal settings.
                             </p>
                         </div>
+
                         <div className={s.contentBottom}>
                             <div className={s.contentLeft}>
                                 <img src={avatar} alt="Avatar" className={s.userAvater} />
@@ -102,6 +131,7 @@ const Edit = () => {
                                     </button>
                                 </div>
                             </div>
+
                             <div className={s.contentRight}>
                                 <h2 className={s.contentRightTilte}>Account info</h2>
                                 <div className={s.contentRightForm}>
@@ -114,12 +144,15 @@ const Edit = () => {
                                             id="username"
                                             name="displayName"
                                             className={s.formInput}
-                                            value={localUsername} 
-                                            onChange={(e) => setLocalUsername(e.target.value)}  
+                                            value={localUsername} // Привязываем к локальному состоянию
+                                            onChange={(e) => setLocalUsername(e.target.value)}  // Обновляем username
                                             placeholder="Enter your display name"
                                         />
                                     </div>
+
                                     <h2 className={s.formSocial}>Social</h2>
+
+
                                     <div className={s.formBlock}>
                                         <label htmlFor="url" className={s.formLabel}>
                                             PORTFOLIO OR WEBSITE
@@ -132,6 +165,8 @@ const Edit = () => {
                                             placeholder="Enter URL"
                                         />
                                     </div>
+
+
                                     <div className={s.formBlock}>
                                         <label htmlFor="twitter" className={s.formLabel}>
                                             TWITTER
@@ -149,14 +184,18 @@ const Edit = () => {
                                             </button>
                                         </div>
                                     </div>
+
                                     <button type='button' className={s.newLink}>
                                         <img src={plusIcon} alt="Icon" className={s.newLinkIcon} />
                                         Add more social account
                                     </button>
+
                                     <p className={s.editDescription}>
                                         To update your settings you should sign message through your wallet. Click 'Update profile' then sign the message
                                     </p>
+
                                     <span className={s.editpageLine}></span>
+
                                     <div className={s.editButtons}>
                                         <button type='button' className={s.updateButton} onClick={handleUpdateProfile}>
                                             Update Profile
@@ -166,11 +205,16 @@ const Edit = () => {
                                             Clear all
                                         </button>
                                     </div>
+
+
+
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </section>
         </>
     )

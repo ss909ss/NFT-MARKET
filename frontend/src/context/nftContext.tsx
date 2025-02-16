@@ -3,7 +3,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "./authContenxt";
 import { INft } from "../types/NFT";
 import { useNavigate, useParams } from "react-router";
-import { toast } from "react-toastify";
 
 interface NFTContextType {
     _id: string
@@ -51,7 +50,7 @@ export const UpdateNftProvider = ({ children }: { children: React.ReactNode }) =
     const fetchGetNftData = async (id: string): Promise<void> => {
 
         if (!token) {
-            toast.error("You have not token");
+            alert("You have not token");
         }
 
         try {
@@ -91,7 +90,7 @@ export const UpdateNftProvider = ({ children }: { children: React.ReactNode }) =
         image: string | null,
     ) => {
         if (!token || !id) {
-            toast.error("You have not token or id")
+            alert("error")
         }
 
         try {
@@ -127,7 +126,7 @@ export const UpdateNftProvider = ({ children }: { children: React.ReactNode }) =
 
     const fetchGetNftAuction = async (id: string): Promise<void> => {
         if (!token) {
-            toast.error("You have not token");
+            alert("You have not token");
         }
 
         try {

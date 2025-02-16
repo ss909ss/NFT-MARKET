@@ -3,7 +3,6 @@ import closeIcon from '../../assets/cancel.png'
 import { useState } from "react";
 import { useInfo } from "../../context/UserInfo";
 import axios from "axios";
-import { toast } from "react-toastify";
 
 interface IModalBuy {
     isOpenBuyModal: boolean;
@@ -26,10 +25,10 @@ const ModalToken = ({ isOpenBuyModal, onClose }: IModalBuy) => {
 
     const handleAddTransaction = async () => {
         if (Number(amount) > balance) {
-            toast.error("The transfer cannot be more than the balance on hand");
+            alert("Перевод не может быть больше, чем на балансе");
             return;
         } else if (!token) {
-            toast.error("You don't have the token")
+            alert("ВЫ не имеете токен")
         }
 
         try {
@@ -45,55 +44,59 @@ const ModalToken = ({ isOpenBuyModal, onClose }: IModalBuy) => {
             );
 
             if (response.status === 200) {
-                toast.success("Successful");
+                alert("Successful");
             }
         } catch (e) {
             console.error(e);
-            toast.error("An error occurred during the transaction.");
+            alert("An error occurred during the transaction.");
         }
     };
 
     if (!isOpenBuyModal) return null;
     return (
-        <section className={s.modalWrapper}>
-            <div className={s.modalWrapper__top}>
-                <h1 className={s.modalWrapper__top__title}>Transfer token</h1>
-                <img src={closeIcon} alt="" className={s.closeIcon} onClick={onClose} />
-            </div>
-            <div className={s.modalWrapper__purshasing}>
-                You can transfer tokens from your address to another
-            </div>
-            <form className={s.modalWrapper__form}>
-                <label htmlFor="modalWrapper__input">Receiver address</label>
-                <input
-                    type="text"
-                    id="receiverWalletId"
-                    name="receiverWalletId"
-                    value={receiverWalletId}
-                    onChange={handleChange}
-                    className={s.modalWrapper__input}
-                    placeholder="Paste Address"
-                />
-                <label htmlFor="modalWrapper__input">Amount</label>
-                <input
-                    type="number"
-                    id="amountInput"
-                    name="amount"
-                    value={amount}
-                    onChange={handleChange}
-                    className={s.modalWrapper__input}
-                    placeholder="Amount"
-                />
-            </form>
-            <div className={s.modalWrapper__buttons}>
-                <button className={s.modalWrapper__buttons__countine} onClick={handleAddTransaction}>
-                    Continue
-                </button>
-                <button className={s.modalWrapper__buttons__cancel}>
-                    Cancel
-                </button>
-            </div>
-        </section>
+        <div className={s.modal}>
+            <div className={s.overlay}></div>
+
+            <section className={s.modalWrapper}>
+                <div className={s.modalWrapper__top}>
+                    <h1 className={s.modalWrapper__top__title}>Transfer token</h1>
+                    <img src={closeIcon} alt="" className={s.closeIcon} onClick={onClose} />
+                </div>
+                <div className={s.modalWrapper__purshasing}>
+                    You can transfer tokens from your address to another
+                </div>
+                <form className={s.modalWrapper__form}>
+                    <label htmlFor="modalWrapper__input">Receiver address</label>
+                    <input
+                        type="text"
+                        id="receiverWalletId"
+                        name="receiverWalletId"
+                        value={receiverWalletId}
+                        onChange={handleChange}
+                        className={s.modalWrapper__input}
+                        placeholder="Paste Address"
+                    />
+                    <label htmlFor="modalWrapper__input">Amount</label>
+                    <input
+                        type="number"
+                        id="amountInput"
+                        name="amount"
+                        value={amount}
+                        onChange={handleChange}
+                        className={s.modalWrapper__input}
+                        placeholder="Amount"
+                    />
+                </form>
+                <div className={s.modalWrapper__buttons}>
+                    <button className={s.modalWrapper__buttons__countine} onClick={handleAddTransaction}>
+                        Continue
+                    </button>
+                    <button className={s.modalWrapper__buttons__cancel}>
+                        Cancel
+                    </button>
+                </div>
+            </section>
+        </div>
     )
 }
 

@@ -3,7 +3,6 @@ import nft from '../../assets/singleImage.png'
 import { useInfo } from '../../context/UserInfo';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 
 
 interface NotificationData {
@@ -20,7 +19,7 @@ const Notification = () => {
 
     const getNotifications = async () => {
         if (!token) {
-            toast.error("You do not have a token");
+            alert("You do not have a token");
             return;
         }
         try {

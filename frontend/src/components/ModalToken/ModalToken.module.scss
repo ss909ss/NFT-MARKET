@@ -12,6 +12,7 @@
     flex-direction: column;
     gap: 16px;
     font-weight: 600;
+    width: 100%;
 
     label {
       font-size: 24px;
@@ -25,6 +26,7 @@
       border-bottom: 1px solid $dark-gray;
       background: none;
       font-size: 16px;
+      width: 100%;
     }
 
     .modalWrapper__input:focus {
