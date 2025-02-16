@@ -68,7 +68,7 @@ const OnSale = () => {
                     </Link>
                 ))
             ) : (
-                <p className={s.noItem}>No items on sale</p>
+                <p className={s.noItem}>No items  created on sale</p>
             )}
         </section>
     );

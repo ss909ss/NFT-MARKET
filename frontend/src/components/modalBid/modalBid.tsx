@@ -24,8 +24,6 @@ const ModalBid = ({ isOpenBidAuction, onClose, startingPrice }: ModalBidProps) =
         }
     }, [bidder]);
 
-
-
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setBidAmount(parseFloat(e.target.value) || 0);
     };
@@ -54,8 +52,8 @@ const ModalBid = ({ isOpenBidAuction, onClose, startingPrice }: ModalBidProps) =
             console.log(response.data)
             const bids = response.data?.bids || [];
 
-            // Получаем последнего пользователя, сделавшего ставку
-            const lastBid = bids.at(-1); // или bids[bids.length - 1]
+            
+            const lastBid = bids.at(-1); 
             const lastBidder = lastBid?.bidder;
             console.log("Last bidder from response:", lastBidder);
             setBidder(lastBidder);
@@ -96,16 +94,18 @@ const ModalBid = ({ isOpenBidAuction, onClose, startingPrice }: ModalBidProps) =
                         />
                         <p className={s.bidRight}>ETH</p>
                     </div>
+
                     <span className={s.bidLine}></span>
-                    <div className={s.bidBalance}>
+                    
+                    <div className={s.bidCategory}>
                         <p className={s.bidLeft}>Your balance</p>
                         <p className={s.bidRight}>{balance} BTC</p>
                     </div>
-                    <div className={s.bidService}>
+                    <div className={s.bidCategory}>
                         <p className={s.bidLeft}>Service fee</p>
                         <p className={s.bidRight}>0 BTC</p>
                     </div>
-                    <div className={s.bidService}>
+                    <div className={s.bidCategory}>
                         <p className={s.bidLeft}>Total bid amount</p>
                         <p className={s.bidRight}>0 BTC</p>
                     </div>

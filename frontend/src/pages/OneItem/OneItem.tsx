@@ -138,7 +138,7 @@ const OneItem: React.FC = () => {
 
             if (response.status === 200) {
                 removeFavorite(id);
-                toast.error("You successful delete this NFT");
+                toast.success("You successful delete this NFT");
                 navigate("/profile");
             }
             setNft(response.data.data);
